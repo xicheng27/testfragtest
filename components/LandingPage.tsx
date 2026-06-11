@@ -1,69 +1,83 @@
 'use client';
+
 import { useState } from 'react';
 import AuthModal from './AuthModal';
 import { useAuth } from '@/lib/auth-context';
 
 export default function LandingPage() {
-  const [showModal, setShowModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'signup' | 'login' | null>(null);
   const { continueAsGuest } = useAuth();
 
   return (
     <>
-      <div className="min-h-screen bg-stone-50 flex flex-col">
-        {/* Nav */}
-        <header className="px-6 py-5 flex items-center justify-between">
-          <span className="font-semibold text-stone-900 tracking-tight text-lg">ScentMatch</span>
+      <div className="flex min-h-screen flex-col bg-stone-50">
+        <header className="flex items-center justify-between px-5 py-5 sm:px-8">
+          <span className="text-lg font-semibold tracking-tight text-stone-950">ScentMatch</span>
+          <button
+            type="button"
+            onClick={() => setAuthMode('login')}
+            className="text-sm font-medium text-stone-500 transition-colors hover:text-stone-950"
+          >
+            Log In
+          </button>
         </header>
 
-        {/* Hero */}
-        <main className="flex-1 flex flex-col items-center justify-center px-6 py-20 text-center">
-          <div className="max-w-md">
-            {/* Wordmark */}
-            <div className="mb-10">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-stone-900 mb-6">
-                {/* Simple drop/scent icon */}
-                <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C12 2 5 10.5 5 15a7 7 0 0014 0c0-4.5-7-13-7-13z" />
-                </svg>
-              </div>
-              <h1 className="text-4xl sm:text-5xl font-semibold text-stone-900 leading-tight tracking-tight">
-                ScentMatch
-              </h1>
-              <p className="mt-3 text-lg text-stone-500 font-light leading-relaxed">
-                Find a fragrance that actually feels like you.
-              </p>
+        <main className="flex flex-1 items-center justify-center px-6 py-16 text-center">
+          <div className="max-w-lg">
+            <div className="mb-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-stone-950">
+              <svg className="h-7 w-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C12 2 5 10.5 5 15a7 7 0 0014 0c0-4.5-7-13-7-13z" />
+              </svg>
             </div>
+            <p className="text-xs font-medium uppercase tracking-[0.24em] text-stone-400">Personal fragrance discovery</p>
+            <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-stone-950 sm:text-6xl">
+              Find the scent that feels like you.
+            </h1>
+            <p className="mx-auto mt-5 max-w-md text-base font-light leading-relaxed text-stone-500 sm:text-lg">
+              A visual fragrance quiz, thoughtful recommendations, and a personal Shelf for everything worth remembering.
+            </p>
 
-            {/* CTA buttons */}
-            <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
+            <div className="mx-auto mt-9 flex w-full max-w-sm flex-col gap-3 sm:flex-row">
               <button
-                onClick={() => setShowModal(true)}
-                className="w-full py-3.5 rounded-xl bg-stone-900 text-white font-medium text-sm hover:bg-stone-800 transition-colors"
+                type="button"
+                onClick={() => setAuthMode('signup')}
+                className="flex-1 rounded-xl bg-stone-950 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-stone-800"
               >
-                Sign in
+                Sign Up
               </button>
               <button
-                onClick={continueAsGuest}
-                className="w-full py-3.5 rounded-xl border border-stone-300 text-stone-700 font-medium text-sm hover:border-stone-500 hover:text-stone-900 transition-colors"
+                type="button"
+                onClick={() => setAuthMode('login')}
+                className="flex-1 rounded-xl border border-stone-300 px-6 py-3.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
               >
-                Continue as guest
+                Log In
               </button>
             </div>
-
-            {/* Social proof hint */}
-            <p className="mt-8 text-xs text-stone-400 font-light">
-              No account required. No ads. Just your perfect scent.
+            <button
+              type="button"
+              onClick={continueAsGuest}
+              className="mt-5 text-sm text-stone-400 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-700"
+            >
+              Continue as Guest
+            </button>
+            <p className="mt-6 text-xs font-light text-stone-400">
+              Guest quiz data and Shelf items stay separate from account data.
             </p>
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="px-6 py-4 text-center text-xs text-stone-400 font-light">
+        <footer className="px-6 py-5 text-center text-xs font-light text-stone-400">
           © {new Date().getFullYear()} ScentMatch
         </footer>
       </div>
 
-      {showModal && <AuthModal onClose={() => setShowModal(false)} mode="entry" />}
+      {authMode && (
+        <AuthModal
+          initialMode={authMode}
+          allowGuest
+          onClose={() => setAuthMode(null)}
+        />
+      )}
     </>
   );
 }

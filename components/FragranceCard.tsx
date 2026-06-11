@@ -1,7 +1,7 @@
 'use client';
 import { ScoredFragrance } from '@/lib/scoring';
 import { Fragrance } from '@/lib/fragrances';
-import { useSavedFragrances } from '@/lib/saved-fragrances-context';
+import { useShelf } from '@/lib/shelf-context';
 import clsx from 'clsx';
 import ProductImage from './ProductImage';
 
@@ -12,12 +12,12 @@ interface FragranceCardProps {
 }
 
 export default function FragranceCard({ result, fragrance: fragranceProp, rank }: FragranceCardProps) {
-  const { isSaved, toggleSaved } = useSavedFragrances();
+  const { isOnShelf, toggleShelf } = useShelf();
   const fragrance = result?.fragrance ?? fragranceProp;
 
   if (!fragrance) return null;
 
-  const saved = isSaved(fragrance.id);
+  const saved = isOnShelf(fragrance.id);
   const rankLabel = result?.recommendationLabel;
   const rankColor = result?.recommendationType === 'best'
     ? 'text-amber-700 bg-amber-50 border-amber-200'
@@ -137,9 +137,9 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
         <div className="flex flex-col gap-2 sm:flex-row">
           <button
             type="button"
-            onClick={() => toggleSaved(fragrance.id)}
+            onClick={() => toggleShelf(fragrance.id)}
             aria-pressed={saved}
-            aria-label={saved ? `Remove ${fragrance.name} from My List` : `Save ${fragrance.name} to My List`}
+            aria-label={saved ? `Remove ${fragrance.name} from Shelf` : `Add ${fragrance.name} to Shelf`}
             className={clsx(
               'flex-1 rounded-xl py-2.5 text-sm font-medium transition-colors',
               saved
@@ -147,7 +147,7 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
                 : 'bg-stone-900 text-white hover:bg-stone-800'
             )}
           >
-            {saved ? 'Saved - Remove from My List' : 'Save to My List'}
+            {saved ? 'On Shelf - Remove' : 'Add to Shelf'}
           </button>
           {fragrance.productUrl && (
             <a

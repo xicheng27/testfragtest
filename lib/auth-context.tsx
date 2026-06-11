@@ -1,53 +1,94 @@
 'use client';
-import { createContext, useContext, useState, ReactNode } from 'react';
 
-interface User {
-  name: string;
-  email: string;
-}
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  AuthActionResult,
+  AuthUser,
+  localAuthRepository,
+} from './auth-storage';
 
 interface AuthContextValue {
-  user: User | null;
+  user: AuthUser | null;
   isGuest: boolean;
-  signIn: (name: string, email: string) => void;
+  isReady: boolean;
+  profileId: string | null;
+  hasEnteredApp: boolean;
+  signUp: (name: string, email: string, password: string) => Promise<AuthActionResult>;
+  logIn: (email: string, password: string) => Promise<AuthActionResult>;
   signOut: () => void;
   continueAsGuest: () => void;
-  hasEnteredApp: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isGuest, setIsGuest] = useState(false);
-  const [hasEnteredApp, setHasEnteredApp] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
-  const signIn = (name: string, email: string) => {
-    setUser({ name, email });
-    setIsGuest(false);
-    setHasEnteredApp(true);
-  };
+  useEffect(() => {
+    let cancelled = false;
+    const restore = window.setTimeout(async () => {
+      const session = await localAuthRepository.restoreSession();
+      if (cancelled) return;
+      setUser(session.user);
+      setIsGuest(session.isGuest);
+      setIsReady(true);
+    }, 0);
 
-  const signOut = () => {
+    return () => {
+      cancelled = true;
+      window.clearTimeout(restore);
+    };
+  }, []);
+
+  const signUp = useCallback(async (name: string, email: string, password: string) => {
+    const result = await localAuthRepository.signUp(name, email, password);
+    if (result.ok && result.user) {
+      setUser(result.user);
+      setIsGuest(false);
+    }
+    return result;
+  }, []);
+
+  const logIn = useCallback(async (email: string, password: string) => {
+    const result = await localAuthRepository.logIn(email, password);
+    if (result.ok && result.user) {
+      setUser(result.user);
+      setIsGuest(false);
+    }
+    return result;
+  }, []);
+
+  const signOut = useCallback(() => {
+    localAuthRepository.clearSession();
     setUser(null);
     setIsGuest(false);
-    setHasEnteredApp(false);
-  };
+  }, []);
 
-  const continueAsGuest = () => {
+  const continueAsGuest = useCallback(() => {
+    localAuthRepository.continueAsGuest();
+    setUser(null);
     setIsGuest(true);
-    setHasEnteredApp(true);
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, isGuest, signIn, signOut, continueAsGuest, hasEnteredApp }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = useMemo<AuthContextValue>(() => ({
+    user,
+    isGuest,
+    isReady,
+    profileId: user?.id ?? (isGuest ? 'guest' : null),
+    hasEnteredApp: Boolean(user || isGuest),
+    signUp,
+    logIn,
+    signOut,
+    continueAsGuest,
+  }), [continueAsGuest, isGuest, isReady, logIn, signOut, signUp, user]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  return context;
 }

@@ -30,7 +30,7 @@ export default function OptionCard({ option, selected, onClick, variant = 'defau
             src={option.imageUrl}
             alt=""
             fill
-            sizes="(max-width: 640px) 50vw, 180px"
+            sizes="(max-width: 640px) 50vw, 220px"
             loading="eager"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />

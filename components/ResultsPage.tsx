@@ -4,19 +4,19 @@ import { ScoredFragrance } from '@/lib/scoring';
 import FragranceCard from './FragranceCard';
 import AuthModal from './AuthModal';
 import { useAuth } from '@/lib/auth-context';
-import { useSavedFragrances } from '@/lib/saved-fragrances-context';
+import { useShelf } from '@/lib/shelf-context';
 
 interface ResultsPageProps {
   results: ScoredFragrance[];
   onRestart: () => void;
   onExtendedQuiz: () => void;
-  onViewSaved: () => void;
+  onViewShelf: () => void;
   isExtended: boolean;
 }
 
-export default function ResultsPage({ results, onRestart, onExtendedQuiz, onViewSaved, isExtended }: ResultsPageProps) {
+export default function ResultsPage({ results, onRestart, onExtendedQuiz, onViewShelf, isExtended }: ResultsPageProps) {
   const { user, signOut } = useAuth();
-  const { savedIds } = useSavedFragrances();
+  const { shelfIds } = useShelf();
   const [showSignIn, setShowSignIn] = useState(false);
 
   return (
@@ -27,10 +27,10 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, onView
           <span className="font-semibold text-stone-900 tracking-tight">ScentMatch</span>
           <div className="flex items-center gap-3">
             <button
-              onClick={onViewSaved}
+              onClick={onViewShelf}
               className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
             >
-              My List{savedIds.length > 0 ? ` (${savedIds.length})` : ''}
+              Shelf{shelfIds.length > 0 ? ` (${shelfIds.length})` : ''}
             </button>
             {user ? (
               <>
@@ -39,7 +39,7 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, onView
               </>
             ) : (
               <button onClick={() => setShowSignIn(true)} className="text-sm text-stone-500 hover:text-stone-800 transition-colors">
-                Sign in
+                Log In
               </button>
             )}
           </div>
@@ -98,7 +98,7 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, onView
         </main>
       </div>
 
-      {showSignIn && <AuthModal onClose={() => setShowSignIn(false)} mode="signin" />}
+      {showSignIn && <AuthModal onClose={() => setShowSignIn(false)} initialMode="login" />}
     </>
   );
 }

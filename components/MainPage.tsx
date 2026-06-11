@@ -5,10 +5,17 @@ import { useState } from 'react';
 
 interface MainPageProps {
   onStartQuiz: (extended?: boolean) => void;
-  onViewSaved: () => void;
+  onViewShelf: () => void;
+  onViewPreviousResults: () => void;
+  hasPreviousResults: boolean;
 }
 
-export default function MainPage({ onStartQuiz, onViewSaved }: MainPageProps) {
+export default function MainPage({
+  onStartQuiz,
+  onViewShelf,
+  onViewPreviousResults,
+  hasPreviousResults,
+}: MainPageProps) {
   const { user, isGuest, signOut } = useAuth();
   const [showSignIn, setShowSignIn] = useState(false);
 
@@ -20,10 +27,10 @@ export default function MainPage({ onStartQuiz, onViewSaved }: MainPageProps) {
           <span className="font-semibold text-stone-900 tracking-tight">ScentMatch</span>
           <div className="flex items-center gap-3">
             <button
-              onClick={onViewSaved}
+              onClick={onViewShelf}
               className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
             >
-              My List
+              Shelf
             </button>
             {user ? (
               <div className="flex items-center gap-3">
@@ -37,7 +44,7 @@ export default function MainPage({ onStartQuiz, onViewSaved }: MainPageProps) {
                 onClick={() => setShowSignIn(true)}
                 className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
               >
-                Sign in
+                Create account
               </button>
             ) : null}
           </div>
@@ -80,12 +87,21 @@ export default function MainPage({ onStartQuiz, onViewSaved }: MainPageProps) {
             >
               Start Quiz
             </button>
+            {hasPreviousResults && (
+              <button
+                type="button"
+                onClick={onViewPreviousResults}
+                className="mt-3 w-full rounded-xl border border-stone-300 py-3.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
+              >
+                View my saved matches
+              </button>
+            )}
             <p className="text-xs text-stone-400 mt-3 font-light">Takes about 2 minutes</p>
           </div>
         </main>
       </div>
 
-      {showSignIn && <AuthModal onClose={() => setShowSignIn(false)} mode="signin" />}
+      {showSignIn && <AuthModal onClose={() => setShowSignIn(false)} initialMode="signup" />}
     </>
   );
 }

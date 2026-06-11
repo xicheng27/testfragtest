@@ -45,7 +45,10 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
       </div>
 
       {isImageCards ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className={clsx(
+          'grid grid-cols-2 gap-3',
+          question.id === 'birth-month' ? 'sm:grid-cols-4' : 'sm:grid-cols-3',
+        )}>
           {question.options.map(option => (
             <OptionCard
               key={option.id}
@@ -61,7 +64,9 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
           {question.options.map(option => (
             <button
               key={option.id}
+              type="button"
               onClick={() => toggle(option.id)}
+              aria-pressed={selected.includes(option.id)}
               className={clsx(
                 'rounded-xl border p-4 text-left transition-all duration-150',
                 selected.includes(option.id)
@@ -78,23 +83,6 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
                   {option.description}
                 </div>
               )}
-            </button>
-          ))}
-        </div>
-      ) : question.id === 'birth-month' ? (
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-          {question.options.map(option => (
-            <button
-              key={option.id}
-              onClick={() => toggle(option.id)}
-              className={clsx(
-                'rounded-xl border py-3 text-sm font-medium text-center transition-all duration-150',
-                selected.includes(option.id)
-                  ? 'bg-stone-900 border-stone-900 text-white'
-                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400 hover:bg-stone-50'
-              )}
-            >
-              {option.label}
             </button>
           ))}
         </div>

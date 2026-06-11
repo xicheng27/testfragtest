@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
-import { SavedFragrancesProvider } from "@/lib/saved-fragrances-context";
+import { ShelfProvider } from "@/lib/shelf-context";
+import { QuizProgressProvider } from "@/lib/quiz-progress-context";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -23,9 +24,11 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-stone-50">
         <AuthProvider>
-          <SavedFragrancesProvider>
-            {children}
-          </SavedFragrancesProvider>
+          <ShelfProvider>
+            <QuizProgressProvider>
+              {children}
+            </QuizProgressProvider>
+          </ShelfProvider>
         </AuthProvider>
       </body>
     </html>
