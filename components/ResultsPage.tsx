@@ -54,7 +54,9 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, onView
               </svg>
             </div>
             <h1 className="text-2xl font-semibold text-stone-900">Your matches</h1>
-            <p className="text-stone-500 font-light text-sm mt-1">Based on your answers, here are your top picks.</p>
+            <p className="text-stone-500 font-light text-sm mt-1">
+              A best match, considered alternatives, and a few different directions.
+            </p>
           </div>
 
           {/* Cards */}

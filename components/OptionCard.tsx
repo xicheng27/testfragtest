@@ -1,5 +1,6 @@
 'use client';
 import clsx from 'clsx';
+import Image from 'next/image';
 import { QuizOption } from '@/lib/quiz';
 
 interface OptionCardProps {
@@ -21,9 +22,19 @@ export default function OptionCard({ option, selected, onClick, variant = 'defau
             : 'hover:scale-[0.98] hover:ring-2 hover:ring-stone-300 hover:ring-offset-2'
         )}
       >
-        {/* Gradient placeholder — swap src with AI-generated image later */}
-        <div className={clsx('absolute inset-0 bg-gradient-to-br', option.gradient)} />
-        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
+        {option.imageUrl ? (
+          <Image
+            src={option.imageUrl}
+            alt=""
+            fill
+            sizes="(max-width: 640px) 50vw, 180px"
+            loading="eager"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className={clsx('absolute inset-0 bg-gradient-to-br', option.gradient)} />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/5 group-hover:from-black/65 transition-colors" />
         <div className="absolute inset-0 flex flex-col justify-end p-3 text-white text-left">
           <div className="font-medium text-sm leading-tight">{option.label}</div>
           {option.description && (

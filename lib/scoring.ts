@@ -9,7 +9,11 @@ export interface ScoredFragrance {
   score: number;
   matchPercent: number;
   matchReason: string;
+  recommendationType: RecommendationType;
+  recommendationLabel: string;
 }
+
+export type RecommendationType = 'best' | 'affordable' | 'similar' | 'everyday' | 'unique';
 
 // ──────────────────────────────────────────────────────────────────────────────
 // SCORING SYSTEM
@@ -29,11 +33,68 @@ const WEIGHTS = {
   season: 10,          // season match
   mood: 15,            // mood match
   longevity: 10,       // inferred from projection
-  personality: 8,      // inferred from aesthetic
-  scentCharacter: 12,  // broad scent character
-  drink: 6,            // light lifestyle signal
-  priority: 10,        // compliments, signature, versatility, uniqueness
+  personalSignal: 7,   // premium lifestyle and memory questions
   dislikedNote: -40,   // penalty if fragrance contains a disliked note
+};
+
+const PERSONALISATION_SIGNALS: Record<string, Record<string, string[]>> = {
+  'ideal-weekend': {
+    'slow-morning': ['slow-weekend', 'clean-laundry', 'soft', 'intimate', 'clean'],
+    'coastal-escape': ['seaside', 'beach', 'citrus', 'aquatic', 'summer'],
+    'city-evening': ['late-night-city', 'night', 'bold', 'confident', 'midnight'],
+    'forest-reset': ['forest-rain', 'green', 'woody', 'rain', 'grounding'],
+  },
+  room: {
+    'minimal-suite': ['hotel-room', 'clean', 'minimal', 'quiet-luxury'],
+    'old-library': ['old-library', 'dark-academia', 'woody', 'leather', 'mysterious'],
+    'warm-boutique': ['luxury-mall', 'expensive', 'quiet-luxury', 'elegant'],
+    'fireside-room': ['fireside', 'comforting', 'smoky', 'vanilla', 'winter'],
+  },
+  'weather-personality': {
+    'soft-rain': ['rain', 'forest-rain', 'aquatic', 'soft', 'grounding'],
+    'clear-sun': ['sunny-beach', 'summer', 'citrus', 'fresh', 'playful'],
+    'crisp-air': ['fresh', 'clean', 'spring', 'citrus', 'subtle'],
+    'night-storm': ['rainy-castle', 'strong', 'mysterious', 'spicy', 'bold'],
+  },
+  'time-of-day': {
+    'early-morning': ['morning-light', 'clean', 'fresh', 'subtle', 'daily'],
+    'golden-hour': ['golden-hour', 'warm', 'romantic', 'elegant', 'date'],
+    'blue-hour': ['quiet-luxury', 'intimate', 'floral', 'moderate'],
+    midnight: ['midnight', 'night', 'strong', 'addictive', 'mysterious'],
+  },
+  'fictional-setting': {
+    'secret-library': ['old-library', 'dark-academia', 'woody', 'leather'],
+    'moonlit-conservatory': ['green', 'floral', 'mysterious', 'forest-rain'],
+    'cliffside-villa': ['sunny-beach', 'citrus', 'aquatic', 'quiet-luxury'],
+    'rainy-kingdom': ['rainy-castle', 'spicy', 'oriental', 'mysterious'],
+  },
+  'outfit-style': {
+    tailored: ['tailored', 'old-money', 'quiet-luxury', 'elegant', 'work'],
+    relaxed: ['clean', 'casual', 'soft', 'daily', 'versatile'],
+    streetwear: ['streetwear', 'bold', 'late-night-city', 'confident'],
+    evening: ['romantic', 'night', 'date', 'elegant', 'intimate'],
+  },
+  memory: {
+    'clean-laundry': ['clean-laundry', 'clean', 'musk', 'soft', 'morning-light'],
+    'seaside-holiday': ['seaside', 'sunny-beach', 'citrus', 'aquatic', 'summer'],
+    'rain-on-stone': ['rain', 'mineral', 'forest-rain', 'woody', 'fresh'],
+    'warm-embrace': ['embrace', 'comforting', 'vanilla', 'woody', 'winter'],
+  },
+  'desired-feel': {
+    clean: ['clean', 'fresh', 'musk', 'subtle'],
+    addictive: ['addictive', 'sweet', 'gourmand', 'strong'],
+    mysterious: ['mysterious', 'oriental', 'spicy', 'night'],
+    expensive: ['expensive', 'quiet-luxury', 'old-money', 'elegant'],
+    comforting: ['comforting', 'soft', 'vanilla', 'woody'],
+    bold: ['bold', 'strong', 'confident', 'spicy'],
+    intimate: ['intimate', 'subtle', 'soft', 'date'],
+  },
+  'compliment-style': {
+    'you-smell-clean': ['clean', 'fresh', 'musk', 'daily'],
+    'what-is-that': ['addictive', 'strong', 'unique', 'mysterious'],
+    'smells-expensive': ['expensive', 'quiet-luxury', 'elegant', 'niche'],
+    'only-you': ['unique', 'niche', 'intimate', 'mysterious'],
+  },
 };
 
 function getAnswer(answers: QuizAnswers, id: string): string {
@@ -138,48 +199,30 @@ function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
     score += WEIGHTS.longevity;
   }
 
-  const personality = getAnswer(answers, 'personality');
-  const personalityAesthetics: Record<string, Aesthetic[]> = {
-    classic: ['old-money', 'quiet-luxury'],
-    trendy: ['streetwear', 'clean'],
-    eclectic: ['dark-academia', 'romantic'],
-    minimal: ['clean', 'quiet-luxury'],
-  };
-  if (personality && personalityAesthetics[personality]?.some(value => fragrance.aesthetics.includes(value))) {
-    score += WEIGHTS.personality;
-  }
+  const searchableTags = new Set([
+    ...fragrance.vibeTags,
+    ...fragrance.accords,
+    ...fragrance.notes,
+    ...fragrance.scentFamilies,
+    ...fragrance.vibes,
+    ...fragrance.aesthetics,
+    ...fragrance.occasions,
+    ...fragrance.seasons,
+    ...fragrance.moods,
+    fragrance.projection,
+    fragrance.longevity,
+    fragrance.tier,
+  ].map(tag => tag.toLowerCase()));
 
-  const scentCharacter = getAnswer(answers, 'scent-character');
-  const characterFamilies: Record<string, ScentFamily[]> = {
-    crisp: ['fresh', 'clean', 'citrus', 'aquatic'],
-    soft: ['floral', 'clean', 'woody'],
-    warm: ['sweet', 'gourmand', 'spicy', 'woody'],
-    dark: ['oriental', 'spicy', 'woody'],
-  };
-  if (scentCharacter && characterFamilies[scentCharacter]?.some(value => fragrance.scentFamilies.includes(value))) {
-    score += WEIGHTS.scentCharacter;
-  }
-
-  const drink = getAnswer(answers, 'drink');
-  const drinkFamilies: Record<string, ScentFamily[]> = {
-    espresso: ['gourmand', 'woody'],
-    'sparkling-water': ['fresh', 'citrus', 'aquatic'],
-    cocktail: ['spicy', 'oriental', 'woody'],
-    'flower-tea': ['floral', 'clean'],
-    'cold-brew': ['gourmand', 'fresh'],
-  };
-  if (drink && drinkFamilies[drink]?.some(value => fragrance.scentFamilies.includes(value))) {
-    score += WEIGHTS.drink;
-  }
-
-  const priority = getAnswer(answers, 'compliments');
-  if (
-    (priority === 'compliments' && fragrance.projection === 'strong') ||
-    (priority === 'personal' && fragrance.projection === 'subtle') ||
-    (priority === 'versatile' && fragrance.occasions.length >= 4) ||
-    (priority === 'unique' && fragrance.tier === 'niche')
-  ) {
-    score += WEIGHTS.priority;
+  for (const [questionId, optionSignals] of Object.entries(PERSONALISATION_SIGNALS)) {
+    for (const answer of getAnswers(answers, questionId)) {
+      const signals = optionSignals[answer] ?? [];
+      const matches = signals.filter(signal => (
+        searchableTags.has(signal)
+        || fragrance.notes.some(note => note.toLowerCase().includes(signal))
+      )).length;
+      score += Math.min(matches, 2) * WEIGHTS.personalSignal;
+    }
   }
 
   // ── Disliked notes penalty ────────────────────────────────────────────────
@@ -259,7 +302,9 @@ function buildMatchReason(fragrance: Fragrance, answers: QuizAnswers): string {
   }
 
   if (parts.length === 0) {
-    return fragrance.shortDescription;
+    return fragrance.isDupe && fragrance.similarityNotes
+      ? `${fragrance.shortDescription} ${fragrance.similarityNotes}`
+      : fragrance.shortDescription;
   }
 
   if (parts.length === 1) {
@@ -270,10 +315,18 @@ function buildMatchReason(fragrance: Fragrance, answers: QuizAnswers): string {
   return `Matches ${parts.join(', ')} and ${last}. ${fragrance.shortDescription}`;
 }
 
-export function getRecommendations(answers: QuizAnswers, topN = 3): ScoredFragrance[] {
+const RECOMMENDATION_LABELS: Record<RecommendationType, string> = {
+  best: 'Best Match',
+  affordable: 'More Affordable Alternative',
+  similar: 'Similar Vibe',
+  everyday: 'Safer Everyday Option',
+  unique: 'More Unique Option',
+};
+
+export function getRecommendations(answers: QuizAnswers, topN = 5): ScoredFragrance[] {
   const scored = fragrances.map(f => {
     const score = scoreFragrance(f, answers);
-    return { fragrance: f, score, matchPercent: 0, matchReason: '' };
+    return { fragrance: f, score };
   });
 
   // Sort descending by score
@@ -288,11 +341,52 @@ export function getRecommendations(answers: QuizAnswers, topN = 3): ScoredFragra
     return Math.round(60 + ratio * 38);
   };
 
-  const top = scored.slice(0, topN).map(item => ({
-    ...item,
-    matchPercent: normalise(item.score),
-    matchReason: buildMatchReason(item.fragrance, answers),
-  }));
+  const selected = new Set<string>();
+  const pick = (predicate: (item: typeof scored[number]) => boolean) => {
+    const item = scored.find(candidate => !selected.has(candidate.fragrance.id) && predicate(candidate));
+    if (item) selected.add(item.fragrance.id);
+    return item;
+  };
 
-  return top;
+  const best = pick(item => !item.fragrance.isDupe) ?? pick(() => true);
+  const affordable = pick(item => (
+    item.fragrance.isDupe
+    && (!best || item.fragrance.dupeOf === best.fragrance.name || item.score >= best.score * 0.65)
+  )) ?? pick(item => item.fragrance.priceRange === 'budget');
+  const similar = pick(item => (
+    !best
+    || item.fragrance.scentFamilies.some(family => best.fragrance.scentFamilies.includes(family))
+  ));
+  const everyday = pick(item => (
+    item.fragrance.occasions.includes('daily')
+    && item.fragrance.projection !== 'strong'
+  ));
+  const unique = pick(item => item.fragrance.tier === 'niche' && !item.fragrance.isDupe);
+
+  const roleItems: Array<[RecommendationType, typeof scored[number] | undefined]> = [
+    ['best', best],
+    ['affordable', affordable],
+    ['similar', similar],
+    ['everyday', everyday],
+    ['unique', unique],
+  ];
+
+  for (const item of scored) {
+    if (roleItems.filter(([, value]) => value).length >= topN) break;
+    if (!selected.has(item.fragrance.id)) {
+      selected.add(item.fragrance.id);
+      roleItems.push(['similar', item]);
+    }
+  }
+
+  return roleItems
+    .filter((entry): entry is [RecommendationType, typeof scored[number]] => Boolean(entry[1]))
+    .slice(0, topN)
+    .map(([recommendationType, item]) => ({
+      ...item,
+      recommendationType,
+      recommendationLabel: RECOMMENDATION_LABELS[recommendationType],
+      matchPercent: normalise(item.score),
+      matchReason: buildMatchReason(item.fragrance, answers),
+    }));
 }

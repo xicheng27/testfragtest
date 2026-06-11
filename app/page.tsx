@@ -31,7 +31,7 @@ export default function Home() {
 
   const handleQuizComplete = (answers: QuizAnswers) => {
     setQuizAnswers(answers);
-    const recs = getRecommendations(answers, 3);
+    const recs = getRecommendations(answers, 5);
     setResults(recs);
     setView('results');
   };

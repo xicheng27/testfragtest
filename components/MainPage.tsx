@@ -64,7 +64,7 @@ export default function MainPage({ onStartQuiz, onViewSaved }: MainPageProps) {
             <div className="text-left bg-white rounded-2xl border border-stone-200 p-5 mb-8 space-y-3">
               {[
                 { n: '01', text: 'Answer ~12 questions about your style' },
-                { n: '02', text: 'We score 25+ fragrances against your answers' },
+                { n: '02', text: 'We score 35+ fragrances against your answers' },
                 { n: '03', text: 'Get your top 3 personalised picks' },
               ].map(step => (
                 <div key={step.n} className="flex items-center gap-3">

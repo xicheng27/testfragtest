@@ -3,6 +3,7 @@ import { ScoredFragrance } from '@/lib/scoring';
 import { Fragrance } from '@/lib/fragrances';
 import { useSavedFragrances } from '@/lib/saved-fragrances-context';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 interface FragranceCardProps {
   result?: ScoredFragrance;
@@ -17,8 +18,12 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
   if (!fragrance) return null;
 
   const saved = isSaved(fragrance.id);
-  const rankLabel = rank === 1 ? 'Best Match' : rank === 2 ? 'Second Pick' : 'Third Pick';
-  const rankColor = rank === 1 ? 'text-amber-600 bg-amber-50 border-amber-200' : 'text-stone-500 bg-stone-50 border-stone-200';
+  const rankLabel = result?.recommendationLabel;
+  const rankColor = result?.recommendationType === 'best'
+    ? 'text-amber-700 bg-amber-50 border-amber-200'
+    : result?.recommendationType === 'affordable'
+      ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+      : 'text-stone-600 bg-stone-50 border-stone-200';
 
   return (
     <div className={clsx(
@@ -45,6 +50,23 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
         </div>
       )}
 
+      <div className="relative aspect-[16/9] overflow-hidden bg-stone-100 sm:aspect-[2/1]">
+        <Image
+          src={fragrance.imageUrl}
+          alt={`Editorial placeholder for ${fragrance.name}`}
+          fill
+          sizes="(max-width: 672px) 100vw, 672px"
+          className="object-cover"
+          loading={rank === 1 ? 'eager' : 'lazy'}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+        {fragrance.isDupe && (
+          <span className="absolute bottom-3 left-3 rounded-full border border-white/50 bg-white/90 px-2.5 py-1 text-[11px] font-medium text-stone-800 backdrop-blur">
+            Inspired-by alternative
+          </span>
+        )}
+      </div>
+
       <div className="p-5">
         {/* Name & brand */}
         <div className="mb-4">
@@ -62,12 +84,20 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
           <span className="text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 capitalize">
             {fragrance.projection}
           </span>
+          <span className="text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 capitalize">
+            {fragrance.longevity} longevity
+          </span>
         </div>
 
         {/* Notes */}
         <div className="mb-4">
           <div className="text-xs text-stone-400 uppercase tracking-widest mb-1.5 font-light">Notes</div>
           <p className="text-sm text-stone-700">{fragrance.notes.join(' · ')}</p>
+        </div>
+
+        <div className="mb-4">
+          <div className="text-xs text-stone-400 uppercase tracking-widest mb-1.5 font-light">Main Accords</div>
+          <p className="text-sm text-stone-700">{fragrance.accords.join(' · ')}</p>
         </div>
 
         {/* Info grid */}
@@ -82,7 +112,7 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
           </div>
           <div>
             <div className="text-xs text-stone-400 uppercase tracking-widest mb-0.5 font-light">Style</div>
-            <div className="text-sm font-medium text-stone-800 capitalize">{fragrance.genderStyle}</div>
+            <div className="text-sm font-medium text-stone-800 capitalize">{fragrance.genderMarketing}</div>
           </div>
           <div>
             <div className="text-xs text-stone-400 uppercase tracking-widest mb-0.5 font-light">Tier</div>
@@ -99,20 +129,41 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
           <p className="mb-4 text-sm leading-relaxed text-stone-600">{fragrance.shortDescription}</p>
         )}
 
-        <button
-          type="button"
-          onClick={() => toggleSaved(fragrance.id)}
-          aria-pressed={saved}
-          aria-label={saved ? `Remove ${fragrance.name} from My List` : `Save ${fragrance.name} to My List`}
-          className={clsx(
-            'w-full rounded-xl py-2.5 text-sm font-medium transition-colors',
-            saved
-              ? 'border border-stone-300 bg-stone-100 text-stone-800 hover:border-stone-400 hover:bg-white'
-              : 'bg-stone-900 text-white hover:bg-stone-800'
+        {fragrance.isDupe && fragrance.similarityNotes && (
+          <div className="mb-4 rounded-xl border border-emerald-100 bg-emerald-50/70 p-3.5">
+            <div className="mb-1 text-xs font-medium uppercase tracking-widest text-emerald-700">Alternative context</div>
+            <p className="text-sm leading-relaxed text-emerald-950">
+              Inspired by {fragrance.inspiredBy}. {fragrance.similarityNotes}
+            </p>
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => toggleSaved(fragrance.id)}
+            aria-pressed={saved}
+            aria-label={saved ? `Remove ${fragrance.name} from My List` : `Save ${fragrance.name} to My List`}
+            className={clsx(
+              'flex-1 rounded-xl py-2.5 text-sm font-medium transition-colors',
+              saved
+                ? 'border border-stone-300 bg-stone-100 text-stone-800 hover:border-stone-400 hover:bg-white'
+                : 'bg-stone-900 text-white hover:bg-stone-800'
+            )}
+          >
+            {saved ? 'Saved - Remove from My List' : 'Save to My List'}
+          </button>
+          {fragrance.productUrl && (
+            <a
+              href={fragrance.productUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-xl border border-stone-300 px-4 py-2.5 text-center text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
+            >
+              View product
+            </a>
           )}
-        >
-          {saved ? 'Saved - Remove from My List' : 'Save to My List'}
-        </button>
+        </div>
       </div>
     </div>
   );
