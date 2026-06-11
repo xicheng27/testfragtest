@@ -1,13 +1,14 @@
 'use client';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { QuizQuestion, quizQuestions, extendedQuizQuestions } from '@/lib/quiz';
+import { QuizQuestion } from '@/lib/quiz';
 import { QuizAnswers } from '@/lib/scoring';
 import QuestionCard from './QuestionCard';
 import ProgressBar from './ProgressBar';
 
 interface QuizProps {
-  extended?: boolean;
+  questions: QuizQuestion[];
+  initialAnswers?: QuizAnswers;
   onComplete: (answers: QuizAnswers) => void;
   onBack: () => void;
 }
@@ -18,10 +19,9 @@ const variants = {
   exit: (dir: number) => ({ x: dir > 0 ? -40 : 40, opacity: 0 }),
 };
 
-export default function Quiz({ extended = false, onComplete, onBack }: QuizProps) {
-  const questions: QuizQuestion[] = extended ? extendedQuizQuestions : quizQuestions;
+export default function Quiz({ questions, initialAnswers = {}, onComplete, onBack }: QuizProps) {
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<QuizAnswers>({});
+  const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
   const [direction, setDirection] = useState(1);
 
   const question = questions[step];

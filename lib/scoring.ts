@@ -21,13 +21,18 @@ const WEIGHTS = {
   scentFamily: 30,     // scent family match (per family matched)
   occasion: 20,        // occasion match
   projection: 15,      // projection match
-  genderStyle: 15,     // gender style match
+  genderStyle: 8,      // marketed gender is a light preference, never a filter
   priceRange: 25,      // price range — hard filter softened to score penalty
   tier: 10,            // designer vs niche preference
   vibe: 20,            // vibe / setting match
   aesthetic: 20,       // aesthetic match
   season: 10,          // season match
   mood: 15,            // mood match
+  longevity: 10,       // inferred from projection
+  personality: 8,      // inferred from aesthetic
+  scentCharacter: 12,  // broad scent character
+  drink: 6,            // light lifestyle signal
+  priority: 10,        // compliments, signature, versatility, uniqueness
   dislikedNote: -40,   // penalty if fragrance contains a disliked note
 };
 
@@ -64,12 +69,14 @@ function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
   }
 
   // ── Gender style ──────────────────────────────────────────────────────────
-  const genderStyle = getAnswer(answers, 'gender-style') as GenderStyle;
-  if (genderStyle) {
+  const genderStyle = getAnswer(answers, 'gender-style') as GenderStyle | 'any';
+  if (genderStyle && genderStyle !== 'any') {
     if (fragrance.genderStyle === genderStyle) {
       score += WEIGHTS.genderStyle;
     } else if (fragrance.genderStyle === 'unisex') {
-      score += WEIGHTS.genderStyle * 0.5; // unisex is a softer match
+      score += WEIGHTS.genderStyle * 0.6;
+    } else if (genderStyle === 'unisex') {
+      score += WEIGHTS.genderStyle * 0.25;
     }
   }
 
@@ -118,6 +125,61 @@ function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
   const mood = getAnswer(answers, 'mood');
   if (mood && fragrance.moods.includes(mood)) {
     score += WEIGHTS.mood;
+  }
+
+  // Extended answers refine the ranking without overriding the core preferences.
+  const longevity = getAnswer(answers, 'longevity');
+  const longevityProjection: Record<string, Projection> = {
+    short: 'subtle',
+    medium: 'moderate',
+    long: 'strong',
+  };
+  if (longevity && fragrance.projection === longevityProjection[longevity]) {
+    score += WEIGHTS.longevity;
+  }
+
+  const personality = getAnswer(answers, 'personality');
+  const personalityAesthetics: Record<string, Aesthetic[]> = {
+    classic: ['old-money', 'quiet-luxury'],
+    trendy: ['streetwear', 'clean'],
+    eclectic: ['dark-academia', 'romantic'],
+    minimal: ['clean', 'quiet-luxury'],
+  };
+  if (personality && personalityAesthetics[personality]?.some(value => fragrance.aesthetics.includes(value))) {
+    score += WEIGHTS.personality;
+  }
+
+  const scentCharacter = getAnswer(answers, 'scent-character');
+  const characterFamilies: Record<string, ScentFamily[]> = {
+    crisp: ['fresh', 'clean', 'citrus', 'aquatic'],
+    soft: ['floral', 'clean', 'woody'],
+    warm: ['sweet', 'gourmand', 'spicy', 'woody'],
+    dark: ['oriental', 'spicy', 'woody'],
+  };
+  if (scentCharacter && characterFamilies[scentCharacter]?.some(value => fragrance.scentFamilies.includes(value))) {
+    score += WEIGHTS.scentCharacter;
+  }
+
+  const drink = getAnswer(answers, 'drink');
+  const drinkFamilies: Record<string, ScentFamily[]> = {
+    espresso: ['gourmand', 'woody'],
+    'sparkling-water': ['fresh', 'citrus', 'aquatic'],
+    cocktail: ['spicy', 'oriental', 'woody'],
+    'flower-tea': ['floral', 'clean'],
+    'cold-brew': ['gourmand', 'fresh'],
+  };
+  if (drink && drinkFamilies[drink]?.some(value => fragrance.scentFamilies.includes(value))) {
+    score += WEIGHTS.drink;
+  }
+
+  const priority = getAnswer(answers, 'compliments');
+  if (
+    (priority === 'compliments' && fragrance.projection === 'strong') ||
+    (priority === 'personal' && fragrance.projection === 'subtle') ||
+    (priority === 'versatile' && fragrance.occasions.length >= 4) ||
+    (priority === 'unique' && fragrance.tier === 'niche')
+  ) {
+    score += WEIGHTS.priority;
   }
 
   // ── Disliked notes penalty ────────────────────────────────────────────────

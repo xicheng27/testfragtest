@@ -5,9 +5,10 @@ import { useState } from 'react';
 
 interface MainPageProps {
   onStartQuiz: (extended?: boolean) => void;
+  onViewSaved: () => void;
 }
 
-export default function MainPage({ onStartQuiz }: MainPageProps) {
+export default function MainPage({ onStartQuiz, onViewSaved }: MainPageProps) {
   const { user, isGuest, signOut } = useAuth();
   const [showSignIn, setShowSignIn] = useState(false);
 
@@ -18,6 +19,12 @@ export default function MainPage({ onStartQuiz }: MainPageProps) {
         <header className="px-6 py-5 flex items-center justify-between border-b border-stone-100">
           <span className="font-semibold text-stone-900 tracking-tight">ScentMatch</span>
           <div className="flex items-center gap-3">
+            <button
+              onClick={onViewSaved}
+              className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
+            >
+              My List
+            </button>
             {user ? (
               <div className="flex items-center gap-3">
                 <span className="text-sm text-stone-600">Hi, {user.name.split(' ')[0]}</span>
@@ -50,7 +57,7 @@ export default function MainPage({ onStartQuiz }: MainPageProps) {
             </h2>
             <p className="text-stone-500 font-light text-sm leading-relaxed mb-8">
               Answer a few questions about your taste, lifestyle, and aesthetic.
-              We'll recommend fragrances that match your vibe.
+              We&apos;ll recommend fragrances that match your vibe.
             </p>
 
             {/* How it works */}

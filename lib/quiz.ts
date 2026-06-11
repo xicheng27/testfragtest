@@ -66,11 +66,12 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'gender-style',
     type: 'single',
     category: 'serious',
-    question: 'What style do you lean towards?',
+    question: 'Are you open to fragrances marketed as more...',
     options: [
-      { id: 'masculine', label: 'Masculine', emoji: '🔵' },
-      { id: 'feminine', label: 'Feminine', emoji: '🌸' },
-      { id: 'unisex', label: 'Unisex', description: 'I wear what I like', emoji: '⚪' },
+      { id: 'feminine', label: 'Traditionally feminine', emoji: '🌸' },
+      { id: 'masculine', label: 'Traditionally masculine', emoji: '🔵' },
+      { id: 'unisex', label: 'Unisex / gender-neutral', emoji: '⚪' },
+      { id: 'any', label: 'I do not care, just recommend what fits me', emoji: '✨' },
     ],
   },
   {
@@ -185,9 +186,8 @@ export const quizQuestions: QuizQuestion[] = [
   },
 ];
 
-// Extended quiz questions (used in the long quiz mode)
-export const extendedQuizQuestions: QuizQuestion[] = [
-  ...quizQuestions,
+// Additional questions shown after the original quiz.
+export const additionalQuizQuestions: QuizQuestion[] = [
   {
     id: 'longevity',
     type: 'single',
@@ -212,15 +212,15 @@ export const extendedQuizQuestions: QuizQuestion[] = [
     ],
   },
   {
-    id: 'celebrity-scent',
+    id: 'scent-character',
     type: 'single',
     category: 'fun',
-    question: 'If a celebrity had a signature scent, which vibe would it be?',
+    question: 'Which scent character sounds most like you?',
     options: [
-      { id: 'james-bond', label: 'James Bond', description: 'Suave, smoky, classic', emoji: '🤵' },
-      { id: 'audrey', label: 'Audrey Hepburn', description: 'Elegant, feminine, timeless', emoji: '💫' },
-      { id: 'weekend', label: 'Weekend Model', description: 'Fresh, effortless, natural', emoji: '🌿' },
-      { id: 'rockstar', label: 'Rock Star', description: 'Dark, bold, edgy', emoji: '🎸' },
+      { id: 'crisp', label: 'Crisp and airy', description: 'Fresh, clean, uncomplicated', emoji: '🌿' },
+      { id: 'soft', label: 'Soft and comforting', description: 'Gentle, smooth, close to skin', emoji: '☁️' },
+      { id: 'warm', label: 'Warm and inviting', description: 'Spiced, sweet, enveloping', emoji: '🔥' },
+      { id: 'dark', label: 'Dark and intriguing', description: 'Smoky, deep, unconventional', emoji: '🌑' },
     ],
   },
   {

@@ -4,16 +4,19 @@ import { ScoredFragrance } from '@/lib/scoring';
 import FragranceCard from './FragranceCard';
 import AuthModal from './AuthModal';
 import { useAuth } from '@/lib/auth-context';
+import { useSavedFragrances } from '@/lib/saved-fragrances-context';
 
 interface ResultsPageProps {
   results: ScoredFragrance[];
   onRestart: () => void;
   onExtendedQuiz: () => void;
+  onViewSaved: () => void;
   isExtended: boolean;
 }
 
-export default function ResultsPage({ results, onRestart, onExtendedQuiz, isExtended }: ResultsPageProps) {
+export default function ResultsPage({ results, onRestart, onExtendedQuiz, onViewSaved, isExtended }: ResultsPageProps) {
   const { user, signOut } = useAuth();
+  const { savedIds } = useSavedFragrances();
   const [showSignIn, setShowSignIn] = useState(false);
 
   return (
@@ -22,16 +25,24 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, isExte
         {/* Nav */}
         <header className="px-6 py-5 flex items-center justify-between border-b border-stone-100">
           <span className="font-semibold text-stone-900 tracking-tight">ScentMatch</span>
-          {user ? (
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onViewSaved}
+              className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
+            >
+              My List{savedIds.length > 0 ? ` (${savedIds.length})` : ''}
+            </button>
+            {user ? (
+              <>
               <span className="text-sm text-stone-500">{user.name.split(' ')[0]}</span>
               <button onClick={signOut} className="text-xs text-stone-400 hover:text-stone-700 transition-colors">Sign out</button>
-            </div>
-          ) : (
-            <button onClick={() => setShowSignIn(true)} className="text-sm text-stone-500 hover:text-stone-800 transition-colors">
-              Sign in
-            </button>
-          )}
+              </>
+            ) : (
+              <button onClick={() => setShowSignIn(true)} className="text-sm text-stone-500 hover:text-stone-800 transition-colors">
+                Sign in
+              </button>
+            )}
+          </div>
         </header>
 
         <main className="px-6 py-10 max-w-2xl mx-auto">
@@ -53,7 +64,6 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, isExte
                 key={result.fragrance.id}
                 result={result}
                 rank={i + 1}
-                onSignInToSave={() => setShowSignIn(true)}
               />
             ))}
           </div>
