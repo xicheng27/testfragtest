@@ -8,9 +8,18 @@ interface OptionCardProps {
   selected: boolean;
   onClick: () => void;
   variant?: 'default' | 'image';
+  className?: string;
+  wideOnMobile?: boolean;
 }
 
-export default function OptionCard({ option, selected, onClick, variant = 'default' }: OptionCardProps) {
+export default function OptionCard({
+  option,
+  selected,
+  onClick,
+  variant = 'default',
+  className,
+  wideOnMobile = false,
+}: OptionCardProps) {
   if (variant === 'image') {
     return (
       <button
@@ -19,38 +28,44 @@ export default function OptionCard({ option, selected, onClick, variant = 'defau
         aria-pressed={selected}
         aria-label={option.description ? `${option.label}: ${option.description}` : option.label}
         className={clsx(
-          'relative rounded-xl overflow-hidden aspect-[4/3] w-full transition-all duration-200 group',
+          'group flex h-full w-full min-w-0 flex-col overflow-hidden rounded-2xl border bg-white text-left shadow-sm transition-all duration-200',
           selected
-            ? 'ring-2 ring-stone-800 ring-offset-2 scale-[0.98]'
-            : 'hover:scale-[0.98] hover:ring-2 hover:ring-stone-300 hover:ring-offset-2'
+            ? 'border-stone-900 ring-2 ring-stone-900 ring-offset-2'
+            : 'border-stone-200 hover:-translate-y-0.5 hover:border-stone-400 hover:shadow-md',
+          className,
         )}
       >
-        {option.imageUrl ? (
-          <Image
-            src={option.imageUrl}
-            alt=""
-            fill
-            sizes="(max-width: 640px) 50vw, 220px"
-            loading="eager"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className={clsx('absolute inset-0 bg-gradient-to-br', option.gradient)} />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/5 group-hover:from-black/65 transition-colors" />
-        <div className="absolute inset-0 flex flex-col justify-end p-3 text-white text-left">
-          <div className="font-medium text-sm leading-tight">{option.label}</div>
-          {option.description && (
-            <div className="text-xs text-white/70 mt-0.5">{option.description}</div>
+        <div className={clsx(
+          'relative w-full shrink-0 overflow-hidden bg-stone-100',
+          wideOnMobile ? 'aspect-[8/3] md:aspect-[4/3]' : 'aspect-[4/3]',
+        )}>
+          {option.imageUrl ? (
+            <Image
+              src={option.imageUrl}
+              alt=""
+              fill
+              sizes="(max-width: 479px) 50vw, (max-width: 1023px) 33vw, 260px"
+              loading="eager"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          ) : (
+            <div className={clsx('absolute inset-0 bg-gradient-to-br', option.gradient)} />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent" />
+          {selected && (
+            <div className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-stone-950 shadow-lg">
+              <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
           )}
         </div>
-        {selected && (
-          <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-stone-800 flex items-center justify-center">
-            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-          </div>
-        )}
+        <div className="flex min-w-0 flex-1 flex-col p-3.5 sm:p-4">
+          <div className="break-words text-sm font-semibold leading-tight text-stone-950 sm:text-[15px]">{option.label}</div>
+          {option.description && (
+            <div className="mt-1.5 break-words text-xs leading-relaxed text-stone-500">{option.description}</div>
+          )}
+        </div>
       </button>
     );
   }

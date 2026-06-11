@@ -28,6 +28,12 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   const currentAnswers = (answers[question.id] as string[] | undefined) ?? [];
   const hasAnswer = currentAnswers.length > 0;
   const isLast = step === questions.length - 1;
+  const isVisualQuestion = question.type === 'image-cards';
+  const contentWidthClass = !isVisualQuestion
+    ? 'mx-auto max-w-lg'
+    : question.options.length <= 4
+      ? 'mx-auto max-w-3xl'
+      : 'mx-auto max-w-5xl';
 
   const handleChange = (values: string[]) => {
     setAnswers(prev => ({ ...prev, [question.id]: values }));
@@ -82,13 +88,15 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
       </header>
 
       {/* Progress */}
-      <div className="px-6 pt-5 pb-0">
-        <ProgressBar current={step + 1} total={questions.length} />
+      <div className="px-4 pt-5 pb-0 sm:px-6">
+        <div className="mx-auto max-w-5xl">
+          <ProgressBar current={step + 1} total={questions.length} />
+        </div>
       </div>
 
       {/* Question */}
-      <main className="flex-1 overflow-hidden px-6 py-8">
-        <div className="max-w-lg mx-auto">
+      <main className="flex-1 overflow-x-hidden px-4 py-7 sm:px-6 sm:py-8">
+        <div className={contentWidthClass}>
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={question.id}
@@ -111,8 +119,8 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
 
       {/* Footer — show Next button for multi-select / non-auto questions */}
       {question.type !== 'single' && (
-        <div className="px-6 pb-8">
-          <div className="max-w-lg mx-auto">
+        <div className="sticky bottom-0 z-20 border-t border-stone-200/70 bg-stone-50/95 px-4 py-4 backdrop-blur sm:px-6 sm:pb-8 sm:pt-4">
+          <div className={contentWidthClass}>
             <button
               onClick={goNext}
               disabled={!hasAnswer}

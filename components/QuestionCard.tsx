@@ -31,6 +31,16 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
 
   const isImageCards = question.type === 'image-cards';
   const isCards = question.type === 'cards';
+  const optionCount = question.options.length;
+  const imageGridClass = optionCount === 3
+    ? 'grid-cols-1 sm:grid-cols-3'
+    : optionCount === 4
+      ? 'grid-cols-2'
+      : optionCount === 6
+        ? 'grid-cols-2 md:grid-cols-3'
+        : optionCount === 12
+          ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
+          : 'grid-cols-2 md:grid-cols-3';
 
   return (
     <div>
@@ -46,16 +56,21 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
 
       {isImageCards ? (
         <div className={clsx(
-          'grid grid-cols-2 gap-3',
-          question.id === 'birth-month' ? 'sm:grid-cols-4' : 'sm:grid-cols-3',
+          'grid items-stretch gap-3 sm:gap-4',
+          imageGridClass,
         )}>
-          {question.options.map(option => (
+          {question.options.map((option, index) => (
             <OptionCard
               key={option.id}
               option={option}
               selected={selected.includes(option.id)}
               onClick={() => toggle(option.id)}
               variant="image"
+              wideOnMobile={optionCount === 7 && index === optionCount - 1}
+              className={clsx(
+                optionCount === 7 && index === optionCount - 1
+                  && 'col-span-2 md:col-span-1 md:col-start-2',
+              )}
             />
           ))}
         </div>

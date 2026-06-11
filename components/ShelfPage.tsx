@@ -16,7 +16,7 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
   return (
     <div className="min-h-screen bg-stone-50">
       <header className="sticky top-0 z-10 border-b border-stone-200/80 bg-stone-50/90 px-4 py-4 backdrop-blur sm:px-6">
-        <div className="mx-auto flex max-w-3xl items-center justify-between">
+        <div className="mx-auto flex max-w-4xl items-center justify-between">
           <button
             type="button"
             onClick={onBack}
@@ -34,7 +34,7 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+      <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
         <div className="mb-8">
           <p className="mb-2 text-xs font-medium uppercase tracking-[0.22em] text-stone-400">
             {user ? `${user.name.split(' ')[0]}'s collection` : 'Your collection'}
