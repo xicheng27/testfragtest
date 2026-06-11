@@ -5,7 +5,7 @@ export interface QuizOption {
   label: string;
   description?: string;
   gradient?: string; // CSS gradient for image card placeholders
-  imageUrl?: string; // Replace this path to swap the visual without touching UI code
+  imageUrl?: string; // Quiz scene artwork only; product packshots live in fragrance data
   emoji?: string;
 }
 
@@ -39,16 +39,17 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: 'occasion',
-    type: 'single',
+    type: 'image-cards',
     category: 'serious',
+    maxSelections: 1,
     question: 'What do you mainly need this fragrance for?',
     options: [
-      { id: 'daily', label: 'Everyday wear', emoji: '☀️' },
-      { id: 'work', label: 'School / Work', emoji: '💼' },
-      { id: 'date', label: 'Dates', emoji: '🥂' },
-      { id: 'night', label: 'Nights out', emoji: '🌙' },
-      { id: 'special', label: 'Special occasions', emoji: '🎭' },
-      { id: 'casual', label: 'Casual / Weekend', emoji: '🎒' },
+      { id: 'daily', label: 'Casual Everyday', description: 'Easy and naturally put together', imageUrl: '/images/quiz/relaxed-denim.jpg' },
+      { id: 'work', label: 'School / Work', description: 'Polished without taking over', imageUrl: '/images/quiz/tailored-neutral.jpg' },
+      { id: 'date', label: 'Date Night', description: 'Warm, close, memorable', imageUrl: '/images/quiz/golden-rooftop.jpg' },
+      { id: 'night', label: 'Party / Night Out', description: 'Confident after dark', imageUrl: '/images/quiz/late-night-city.jpg' },
+      { id: 'special', label: 'Formal Event', description: 'Elegant and elevated', imageUrl: '/images/quiz/luxury-boutique.jpg' },
+      { id: 'casual', label: 'Holiday / Weekend', description: 'Relaxed and transportive', imageUrl: '/images/quiz/seaside-memory.jpg' },
     ],
   },
   {
@@ -118,6 +119,7 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'vibe',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'Pick your vibe',
     subtitle: 'Where do you feel most yourself?',
     options: [
@@ -131,43 +133,46 @@ export const quizQuestions: QuizQuestion[] = [
   },
   {
     id: 'season',
-    type: 'single',
+    type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'Pick your season',
     options: [
-      { id: 'spring', label: 'Spring', description: 'Bloom and freshness', emoji: '🌱' },
-      { id: 'summer', label: 'Summer', description: 'Sun-soaked and free', emoji: '☀️' },
-      { id: 'autumn', label: 'Autumn', description: 'Cosy and golden', emoji: '🍂' },
-      { id: 'winter', label: 'Winter', description: 'Warm and intimate', emoji: '❄️' },
+      { id: 'spring', label: 'Spring', description: 'Blooming, airy, optimistic', imageUrl: '/images/quiz/spring-garden.jpg' },
+      { id: 'summer', label: 'Summer', description: 'Sun-soaked, bright, free', imageUrl: '/images/quiz/sunny-beach.jpg' },
+      { id: 'autumn', label: 'Autumn', description: 'Textured, cosy, golden', imageUrl: '/images/quiz/autumn-library.jpg' },
+      { id: 'winter', label: 'Winter', description: 'Warm, intimate, enveloping', imageUrl: '/images/quiz/winter-firelight.jpg' },
     ],
   },
   {
     id: 'aesthetic',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'Which aesthetic is most you?',
     options: [
-      { id: 'old-money', label: 'Tailored Classic', description: 'Timeless, composed, precise', imageUrl: '/images/quiz/tailored-neutral.jpg' },
-      { id: 'clean', label: 'Clean Minimal', description: 'Natural, bright, effortless', imageUrl: '/images/quiz/morning-room.jpg' },
+      { id: 'old-money', label: 'Old Money', description: 'Timeless, composed, precise', imageUrl: '/images/quiz/tailored-neutral.jpg' },
+      { id: 'clean', label: 'Clean Girl', description: 'Natural, bright, effortless', imageUrl: '/images/quiz/morning-room.jpg' },
       { id: 'dark-academia', label: 'Dark Academia', description: 'Books, mystery, intellect', imageUrl: '/images/quiz/secret-library.jpg' },
-      { id: 'beach', label: 'Coastal Ease', description: 'Relaxed, salty, golden', imageUrl: '/images/quiz/seaside-memory.jpg' },
+      { id: 'beach', label: 'Beach Holiday', description: 'Relaxed, salty, golden', imageUrl: '/images/quiz/seaside-memory.jpg' },
       { id: 'quiet-luxury', label: 'Quiet Luxury', description: 'Understated, premium, calm', imageUrl: '/images/quiz/luxury-boutique.jpg' },
-      { id: 'streetwear', label: 'Dark Streetwear', description: 'Bold, urban, expressive', imageUrl: '/images/quiz/dark-streetwear.jpg' },
-      { id: 'romantic', label: 'Romantic Evening', description: 'Soft, polished, intimate', imageUrl: '/images/quiz/romantic-evening.jpg' },
+      { id: 'streetwear', label: 'City Chic', description: 'Bold, urban, expressive', imageUrl: '/images/quiz/dark-streetwear.jpg' },
+      { id: 'romantic', label: 'Soft Romantic', description: 'Gentle, polished, intimate', imageUrl: '/images/quiz/romantic-evening.jpg' },
     ],
   },
   {
     id: 'mood',
-    type: 'single',
+    type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'What mood do you want to wear?',
     options: [
-      { id: 'mysterious', label: 'Mysterious', emoji: '🌑' },
-      { id: 'fresh', label: 'Fresh', emoji: '💧' },
-      { id: 'confident', label: 'Confident', emoji: '⚡' },
-      { id: 'soft', label: 'Soft', emoji: '🕊️' },
-      { id: 'elegant', label: 'Elegant', emoji: '🪞' },
-      { id: 'playful', label: 'Playful', emoji: '🎈' },
+      { id: 'fresh', label: 'Fresh Morning', description: 'Clear light and a clean start', imageUrl: '/images/quiz/morning-room.jpg' },
+      { id: 'mysterious', label: 'Rainy Day', description: 'Reflective, cool, atmospheric', imageUrl: '/images/quiz/forest-rain.jpg' },
+      { id: 'soft', label: 'Sunset Date', description: 'Warm, tender, close', imageUrl: '/images/quiz/golden-rooftop.jpg' },
+      { id: 'elegant', label: 'Luxury Hotel Lobby', description: 'Smooth, composed, expensive', imageUrl: '/images/quiz/luxury-boutique.jpg' },
+      { id: 'confident', label: 'Forest Walk', description: 'Grounded, distinct, self-assured', imageUrl: '/images/quiz/glass-conservatory.jpg' },
+      { id: 'playful', label: 'Beach Resort', description: 'Bright, relaxed, sociable', imageUrl: '/images/quiz/sunny-beach.jpg' },
     ],
   },
   {
@@ -204,6 +209,7 @@ export const additionalQuizQuestions: QuizQuestion[] = [
     id: 'ideal-weekend',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'What does your ideal weekend feel like?',
     subtitle: 'Choose the pace you want your fragrance to carry',
     options: [
@@ -217,6 +223,7 @@ export const additionalQuizQuestions: QuizQuestion[] = [
     id: 'room',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'Pick a room you would want to walk into.',
     options: [
       { id: 'minimal-suite', label: 'Minimal Suite', description: 'Quiet, crisp, immaculate', imageUrl: '/images/quiz/hotel-room.jpg' },
@@ -229,6 +236,7 @@ export const additionalQuizQuestions: QuizQuestion[] = [
     id: 'weather-personality',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'What kind of weather matches your personality?',
     options: [
       { id: 'soft-rain', label: 'Soft Rain', description: 'Reflective and grounding', imageUrl: '/images/quiz/forest-rain.jpg' },
@@ -241,6 +249,7 @@ export const additionalQuizQuestions: QuizQuestion[] = [
     id: 'time-of-day',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'What time of day do you feel most like yourself?',
     options: [
       { id: 'early-morning', label: 'Early Morning', description: 'Still, bright, full of possibility', imageUrl: '/images/quiz/morning-room.jpg' },
@@ -253,6 +262,7 @@ export const additionalQuizQuestions: QuizQuestion[] = [
     id: 'fictional-setting',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'Which fictional setting would you live in?',
     options: [
       { id: 'secret-library', label: 'A Secret Library', description: 'Old books and hidden rooms', imageUrl: '/images/quiz/secret-library.jpg' },
@@ -265,6 +275,7 @@ export const additionalQuizQuestions: QuizQuestion[] = [
     id: 'outfit-style',
     type: 'image-cards',
     category: 'fun',
+    maxSelections: 1,
     question: 'What kind of outfit do you gravitate toward?',
     options: [
       { id: 'tailored', label: 'Tailored Neutrals', description: 'Structured, timeless, exact', imageUrl: '/images/quiz/tailored-neutral.jpg' },

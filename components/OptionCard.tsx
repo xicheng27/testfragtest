@@ -14,7 +14,10 @@ export default function OptionCard({ option, selected, onClick, variant = 'defau
   if (variant === 'image') {
     return (
       <button
+        type="button"
         onClick={onClick}
+        aria-pressed={selected}
+        aria-label={option.description ? `${option.label}: ${option.description}` : option.label}
         className={clsx(
           'relative rounded-xl overflow-hidden aspect-[4/3] w-full transition-all duration-200 group',
           selected
@@ -54,7 +57,9 @@ export default function OptionCard({ option, selected, onClick, variant = 'defau
 
   return (
     <button
+      type="button"
       onClick={onClick}
+      aria-pressed={selected}
       className={clsx(
         'w-full text-left px-4 py-3.5 rounded-xl border transition-all duration-150 flex items-start gap-3',
         selected

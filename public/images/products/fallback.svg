@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Fragrance image unavailable</title>
+  <desc id="desc">A minimal outline of a fragrance bottle.</desc>
+  <rect width="900" height="900" fill="#fafaf9"/>
+  <rect x="360" y="170" width="180" height="95" rx="14" fill="none" stroke="#a8a29e" stroke-width="10"/>
+  <rect x="290" y="255" width="320" height="410" rx="45" fill="#fff" stroke="#78716c" stroke-width="12"/>
+  <path d="M338 355h224" stroke="#d6d3d1" stroke-width="10"/>
+  <text x="450" y="470" fill="#57534e" font-family="Arial, sans-serif" font-size="32" text-anchor="middle">IMAGE</text>
+  <text x="450" y="510" fill="#57534e" font-family="Arial, sans-serif" font-size="32" text-anchor="middle">UNAVAILABLE</text>
+</svg>

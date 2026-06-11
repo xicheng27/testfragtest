@@ -3,7 +3,7 @@ import { ScoredFragrance } from '@/lib/scoring';
 import { Fragrance } from '@/lib/fragrances';
 import { useSavedFragrances } from '@/lib/saved-fragrances-context';
 import clsx from 'clsx';
-import Image from 'next/image';
+import ProductImage from './ProductImage';
 
 interface FragranceCardProps {
   result?: ScoredFragrance;
@@ -50,18 +50,14 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
         </div>
       )}
 
-      <div className="relative aspect-[16/9] overflow-hidden bg-stone-100 sm:aspect-[2/1]">
-        <Image
+      <div className="relative aspect-square overflow-hidden border-b border-stone-100 bg-white sm:aspect-[5/4]">
+        <ProductImage
           src={fragrance.imageUrl}
-          alt={`Editorial placeholder for ${fragrance.name}`}
-          fill
-          sizes="(max-width: 672px) 100vw, 672px"
-          className="object-cover"
-          loading={rank === 1 ? 'eager' : 'lazy'}
+          alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
+          eager={rank === 1}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         {fragrance.isDupe && (
-          <span className="absolute bottom-3 left-3 rounded-full border border-white/50 bg-white/90 px-2.5 py-1 text-[11px] font-medium text-stone-800 backdrop-blur">
+          <span className="absolute bottom-3 left-3 rounded-full border border-stone-200 bg-white/95 px-2.5 py-1 text-[11px] font-medium text-stone-800 shadow-sm">
             Inspired-by alternative
           </span>
         )}
@@ -164,6 +160,16 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
             </a>
           )}
         </div>
+        {fragrance.sourceUrl && (
+          <a
+            href={fragrance.sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-block text-xs text-stone-400 underline-offset-4 transition-colors hover:text-stone-700 hover:underline"
+          >
+            Product image source
+          </a>
+        )}
       </div>
     </div>
   );

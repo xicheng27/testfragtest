@@ -38,6 +38,46 @@ const WEIGHTS = {
 };
 
 const PERSONALISATION_SIGNALS: Record<string, Record<string, string[]>> = {
+  // Visual choices translate scenes into editable scent-language signals here.
+  season: {
+    spring: ['floral', 'fruity', 'musk', 'fresh', 'soft', 'romantic'],
+    summer: ['fresh', 'citrus', 'aquatic', 'coconut', 'marine', 'beach'],
+    autumn: ['woody', 'spicy', 'amber', 'smoky', 'tea', 'dark-academia'],
+    winter: ['vanilla', 'amber', 'oud', 'tobacco', 'warm spicy', 'night'],
+  },
+  aesthetic: {
+    clean: ['clean', 'fresh', 'musk', 'subtle', 'morning-light'],
+    'old-money': ['old-money', 'woody', 'elegant', 'quiet-luxury', 'tailored'],
+    'dark-academia': ['dark-academia', 'woody', 'spicy', 'tea', 'smoky'],
+    beach: ['beach', 'citrus', 'aquatic', 'coconut', 'summer'],
+    'quiet-luxury': ['quiet-luxury', 'expensive', 'elegant', 'moderate'],
+    streetwear: ['late-night-city', 'bold', 'spicy', 'confident'],
+    romantic: ['romantic', 'floral', 'fruity', 'musk', 'soft'],
+  },
+  vibe: {
+    'rainy-castle': ['woody', 'amber', 'smoky', 'tea', 'mysterious'],
+    'sunny-beach': ['fresh', 'citrus', 'aquatic', 'coconut', 'marine'],
+    'late-night-city': ['amber', 'vanilla', 'spicy', 'bold', 'night'],
+    'hotel-room': ['clean', 'musk', 'subtle', 'quiet-luxury'],
+    'forest-rain': ['green', 'woody', 'aquatic', 'tea', 'fresh'],
+    'luxury-mall': ['expensive', 'amber', 'floral', 'elegant'],
+  },
+  occasion: {
+    daily: ['daily', 'clean', 'fresh', 'moderate', 'versatile'],
+    work: ['work', 'clean', 'subtle', 'woody', 'tailored'],
+    date: ['date', 'romantic', 'intimate', 'floral', 'vanilla'],
+    night: ['night', 'bold', 'amber', 'spicy', 'strong'],
+    special: ['special', 'elegant', 'expensive', 'floral', 'oud'],
+    casual: ['casual', 'fresh', 'citrus', 'aquatic', 'soft'],
+  },
+  mood: {
+    fresh: ['clean', 'fresh', 'citrus', 'musk', 'morning-light'],
+    mysterious: ['mysterious', 'rain', 'tea', 'woody', 'smoky'],
+    soft: ['soft', 'romantic', 'floral', 'musk', 'vanilla'],
+    elegant: ['elegant', 'expensive', 'amber', 'quiet-luxury'],
+    confident: ['confident', 'woody', 'green', 'spicy', 'strong'],
+    playful: ['playful', 'fruity', 'citrus', 'aquatic', 'summer'],
+  },
   'ideal-weekend': {
     'slow-morning': ['slow-weekend', 'clean-laundry', 'soft', 'intimate', 'clean'],
     'coastal-escape': ['seaside', 'beach', 'citrus', 'aquatic', 'summer'],
@@ -220,6 +260,7 @@ function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
       const matches = signals.filter(signal => (
         searchableTags.has(signal)
         || fragrance.notes.some(note => note.toLowerCase().includes(signal))
+        || fragrance.accords.some(accord => accord.toLowerCase().includes(signal))
       )).length;
       score += Math.min(matches, 2) * WEIGHTS.personalSignal;
     }
