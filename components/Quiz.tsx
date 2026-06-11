@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { QuizQuestion } from '@/lib/quiz';
 import { QuizAnswers } from '@/lib/scoring';
@@ -14,15 +15,16 @@ interface QuizProps {
 }
 
 const variants = {
-  enter: (dir: number) => ({ x: dir > 0 ? 40 : -40, opacity: 0 }),
+  enter: (direction: number) => ({ x: direction > 0 ? 40 : -40, opacity: 0 }),
   center: { x: 0, opacity: 1 },
-  exit: (dir: number) => ({ x: dir > 0 ? -40 : 40, opacity: 0 }),
+  exit: (direction: number) => ({ x: direction > 0 ? -40 : 40, opacity: 0 }),
 };
 
 export default function Quiz({ questions, initialAnswers = {}, onComplete, onBack }: QuizProps) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
   const [direction, setDirection] = useState(1);
+  const advanceTimeoutRef = useRef<number | null>(null);
 
   const question = questions[step];
   const currentAnswers = (answers[question.id] as string[] | undefined) ?? [];
@@ -35,8 +37,18 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
       ? 'mx-auto max-w-3xl'
       : 'mx-auto max-w-5xl';
 
+  useEffect(() => () => {
+    if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
+  }, []);
+
   const handleChange = (values: string[]) => {
-    setAnswers(prev => ({ ...prev, [question.id]: values }));
+    setAnswers(previous => ({ ...previous, [question.id]: values }));
+  };
+
+  const moveToStep = (nextStep: number, nextDirection: number) => {
+    setDirection(nextDirection);
+    setStep(nextStep);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const goNext = () => {
@@ -45,57 +57,56 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
       onComplete(answers);
       return;
     }
-    setDirection(1);
-    setStep(s => s + 1);
+    moveToStep(step + 1, 1);
   };
 
   const goPrev = () => {
-    if (step === 0) { onBack(); return; }
-    setDirection(-1);
-    setStep(s => s - 1);
+    if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
+    if (step === 0) {
+      onBack();
+      return;
+    }
+    moveToStep(step - 1, -1);
   };
 
-  // Auto-advance on single-select answers (after brief delay for feedback)
   const handleSingleChange = (values: string[]) => {
     handleChange(values);
-    if (question.type === 'single') {
-      setTimeout(() => {
-        if (step === questions.length - 1) {
-          onComplete({ ...answers, [question.id]: values });
-        } else {
-          setDirection(1);
-          setStep(s => s + 1);
-        }
-      }, 320);
-    }
+    if (question.type !== 'single') return;
+
+    if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
+    advanceTimeoutRef.current = window.setTimeout(() => {
+      if (isLast) {
+        onComplete({ ...answers, [question.id]: values });
+      } else {
+        moveToStep(step + 1, 1);
+      }
+    }, 320);
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 flex flex-col">
-      {/* Header */}
-      <header className="px-6 py-5 flex items-center justify-between border-b border-stone-100">
+    <div className="flex min-h-screen flex-col bg-stone-50">
+      <header className="flex items-center justify-between border-b border-stone-100 px-4 py-4 sm:px-6 sm:py-5">
         <button
+          type="button"
           onClick={goPrev}
-          className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800 transition-colors"
+          className="flex min-h-11 items-center gap-1.5 rounded-lg px-2 text-sm text-stone-500 transition-colors hover:text-stone-800"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           Back
         </button>
-        <span className="font-semibold text-stone-900 tracking-tight text-sm">ScentMatch</span>
-        <div className="w-16" /> {/* spacer */}
+        <span className="text-sm font-semibold tracking-tight text-stone-900">ScentMatch</span>
+        <div className="w-16" />
       </header>
 
-      {/* Progress */}
-      <div className="px-4 pt-5 pb-0 sm:px-6">
+      <div className="px-4 pb-0 pt-4 sm:px-6 sm:pt-5">
         <div className="mx-auto max-w-5xl">
           <ProgressBar current={step + 1} total={questions.length} />
         </div>
       </div>
 
-      {/* Question */}
-      <main className="flex-1 overflow-x-hidden px-4 py-7 sm:px-6 sm:py-8">
+      <main className={`flex-1 overflow-x-hidden px-4 py-3 sm:px-6 sm:py-8 ${question.type !== 'single' ? 'pb-24 sm:pb-8' : ''}`}>
         <div className={contentWidthClass}>
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -117,16 +128,16 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
         </div>
       </main>
 
-      {/* Footer — show Next button for multi-select / non-auto questions */}
       {question.type !== 'single' && (
-        <div className="sticky bottom-0 z-20 border-t border-stone-200/70 bg-stone-50/95 px-4 py-4 backdrop-blur sm:px-6 sm:pb-8 sm:pt-4">
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-stone-200/70 bg-stone-50/95 px-4 py-2.5 backdrop-blur sm:static sm:border-t-0 sm:bg-transparent sm:px-6 sm:pb-8 sm:pt-4">
           <div className={contentWidthClass}>
             <button
+              type="button"
               onClick={goNext}
               disabled={!hasAnswer}
-              className="w-full py-4 rounded-xl bg-stone-900 text-white font-medium text-sm disabled:opacity-30 hover:bg-stone-800 transition-all duration-150"
+              className="min-h-13 w-full rounded-xl bg-stone-900 px-5 py-3.5 text-sm font-medium text-white transition-all duration-150 hover:bg-stone-800 disabled:opacity-30"
             >
-              {isLast ? 'See my recommendations →' : 'Next →'}
+              {isLast ? 'See my recommendations' : 'Next'}
             </button>
           </div>
         </div>

@@ -50,7 +50,7 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
         </div>
       )}
 
-      <div className="relative aspect-square overflow-hidden border-b border-stone-100 bg-white sm:aspect-[5/4]">
+      <div className="relative aspect-[5/4] overflow-hidden border-b border-stone-100 bg-white">
         <ProductImage
           src={fragrance.imageUrl}
           alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
@@ -141,7 +141,7 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
             aria-pressed={saved}
             aria-label={saved ? `Remove ${fragrance.name} from Shelf` : `Add ${fragrance.name} to Shelf`}
             className={clsx(
-              'flex-1 rounded-xl py-2.5 text-sm font-medium transition-colors',
+              'min-h-11 flex-1 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors',
               saved
                 ? 'border border-stone-300 bg-stone-100 text-stone-800 hover:border-stone-400 hover:bg-white'
                 : 'bg-stone-900 text-white hover:bg-stone-800'
@@ -154,7 +154,7 @@ export default function FragranceCard({ result, fragrance: fragranceProp, rank }
               href={fragrance.productUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl border border-stone-300 px-4 py-2.5 text-center text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
+              className="flex min-h-11 items-center justify-center rounded-xl border border-stone-300 px-4 py-2.5 text-center text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
             >
               View product
             </a>

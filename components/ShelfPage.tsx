@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useShelf } from '@/lib/shelf-context';
 import { useAuth } from '@/lib/auth-context';
 import ShelfCard from './ShelfCard';
@@ -28,9 +29,12 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
             Back
           </button>
           <span className="text-sm font-semibold tracking-tight text-stone-950">ScentMatch</span>
-          <span className="min-w-16 text-right text-xs text-stone-400">
-            {shelfFragrances.length} {shelfFragrances.length === 1 ? 'scent' : 'scents'}
-          </span>
+          <div className="flex min-w-16 items-center justify-end gap-3 text-right">
+            <Link href="/about" className="text-xs text-stone-400 transition-colors hover:text-stone-950">About</Link>
+            <span className="text-xs text-stone-400">
+              {shelfFragrances.length} {shelfFragrances.length === 1 ? 'scent' : 'scents'}
+            </span>
+          </div>
         </div>
       </header>
 

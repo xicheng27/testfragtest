@@ -44,7 +44,7 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
         <button
           type="button"
           onClick={() => removeFromShelf(fragrance.id)}
-          className="mt-6 self-start rounded-xl border border-stone-200 px-4 py-2.5 text-sm font-medium text-stone-600 transition-colors hover:border-stone-400 hover:text-stone-950 md:mt-auto"
+          className="mt-6 min-h-11 self-start rounded-xl border border-stone-200 px-4 py-2.5 text-sm font-medium text-stone-600 transition-colors hover:border-stone-400 hover:text-stone-950 md:mt-auto"
         >
           Remove from Shelf
         </button>

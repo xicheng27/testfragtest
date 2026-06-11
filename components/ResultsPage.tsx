@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { ScoredFragrance } from '@/lib/scoring';
 import FragranceCard from './FragranceCard';
 import AuthModal from './AuthModal';
@@ -26,6 +27,9 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, onView
         <header className="px-6 py-5 flex items-center justify-between border-b border-stone-100">
           <span className="font-semibold text-stone-900 tracking-tight">ScentMatch</span>
           <div className="flex items-center gap-3">
+            <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
+              About
+            </Link>
             <button
               onClick={onViewShelf}
               className="text-sm text-stone-500 hover:text-stone-800 transition-colors"

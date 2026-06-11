@@ -44,11 +44,11 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
 
   return (
     <div>
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         {question.category === 'fun' && (
           <span className="text-xs tracking-widest uppercase text-stone-400 font-light">Just for fun</span>
         )}
-        <h2 className="text-xl font-semibold text-stone-900 mt-1 leading-snug">{question.question}</h2>
+        <h2 className="mt-1 text-lg font-semibold leading-snug text-stone-900 sm:text-xl">{question.question}</h2>
         {question.subtitle && (
           <p className="text-sm text-stone-400 mt-1">{question.subtitle}</p>
         )}
@@ -56,7 +56,7 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
 
       {isImageCards ? (
         <div className={clsx(
-          'grid items-stretch gap-3 sm:gap-4',
+          'grid items-stretch gap-2.5 sm:gap-4',
           imageGridClass,
         )}>
           {question.options.map((option, index) => (
@@ -67,6 +67,8 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
               onClick={() => toggle(option.id)}
               variant="image"
               wideOnMobile={optionCount === 7 && index === optionCount - 1}
+              horizontalOnMobile={optionCount === 3}
+              compactOnMobile={optionCount >= 4}
               className={clsx(
                 optionCount === 7 && index === optionCount - 1
                   && 'col-span-2 md:col-span-1 md:col-start-2',

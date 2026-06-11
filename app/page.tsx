@@ -7,11 +7,15 @@ import MainPage from '@/components/MainPage';
 import Quiz from '@/components/Quiz';
 import ResultsPage from '@/components/ResultsPage';
 import ShelfPage from '@/components/ShelfPage';
+import PersonalityQuiz from '@/components/PersonalityQuiz';
+import PersonalityResultPage from '@/components/PersonalityResultPage';
 import { QuizAnswers, getRecommendations, ScoredFragrance } from '@/lib/scoring';
 import { additionalQuizQuestions, quizQuestions } from '@/lib/quiz';
 import { useQuizProgress } from '@/lib/quiz-progress-context';
+import { PersonalityQuizResult } from '@/lib/personality-quiz';
 
-type AppView = 'landing' | 'main' | 'quiz' | 'quiz-extended' | 'results' | 'shelf';
+type AppView = 'landing' | 'main' | 'quiz' | 'quiz-extended' | 'results' | 'shelf' | 'personality-quiz' | 'personality-result';
+type ShelfReturnView = 'main' | 'results' | 'personality-result';
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
@@ -32,7 +36,9 @@ export default function Home() {
   const [results, setResults] = useState<ScoredFragrance[]>([]);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
   const [isExtended, setIsExtended] = useState(false);
-  const [shelfReturnView, setShelfReturnView] = useState<'main' | 'results'>('main');
+  const [personalityResult, setPersonalityResult] = useState<PersonalityQuizResult | null>(null);
+  const [personalityRun, setPersonalityRun] = useState(0);
+  const [shelfReturnView, setShelfReturnView] = useState<ShelfReturnView>('main');
   const previousProfileId = useRef<string | null>(null);
 
   useEffect(() => {
@@ -43,8 +49,13 @@ export default function Home() {
     setResults([]);
     setQuizAnswers({});
     setIsExtended(false);
+    setPersonalityResult(null);
     setShelfReturnView('main');
   }, [isReady, profileId]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [view]);
 
   if (!isReady) {
     return <div className="min-h-screen bg-stone-50" aria-label="Loading ScentMatch" />;
@@ -79,7 +90,13 @@ export default function Home() {
     setView('quiz');
   };
 
-  const handleViewShelf = (returnView: 'main' | 'results') => {
+  const handleStartPersonalityQuiz = () => {
+    setPersonalityResult(null);
+    setPersonalityRun(current => current + 1);
+    setView('personality-quiz');
+  };
+
+  const handleViewShelf = (returnView: ShelfReturnView) => {
     setShelfReturnView(returnView);
     setView('shelf');
   };
@@ -104,6 +121,7 @@ export default function Home() {
             onStartQuiz={handleStartQuiz}
             onViewShelf={() => handleViewShelf('main')}
             onViewPreviousResults={handleViewPreviousResults}
+            onStartPersonalityQuiz={handleStartPersonalityQuiz}
             hasPreviousResults={hasPreviousResults}
           />
         </motion.div>
@@ -136,6 +154,27 @@ export default function Home() {
             onExtendedQuiz={handleExtendedQuiz}
             onViewShelf={() => handleViewShelf('results')}
             isExtended={isExtended}
+          />
+        </motion.div>
+      )}
+      {currentView === 'personality-quiz' && (
+        <motion.div key={`personality-quiz-${personalityRun}`} variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
+          <PersonalityQuiz
+            onBack={() => setView('main')}
+            onComplete={result => {
+              setPersonalityResult(result);
+              setView('personality-result');
+            }}
+          />
+        </motion.div>
+      )}
+      {currentView === 'personality-result' && personalityResult && (
+        <motion.div key="personality-result" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
+          <PersonalityResultPage
+            result={personalityResult}
+            onReplay={handleStartPersonalityQuiz}
+            onHome={() => setView('main')}
+            onViewShelf={() => handleViewShelf('personality-result')}
           />
         </motion.div>
       )}

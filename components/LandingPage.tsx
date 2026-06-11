@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import AuthModal from './AuthModal';
 import { useAuth } from '@/lib/auth-context';
 
@@ -13,13 +14,18 @@ export default function LandingPage() {
       <div className="flex min-h-screen flex-col bg-stone-50">
         <header className="flex items-center justify-between px-5 py-5 sm:px-8">
           <span className="text-lg font-semibold tracking-tight text-stone-950">ScentMatch</span>
-          <button
-            type="button"
-            onClick={() => setAuthMode('login')}
-            className="text-sm font-medium text-stone-500 transition-colors hover:text-stone-950"
-          >
-            Log In
-          </button>
+          <div className="flex items-center gap-4">
+            <Link href="/about" className="text-sm font-medium text-stone-500 transition-colors hover:text-stone-950">
+              About
+            </Link>
+            <button
+              type="button"
+              onClick={() => setAuthMode('login')}
+              className="text-sm font-medium text-stone-500 transition-colors hover:text-stone-950"
+            >
+              Log In
+            </button>
+          </div>
         </header>
 
         <main className="flex flex-1 items-center justify-center px-6 py-16 text-center">
