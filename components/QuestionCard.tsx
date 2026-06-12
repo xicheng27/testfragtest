@@ -61,7 +61,7 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
 
       {isImageCards ? (
         <div className={clsx(
-          'grid min-h-0 flex-1 content-start items-stretch gap-2 overflow-y-auto overscroll-contain sm:gap-3',
+          'grid min-h-0 flex-1 auto-rows-max content-start items-stretch gap-2 overflow-y-auto overscroll-contain sm:gap-3',
           imageGridClass,
         )} ref={optionsRef}>
           {question.options.map((option, index) => (
