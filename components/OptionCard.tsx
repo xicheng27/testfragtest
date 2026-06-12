@@ -42,8 +42,8 @@ export default function OptionCard({
             ? 'border-stone-900 ring-2 ring-stone-900 ring-offset-2'
             : 'border-stone-200 hover:-translate-y-0.5 hover:border-stone-400 hover:shadow-md',
           ultraDense
-            ? 'min-h-[7.75rem] sm:min-h-[7.5rem]'
-            : !horizontalOnMobile && (compactOnMobile ? 'min-h-[8.5rem] sm:min-h-0' : 'min-h-36 sm:min-h-0'),
+            ? 'min-h-[8.25rem] sm:min-h-[7.5rem]'
+            : !horizontalOnMobile && (compactOnMobile ? 'min-h-[9rem] sm:min-h-0' : 'min-h-40 sm:min-h-0'),
           className,
         )}
       >
@@ -52,14 +52,14 @@ export default function OptionCard({
           horizontalOnMobile
             ? 'min-h-20 w-[36%] sm:h-[clamp(6rem,15vh,8rem)] sm:min-h-0 sm:w-full'
             : wideOnMobile
-              ? 'h-[clamp(4.75rem,10dvh,5.75rem)] w-full sm:h-[clamp(5rem,12vh,6.5rem)]'
+              ? 'h-[clamp(5.75rem,13dvh,7rem)] w-full sm:h-[clamp(5rem,12vh,6.5rem)]'
               : clsx(
                   'w-full',
                   ultraDense
-                    ? 'h-[clamp(4.25rem,10dvh,5.25rem)] sm:h-[clamp(4.5rem,11vh,5.75rem)]'
+                    ? 'h-[clamp(5.5rem,12dvh,6.5rem)] sm:h-[clamp(4.5rem,11vh,5.75rem)]'
                     : denseDesktop
-                      ? 'h-[clamp(4.75rem,11dvh,6rem)] sm:h-[clamp(5.5rem,14vh,7.5rem)]'
-                      : 'h-[clamp(5.25rem,12dvh,6.5rem)] sm:h-[clamp(6rem,16vh,8.5rem)]',
+                      ? 'h-[clamp(6.25rem,14dvh,7.5rem)] sm:h-[clamp(5.5rem,14vh,7.5rem)]'
+                      : 'h-[clamp(7rem,16dvh,8.5rem)] sm:h-[clamp(6rem,16vh,8.5rem)]',
                 ),
         )}>
           {option.imageUrl ? (
@@ -86,7 +86,7 @@ export default function OptionCard({
         <div className={clsx(
           'flex min-w-0 flex-col justify-center sm:justify-start sm:p-4',
           horizontalOnMobile ? 'flex-1' : 'shrink-0',
-          ultraDense ? 'p-2' : compactOnMobile ? 'p-2.5' : 'p-3',
+          (compactOnMobile || ultraDense) ? 'px-2.5 py-2' : 'p-3',
         )}>
           <div className={clsx(
             'break-words font-semibold leading-tight text-stone-950 sm:text-[15px]',
@@ -97,7 +97,7 @@ export default function OptionCard({
           {option.description && (
             <div className={clsx(
               'mt-1 break-words text-xs leading-snug text-stone-500 sm:mt-1.5 sm:leading-relaxed',
-              (compactOnMobile || ultraDense) && 'line-clamp-1',
+              (compactOnMobile || ultraDense) && 'hidden sm:block sm:line-clamp-1',
               ultraDense && 'text-[11px]',
             )}>
               {option.description}
