@@ -82,7 +82,7 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
         </div>
       </div>
 
-      <main className="flex flex-1 items-center px-4 py-4 sm:px-6 sm:py-12">
+      <main className="flex flex-1 items-center px-4 py-4 sm:px-6 sm:py-6">
         <div className="mx-auto w-full max-w-4xl">
           <AnimatePresence mode="wait">
             <motion.div
@@ -92,7 +92,7 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.24 }}
             >
-              <div className="mb-4 text-center sm:mb-9">
+              <div className="mb-4 text-center sm:mb-6">
                 <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-stone-500">{round.eyebrow}</p>
                 <h1 className="mx-auto mt-2 max-w-2xl text-2xl font-semibold leading-tight tracking-tight sm:mt-3 sm:text-4xl">
                   {round.question}
@@ -115,7 +115,7 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
                           : 'border-white/15 bg-white/5 hover:-translate-y-1 hover:border-white/40 hover:bg-white/10'
                       }`}
                     >
-                      <div className={`relative aspect-[16/11] overflow-hidden sm:aspect-[4/3] ${choice.imageFit === 'contain' ? 'bg-white' : 'bg-stone-900'}`}>
+                      <div className={`relative aspect-[16/11] overflow-hidden sm:h-[clamp(10rem,30vh,14rem)] sm:aspect-auto ${choice.imageFit === 'contain' ? 'bg-white' : 'bg-stone-900'}`}>
                         <Image
                           src={choice.imageUrl}
                           alt=""
@@ -131,7 +131,7 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
                           </span>
                         )}
                       </div>
-                      <div className="min-h-24 p-3 sm:min-h-32 sm:p-5">
+                      <div className="min-h-24 p-3 sm:min-h-28 sm:p-5">
                         <h2 className="break-words text-sm font-semibold leading-tight sm:text-lg">{choice.label}</h2>
                         <p className={`mt-1.5 break-words text-xs leading-snug sm:mt-2 sm:text-sm sm:leading-relaxed ${selected ? 'text-stone-600' : 'text-stone-400'}`}>
                           {choice.subtitle}

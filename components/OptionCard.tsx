@@ -12,6 +12,7 @@ interface OptionCardProps {
   wideOnMobile?: boolean;
   horizontalOnMobile?: boolean;
   compactOnMobile?: boolean;
+  denseDesktop?: boolean;
 }
 
 export default function OptionCard({
@@ -23,6 +24,7 @@ export default function OptionCard({
   wideOnMobile = false,
   horizontalOnMobile = false,
   compactOnMobile = false,
+  denseDesktop = false,
 }: OptionCardProps) {
   if (variant === 'image') {
     return (
@@ -43,10 +45,15 @@ export default function OptionCard({
         <div className={clsx(
           'relative shrink-0 overflow-hidden bg-stone-100',
           horizontalOnMobile
-            ? 'min-h-24 w-[38%] sm:aspect-[4/3] sm:min-h-0 sm:w-full'
+            ? 'min-h-24 w-[38%] sm:h-[clamp(8rem,22vh,11rem)] sm:min-h-0 sm:w-full'
             : wideOnMobile
-              ? 'aspect-[8/3] w-full md:aspect-[4/3]'
-              : 'aspect-[16/10] w-full sm:aspect-[4/3]',
+              ? 'aspect-[8/3] w-full md:h-[clamp(7rem,17vh,9rem)] md:aspect-auto'
+              : clsx(
+                  'aspect-[16/10] w-full sm:aspect-auto',
+                  denseDesktop
+                    ? 'sm:h-[clamp(7rem,17vh,9rem)]'
+                    : 'sm:h-[clamp(8rem,22vh,11rem)]',
+                ),
         )}>
           {option.imageUrl ? (
             <Image

@@ -69,6 +69,7 @@ export default function QuestionCard({ question, selected, onChange }: QuestionC
               wideOnMobile={optionCount === 7 && index === optionCount - 1}
               horizontalOnMobile={optionCount === 3}
               compactOnMobile={optionCount >= 4}
+              denseDesktop={optionCount >= 6}
               className={clsx(
                 optionCount === 7 && index === optionCount - 1
                   && 'col-span-2 md:col-span-1 md:col-start-2',
