@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { QuizQuestion } from '@/lib/quiz';
 import { QuizAnswers } from '@/lib/scoring';
+import { useQuizViewport } from '@/lib/use-quiz-viewport';
 import QuestionCard from './QuestionCard';
 import ProgressBar from './ProgressBar';
 
@@ -21,16 +21,12 @@ const variants = {
   exit: (direction: number) => ({ x: direction > 0 ? -40 : 40, opacity: 0 }),
 };
 
-function ViewportPortal({ children }: { children: React.ReactNode }) {
-  if (typeof document === 'undefined') return null;
-  return createPortal(children, document.body);
-}
-
 export default function Quiz({ questions, initialAnswers = {}, onComplete, onBack }: QuizProps) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
   const [direction, setDirection] = useState(1);
   const advanceTimeoutRef = useRef<number | null>(null);
+  const optionsRef = useRef<HTMLElement>(null);
 
   const question = questions[step];
   const currentAnswers = (answers[question.id] as string[] | undefined) ?? [];
@@ -43,6 +39,8 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
       ? 'mx-auto max-w-3xl'
       : 'mx-auto max-w-5xl';
 
+  useQuizViewport(optionsRef, question.id);
+
   useEffect(() => () => {
     if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
   }, []);
@@ -54,7 +52,6 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   const moveToStep = (nextStep: number, nextDirection: number) => {
     setDirection(nextDirection);
     setStep(nextStep);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const goNext = () => {
@@ -90,7 +87,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   };
 
   return (
-    <div className="flex h-dvh min-h-[32rem] flex-col overflow-hidden bg-stone-50">
+    <div className="grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden bg-stone-50">
       <header className="flex items-center justify-between border-b border-stone-100 px-4 py-4 sm:px-6 sm:py-5">
         <button
           type="button"
@@ -112,7 +109,10 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
         </div>
       </div>
 
-      <main className={`min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-4 py-3 sm:px-6 sm:py-5 ${question.type !== 'single' ? 'mb-20 pb-4' : ''}`}>
+      <main
+        ref={optionsRef}
+        className="min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain px-4 py-3 sm:px-6 sm:py-5"
+      >
         <div className={contentWidthClass}>
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -135,8 +135,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
       </main>
 
       {question.type !== 'single' && (
-        <ViewportPortal>
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-stone-200/80 bg-stone-50/95 px-4 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2.5 shadow-[0_-8px_24px_rgba(28,25,23,0.06)] backdrop-blur sm:px-6 sm:py-3">
+        <footer className="z-20 border-t border-stone-200/80 bg-stone-50/95 px-4 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2.5 shadow-[0_-8px_24px_rgba(28,25,23,0.06)] backdrop-blur sm:px-6 sm:py-3">
           <div className="mx-auto max-w-lg">
             <button
               type="button"
@@ -147,8 +146,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
               {isLast ? 'See my recommendations' : 'Next'}
             </button>
           </div>
-        </div>
-        </ViewportPortal>
+        </footer>
       )}
     </div>
   );

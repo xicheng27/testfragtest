@@ -9,6 +9,7 @@ import {
   PersonalityChoice,
   PersonalityQuizResult,
 } from '@/lib/personality-quiz';
+import { useQuizViewport } from '@/lib/use-quiz-viewport';
 import ProgressBar from './ProgressBar';
 
 interface PersonalityQuizProps {
@@ -22,7 +23,10 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const choicesRef = useRef<PersonalityChoice[]>([]);
   const timeoutRef = useRef<number | null>(null);
+  const optionsRef = useRef<HTMLElement>(null);
   const round = rounds[step];
+
+  useQuizViewport(optionsRef, round.id);
 
   useEffect(() => () => {
     if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
@@ -41,7 +45,6 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
       }
       setStep(current => current + 1);
       setSelectedId(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 360);
   };
 
@@ -54,11 +57,10 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
     choicesRef.current = choicesRef.current.slice(0, -1);
     setSelectedId(null);
     setStep(current => current - 1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-stone-950 text-white">
+    <div className="grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)] overflow-hidden bg-stone-950 text-white">
       <header className="border-b border-white/10 px-4 py-3 sm:px-6 sm:py-4">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
           <button
@@ -82,8 +84,12 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
         </div>
       </div>
 
-      <main className="flex flex-1 items-center px-4 py-4 sm:px-6 sm:py-6">
-        <div className="mx-auto w-full max-w-4xl">
+      <main
+        ref={optionsRef}
+        className="min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6"
+      >
+        <div className="mx-auto flex min-h-full w-full max-w-4xl items-center">
+          <div className="w-full">
           <AnimatePresence mode="wait">
             <motion.div
               key={round.id}
@@ -143,6 +149,7 @@ export default function PersonalityQuiz({ onBack, onComplete }: PersonalityQuizP
               </div>
             </motion.div>
           </AnimatePresence>
+          </div>
         </div>
       </main>
     </div>
