@@ -58,6 +58,26 @@ const manualOverrides = {
     pageUrl: 'https://www.maisonmargiela-fragrances.eu/en_GB/fragrances/discover/replica-memories/replica-ideal-one/MM164.html',
     imageUrl: 'https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dwb5a2544d/images/products/MM164/1.jpg',
   },
+  'diptyque-eau-duelle-edp': {
+    pageUrl: 'https://www.diptyqueparis.com/en_us/p/eau-duelle-eau-de-parfum-75ml-1.html',
+    imageUrl: 'https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-eau-duelle-eau-de-parfum-75ml-duellep75-1.jpg?quality=100&bg-color=255,255,255&fit=bounds',
+  },
+  'diptyque-orpheon': {
+    pageUrl: 'https://www.diptyqueparis.com/en_us/p/orpheon-eau-de-parfum-75ml.html',
+    imageUrl: 'https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-orpheon-eau-de-parfum-75ml-orphp75c-1.jpg?quality=100&bg-color=255,255,255&fit=bounds',
+  },
+  'kilian-angels-share': {
+    pageUrl: 'https://www.bykilian.com/product/19797/82905/perfume/angels-share/the-liquors',
+    imageUrl: 'https://www.bykilian.com/media/images/products/833x968/kl_sku_N36E01_833x968_0.jpg',
+  },
+  'kilian-love-dont-be-shy': {
+    pageUrl: 'https://www.bykilian.com/product/19797/50771/perfume/love-dont-be-shy/the-narcotics',
+    imageUrl: 'https://www.bykilian.com/media/images/products/833x968/kl_sku_N3E601_833x968_0.jpg',
+  },
+  'byredo-bibliotheque': {
+    pageUrl: 'https://www.byredo.com/us_en/p/bibliotheque-eau-de-parfum',
+    imageUrl: 'https://www.byredo.com/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/1/0/100219_1_full_no.jpg',
+  },
 };
 
 const trustedRetailers = [

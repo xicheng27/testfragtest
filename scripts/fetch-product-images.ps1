@@ -178,6 +178,21 @@ $items = @(
   @{ id = 'mfk-lhomme-a-la-rose'; query = 'Maison Francis Kurkdjian L Homme A la rose'; domain = 'franciskurkdjian.com' }
   @{ id = 'mfk-amyris-femme'; query = 'Maison Francis Kurkdjian Amyris femme'; domain = 'franciskurkdjian.com' }
   @{ id = 'mfk-amyris-homme'; query = 'Maison Francis Kurkdjian Amyris homme'; domain = 'franciskurkdjian.com' }
+  @{ id = 'diptyque-eau-duelle-edp'; query = 'Diptyque Eau Duelle eau de parfum'; domain = 'diptyqueparis.com' }
+  @{ id = 'diptyque-orpheon'; query = 'Diptyque Orpheon eau de parfum'; domain = 'diptyqueparis.com' }
+  @{ id = 'diptyque-fleur-de-peau'; query = 'Diptyque Fleur de Peau eau de parfum'; domain = 'diptyqueparis.com' }
+  @{ id = 'le-labo-rose-31'; query = 'Le Labo Rose 31 eau de parfum'; domain = 'lelabofragrances.com' }
+  @{ id = 'le-labo-the-noir-29'; query = 'Le Labo The Noir 29 eau de parfum'; domain = 'lelabofragrances.com' }
+  @{ id = 'le-labo-bergamote-22'; query = 'Le Labo Bergamote 22 eau de parfum'; domain = 'lelabofragrances.com' }
+  @{ id = 'byredo-blanche'; query = 'Byredo Blanche eau de parfum'; domain = 'byredo.com' }
+  @{ id = 'byredo-bibliotheque'; query = 'Byredo Bibliotheque eau de parfum'; domain = 'byredo.com' }
+  @{ id = 'byredo-sundazed'; query = 'Byredo Sundazed eau de parfum'; domain = 'byredo.com' }
+  @{ id = 'parfums-de-marly-herod'; query = 'Parfums de Marly Herod eau de parfum'; domain = 'parfums-de-marly.com' }
+  @{ id = 'parfums-de-marly-althair'; query = 'Parfums de Marly Althair eau de parfum'; domain = 'parfums-de-marly.com' }
+  @{ id = 'parfums-de-marly-valaya'; query = 'Parfums de Marly Valaya eau de parfum'; domain = 'parfums-de-marly.com' }
+  @{ id = 'kilian-angels-share'; query = 'Kilian Angels Share eau de parfum'; domain = 'bykilian.com' }
+  @{ id = 'kilian-love-dont-be-shy'; query = 'Kilian Love Dont Be Shy eau de parfum'; domain = 'bykilian.com' }
+  @{ id = 'nishane-hacivat'; query = 'Nishane Hacivat extrait de parfum'; domain = 'nishane.com' }
 )
 
 $trustedRetailers = @(

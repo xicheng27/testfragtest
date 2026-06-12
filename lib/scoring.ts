@@ -70,43 +70,11 @@ const PERSONALISATION_SIGNALS: Record<string, Record<string, string[]>> = {
     special: ['special', 'elegant', 'expensive', 'floral', 'oud'],
     casual: ['casual', 'fresh', 'citrus', 'aquatic', 'soft'],
   },
-  mood: {
-    fresh: ['clean', 'fresh', 'citrus', 'musk', 'morning-light'],
-    mysterious: ['mysterious', 'rain', 'tea', 'woody', 'smoky'],
-    soft: ['soft', 'romantic', 'floral', 'musk', 'vanilla'],
-    elegant: ['elegant', 'expensive', 'amber', 'quiet-luxury'],
-    confident: ['confident', 'woody', 'green', 'spicy', 'strong'],
-    playful: ['playful', 'fruity', 'citrus', 'aquatic', 'summer'],
-  },
-  'ideal-weekend': {
-    'slow-morning': ['slow-weekend', 'clean-laundry', 'soft', 'intimate', 'clean'],
-    'coastal-escape': ['seaside', 'beach', 'citrus', 'aquatic', 'summer'],
-    'city-evening': ['late-night-city', 'night', 'bold', 'confident', 'midnight'],
-    'forest-reset': ['forest-rain', 'green', 'woody', 'rain', 'grounding'],
-  },
-  room: {
-    'minimal-suite': ['hotel-room', 'clean', 'minimal', 'quiet-luxury'],
-    'old-library': ['old-library', 'dark-academia', 'woody', 'leather', 'mysterious'],
-    'warm-boutique': ['luxury-mall', 'expensive', 'quiet-luxury', 'elegant'],
-    'fireside-room': ['fireside', 'comforting', 'smoky', 'vanilla', 'winter'],
-  },
-  'weather-personality': {
-    'soft-rain': ['rain', 'forest-rain', 'aquatic', 'soft', 'grounding'],
-    'clear-sun': ['sunny-beach', 'summer', 'citrus', 'fresh', 'playful'],
-    'crisp-air': ['fresh', 'clean', 'spring', 'citrus', 'subtle'],
-    'night-storm': ['rainy-castle', 'strong', 'mysterious', 'spicy', 'bold'],
-  },
   'time-of-day': {
     'early-morning': ['morning-light', 'clean', 'fresh', 'subtle', 'daily'],
     'golden-hour': ['golden-hour', 'warm', 'romantic', 'elegant', 'date'],
     'blue-hour': ['quiet-luxury', 'intimate', 'floral', 'moderate'],
     midnight: ['midnight', 'night', 'strong', 'addictive', 'mysterious'],
-  },
-  'fictional-setting': {
-    'secret-library': ['old-library', 'dark-academia', 'woody', 'leather'],
-    'moonlit-conservatory': ['green', 'floral', 'mysterious', 'forest-rain'],
-    'cliffside-villa': ['sunny-beach', 'citrus', 'aquatic', 'quiet-luxury'],
-    'rainy-kingdom': ['rainy-castle', 'spicy', 'oriental', 'mysterious'],
   },
   'outfit-style': {
     tailored: ['tailored', 'old-money', 'quiet-luxury', 'elegant', 'work'],
@@ -293,7 +261,6 @@ function buildMatchReason(fragrance: Fragrance, answers: QuizAnswers): string {
 
   const vibe = getAnswer(answers, 'vibe');
   const aesthetic = getAnswer(answers, 'aesthetic');
-  const mood = getAnswer(answers, 'mood');
   const occasion = getAnswer(answers, 'occasion');
   const season = getAnswer(answers, 'season');
 
@@ -320,10 +287,6 @@ function buildMatchReason(fragrance: Fragrance, answers: QuizAnswers): string {
       'romantic': 'your romantic softness',
     };
     parts.push(aestheticLabels[aesthetic] || 'your aesthetic');
-  }
-
-  if (mood && fragrance.moods.includes(mood)) {
-    parts.push(`the ${mood} mood you want to wear`);
   }
 
   if (season && fragrance.seasons.includes(season)) {

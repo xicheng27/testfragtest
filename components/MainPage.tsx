@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { fragrances } from '@/lib/fragrances';
 import AuthModal from './AuthModal';
 
 interface MainPageProps {
@@ -83,7 +84,7 @@ export default function MainPage({
                 <div className="my-6 space-y-3">
                   {[
                     { n: '01', text: 'Answer visual questions about your style' },
-                    { n: '02', text: 'We score 175 fragrances against your answers' },
+                    { n: '02', text: `We score ${fragrances.length} fragrances against your answers` },
                     { n: '03', text: 'Get five personalised directions' },
                   ].map(item => (
                     <div key={item.n} className="flex items-center gap-3">

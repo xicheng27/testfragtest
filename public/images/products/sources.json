@@ -1223,5 +1223,110 @@
     "pageUrl": "https://www.neimanmarcus.com/p/maison-francis-kurkdjian-amyris-pour-homme-eau-de-toilette-6-8-oz-prod271510351",
     "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_4479041_100000_m",
     "file": "mfk-amyris-homme.jpg"
+  },
+  {
+    "id": "diptyque-eau-duelle-edp",
+    "status": "OK",
+    "pageUrl": "https://www.diptyqueparis.com/en_us/p/eau-duelle-eau-de-parfum-75ml-1.html",
+    "imageSourceUrl": "https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-eau-duelle-eau-de-parfum-75ml-duellep75-1.jpg?quality=100&bg-color=255,255,255&fit=bounds",
+    "file": "diptyque-eau-duelle-edp.jpg"
+  },
+  {
+    "id": "diptyque-orpheon",
+    "status": "OK",
+    "pageUrl": "https://www.diptyqueparis.com/en_us/p/orpheon-eau-de-parfum-75ml.html",
+    "imageSourceUrl": "https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-orpheon-eau-de-parfum-75ml-orphp75c-1.jpg?quality=100&bg-color=255,255,255&fit=bounds",
+    "file": "diptyque-orpheon.jpg"
+  },
+  {
+    "id": "diptyque-fleur-de-peau",
+    "status": "OK",
+    "pageUrl": "https://www.diptyqueparis.com/en_us/p/fleur-de-peau-eau-de-parfum-1.html",
+    "imageSourceUrl": "https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-fleur-de-peau-eau-de-parfum-75ml-fleurp75c-1.jpg?quality=100&bg-color=255",
+    "file": "diptyque-fleur-de-peau.jpg"
+  },
+  {
+    "id": "le-labo-rose-31",
+    "status": "OK",
+    "pageUrl": "https://www.harrods.com/__trashed-7/p/le-labo-rose-31-eau-de-parfum-50ml-000000000006491715",
+    "imageSourceUrl": "https://hrd-live.cdn.scayle.cloud/images/1663fdcf286d9cb1180ff73946172e42.jpg?brightness=1&width=922&height=1230&quality=75&bg=ffffff",
+    "file": "le-labo-rose-31.jpg"
+  },
+  {
+    "id": "le-labo-the-noir-29",
+    "status": "OK",
+    "pageUrl": "https://shop.nordstrom.com/s/le-labo-the-noir-29-eau-de-parfum/4335704",
+    "imageSourceUrl": "https://n.nordstrommedia.com/id/sr3/51d5c047-f214-48a3-a69c-4c2061af1b4e.jpeg?crop=pad&pad_color=FFF&format=jpeg&w=780&h=1196&dpr=4",
+    "file": "le-labo-the-noir-29.jpg"
+  },
+  {
+    "id": "le-labo-bergamote-22",
+    "status": "OK",
+    "pageUrl": "https://www.lelabofragrances.com/bergamote-22-131.html",
+    "imageSourceUrl": "https://lelabo.ips.photos/lelabo-java/images/skus/100PB22100__PRODUCT_01--IMG_1200--BERGAMOTE22--1562685279.jpg",
+    "file": "le-labo-bergamote-22.jpg"
+  },
+  {
+    "id": "byredo-blanche",
+    "status": "OK",
+    "pageUrl": "https://www.nordstrom.com/s/byredo-blanche-eau-de-parfum/7235553",
+    "imageSourceUrl": "https://n.nordstrommedia.com/it/07eb2951-7605-4c97-9bb9-06a86432d1f6.jpeg?crop=pad&w=780&h=1196&dpr=2",
+    "file": "byredo-blanche.jpg"
+  },
+  {
+    "id": "byredo-bibliotheque",
+    "status": "OK",
+    "pageUrl": "https://www.byredo.com/us_en/p/bibliotheque-eau-de-parfum",
+    "imageSourceUrl": "https://www.byredo.com/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/1/0/100219_1_full_no.jpg",
+    "file": "byredo-bibliotheque.jpg"
+  },
+  {
+    "id": "byredo-sundazed",
+    "status": "OK",
+    "pageUrl": "https://www.nordstrom.com/s/byredo-sundazed-eau-de-parfum/5208467",
+    "imageSourceUrl": "https://n.nordstrommedia.com/id/sr3/3cc3c978-a30f-4c77-9607-95ed1b7bfdc4.jpeg?crop=pad&w=780&h=1196&dpr=2",
+    "file": "byredo-sundazed.jpg"
+  },
+  {
+    "id": "parfums-de-marly-herod",
+    "status": "OK",
+    "pageUrl": "https://parfums-de-marly.com/products/herod",
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/2203_MARLY_HEROD_75ml_1v2.jpg?v=1683792105",
+    "file": "parfums-de-marly-herod.jpg"
+  },
+  {
+    "id": "parfums-de-marly-althair",
+    "status": "OK",
+    "pageUrl": "https://parfums-de-marly.com/products/althair",
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/2204_MARLY_ALTHAIR_75ml_01.jpg?v=1693217593",
+    "file": "parfums-de-marly-althair.jpg"
+  },
+  {
+    "id": "parfums-de-marly-valaya",
+    "status": "OK",
+    "pageUrl": "https://parfums-de-marly.com/products/valaya",
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/Valaya_75ml_bottle_pack_1024x.jpg?v=1721112388",
+    "file": "parfums-de-marly-valaya.jpg"
+  },
+  {
+    "id": "kilian-angels-share",
+    "status": "OK",
+    "pageUrl": "https://www.bykilian.com/product/19797/82905/perfume/angels-share/the-liquors",
+    "imageSourceUrl": "https://www.bykilian.com/media/images/products/833x968/kl_sku_N36E01_833x968_0.jpg",
+    "file": "kilian-angels-share.jpg"
+  },
+  {
+    "id": "kilian-love-dont-be-shy",
+    "status": "OK",
+    "pageUrl": "https://www.bykilian.com/product/19797/50771/perfume/love-dont-be-shy/the-narcotics",
+    "imageSourceUrl": "https://www.bykilian.com/media/images/products/833x968/kl_sku_N3E601_833x968_0.jpg",
+    "file": "kilian-love-dont-be-shy.jpg"
+  },
+  {
+    "id": "nishane-hacivat",
+    "status": "OK",
+    "pageUrl": "https://nishane.com/product/hacivat/",
+    "imageSourceUrl": "https://nishane.com/wp-content/uploads/2022/09/a-50ml-19-HACIVAT.jpg",
+    "file": "nishane-hacivat.jpg"
   }
 ]
