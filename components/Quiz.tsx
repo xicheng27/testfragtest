@@ -26,7 +26,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
   const [direction, setDirection] = useState(1);
   const advanceTimeoutRef = useRef<number | null>(null);
-  const optionsRef = useRef<HTMLElement>(null);
+  const optionsRef = useRef<HTMLDivElement>(null);
 
   const question = questions[step];
   const currentAnswers = (answers[question.id] as string[] | undefined) ?? [];
@@ -110,10 +110,9 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
       </div>
 
       <main
-        ref={optionsRef}
-        className="min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain px-4 py-3 sm:px-6 sm:py-5"
+        className="min-h-0 overflow-hidden px-4 py-2.5 sm:px-6 sm:py-4"
       >
-        <div className={contentWidthClass}>
+        <div className={`${contentWidthClass} h-full min-h-0`}>
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={question.id}
@@ -123,11 +122,13 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
               animate="center"
               exit="exit"
               transition={{ duration: 0.25, ease: 'easeInOut' }}
+              className="h-full min-h-0"
             >
               <QuestionCard
                 question={question}
                 selected={currentAnswers}
                 onChange={question.type === 'single' ? handleSingleChange : handleChange}
+                optionsRef={optionsRef}
               />
             </motion.div>
           </AnimatePresence>
