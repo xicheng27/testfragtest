@@ -8,8 +8,8 @@ interface QuizChoiceImageProps {
   src: string;
   sizes: string;
   alt: string;
-  productImage?: boolean;
-  eager?: boolean;
+  productImage?: boolean; // packshot on white — use object-contain
+  eager?: boolean; // current/visible question → load immediately, high priority
   className?: string;
 }
 
@@ -25,36 +25,30 @@ export default function QuizChoiceImage({
 
   return (
     <div className={clsx('absolute inset-0 overflow-hidden', productImage ? 'bg-white' : 'bg-stone-200', className)}>
+      {/* Skeleton shimmer while the image decodes — prevents a blank flash */}
       <div
         className={clsx(
-          'absolute inset-0 animate-pulse bg-gradient-to-br from-stone-100 via-stone-200 to-stone-100 transition-opacity',
+          'absolute inset-0 animate-pulse bg-gradient-to-br from-stone-100 via-stone-200 to-stone-100 transition-opacity duration-300',
           loaded ? 'pointer-events-none opacity-0' : 'opacity-100',
         )}
         aria-hidden="true"
       />
-      {!productImage && (
-        <>
-          <Image
-            src={src}
-            alt=""
-            fill
-            sizes={sizes}
-            className="scale-110 object-cover opacity-45 blur-xl"
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-white/10" />
-        </>
-      )}
       <Image
         src={src}
         alt={alt}
         fill
         sizes={sizes}
+        // Raw file from /public (predictable URL) so it can be preloaded and
+        // served straight from browser cache on back/forward navigation.
+        unoptimized
+        // Visible cards never lazy-load; they fetch at high priority.
+        priority={eager}
         loading={eager ? 'eager' : 'lazy'}
+        fetchPriority={eager ? 'high' : 'auto'}
         className={clsx(
-          'object-contain transition-opacity duration-200',
+          'transition-opacity duration-200',
           loaded ? 'opacity-100' : 'opacity-0',
-          productImage ? 'p-2.5 sm:p-3' : 'p-0.5',
+          productImage ? 'object-contain p-3' : 'object-cover',
         )}
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)}

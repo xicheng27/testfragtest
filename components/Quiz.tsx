@@ -19,6 +19,25 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
   const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
   const advanceTimeoutRef = useRef<number | null>(null);
   const optionsRef = useRef<HTMLDivElement>(null);
+  const preloadedRef = useRef<Set<string>>(new Set());
+
+  // Warm the browser cache for the next couple of questions while the user is
+  // answering the current one — by the time they press Next, the images are
+  // already decoded and appear instantly. Cards for the current question load
+  // eagerly at high priority via OptionCard's `priority` flag.
+  useEffect(() => {
+    for (const lookahead of [step + 1, step + 2]) {
+      const upcoming = questions[lookahead];
+      if (!upcoming || upcoming.type !== 'image-cards') continue;
+      for (const option of upcoming.options) {
+        if (!option.imageUrl || preloadedRef.current.has(option.imageUrl)) continue;
+        preloadedRef.current.add(option.imageUrl);
+        const img = new window.Image();
+        img.decoding = 'async';
+        img.src = option.imageUrl;
+      }
+    }
+  }, [step, questions]);
 
   const question = questions[step];
   const currentAnswers = (answers[question.id] as string[] | undefined) ?? [];

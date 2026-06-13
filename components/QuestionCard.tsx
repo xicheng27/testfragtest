@@ -1,5 +1,5 @@
 'use client';
-import { KeyboardEvent, RefObject } from 'react';
+import { KeyboardEvent, RefObject, useEffect, useState } from 'react';
 import { QuizQuestion } from '@/lib/quiz';
 import OptionCard from './OptionCard';
 import clsx from 'clsx';
@@ -11,6 +11,31 @@ interface QuestionCardProps {
   optionsRef?: RefObject<HTMLDivElement | null>;
 }
 
+// Resolve how many columns the image grid should use at the current breakpoint.
+// Driving columns from JS lets us also compute the row count, so the grid can
+// fill the available height exactly — the options always fit without scrolling.
+function useGridColumns(count: number): number {
+  const [bp, setBp] = useState<'base' | 'md' | 'lg'>('base');
+
+  useEffect(() => {
+    const md = window.matchMedia('(min-width: 768px)');
+    const lg = window.matchMedia('(min-width: 1024px)');
+    const update = () => setBp(lg.matches ? 'lg' : md.matches ? 'md' : 'base');
+    update();
+    md.addEventListener('change', update);
+    lg.addEventListener('change', update);
+    return () => {
+      md.removeEventListener('change', update);
+      lg.removeEventListener('change', update);
+    };
+  }, []);
+
+  if (count <= 3) return Math.max(1, count); // 3-option questions sit in one row
+  if (count === 4) return 2; // 2×2 at every size
+  if (count >= 7) return bp === 'lg' ? 4 : bp === 'base' ? 2 : 3;
+  return bp === 'base' ? 2 : 3; // 6 and everything else
+}
+
 export default function QuestionCard({ question, selected, onChange, optionsRef }: QuestionCardProps) {
   const headingId = `quiz-question-${question.id}`;
 
@@ -19,7 +44,6 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
       onChange([optionId]);
       return;
     }
-    // multi / cards / image-cards
     const max = question.maxSelections ?? 99;
     if (selected.includes(optionId)) {
       onChange(selected.filter(id => id !== optionId));
@@ -27,7 +51,6 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
       if (selected.length < max) {
         onChange([...selected, optionId]);
       } else {
-        // Replace the first selected if at max
         onChange([...selected.slice(1), optionId]);
       }
     }
@@ -36,18 +59,12 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
   const isImageCards = question.type === 'image-cards';
   const isCards = question.type === 'cards';
   const optionCount = question.options.length;
-  const isUltraDense = optionCount >= 7;
-  const imageGridClass = optionCount === 3
-    ? 'grid-cols-1 sm:grid-cols-3'
-    : optionCount === 4
-      ? 'grid-cols-2'
-      : optionCount === 6
-        ? 'grid-cols-2 md:grid-cols-3'
-        : optionCount === 7
-          ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-        : optionCount === 12
-          ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
-          : 'grid-cols-2 md:grid-cols-3';
+
+  const columns = useGridColumns(optionCount);
+  const rows = Math.ceil(optionCount / columns);
+  // A lone trailing card on a 2-column mobile layout spans the full width so
+  // there's no awkward empty cell.
+  const lastSpansFull = columns === 2 && optionCount % 2 === 1;
 
   const handleOptionKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
@@ -58,24 +75,14 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
     if (currentIndex < 0 || buttons.length === 0) return;
 
     event.preventDefault();
-    const viewportWidth = window.innerWidth;
-    const columnCount = optionCount === 3
-      ? (viewportWidth >= 640 ? 3 : 1)
-      : optionCount === 6
-        ? (viewportWidth >= 768 ? 3 : 2)
-        : optionCount === 7
-          ? (viewportWidth >= 1024 ? 4 : viewportWidth >= 768 ? 3 : 2)
-          : optionCount === 12
-            ? (viewportWidth >= 1024 ? 4 : viewportWidth >= 640 ? 3 : 2)
-            : 2;
     const movement = event.key === 'ArrowLeft'
       ? -1
       : event.key === 'ArrowRight'
         ? 1
         : event.key === 'ArrowUp'
-          ? -columnCount
+          ? -columns
           : event.key === 'ArrowDown'
-            ? columnCount
+            ? columns
             : 0;
     const nextIndex = event.key === 'Home'
       ? 0
@@ -100,10 +107,12 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
       </div>
 
       {isImageCards ? (
-        <div className={clsx(
-          'grid min-h-0 flex-1 auto-rows-max content-start items-stretch gap-2 overflow-y-auto overscroll-contain sm:gap-3',
-          imageGridClass,
-        )}
+        <div
+          className="grid min-h-0 flex-1 gap-2 sm:gap-3"
+          style={{
+            gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+            gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
+          }}
           ref={optionsRef}
           role="group"
           aria-labelledby={headingId}
@@ -116,9 +125,9 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
               selected={selected.includes(option.id)}
               onClick={() => toggle(option.id)}
               variant="image"
+              priority
               className={clsx(
-                optionCount === 7 && index === optionCount - 1
-                  && 'col-span-2 md:col-span-1 md:col-start-2 lg:col-start-auto',
+                lastSpansFull && index === optionCount - 1 && 'col-span-2',
               )}
             />
           ))}
@@ -153,7 +162,7 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
                 </span>
               )}
               <div className="text-2xl mb-2">{option.emoji}</div>
-              <div className={clsx('text-sm font-medium bg-gradient-to-br rounded-lg', option.gradient && !selected.includes(option.id) ? '' : '')}>
+              <div className="text-sm font-medium">
                 {option.label}
                 {selected.includes(option.id) && <span className="sr-only">, selected</span>}
               </div>
