@@ -116,11 +116,6 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
               selected={selected.includes(option.id)}
               onClick={() => toggle(option.id)}
               variant="image"
-              wideOnMobile={optionCount === 7 && index === optionCount - 1}
-              horizontalOnMobile={optionCount === 3}
-              compactOnMobile={optionCount >= 4}
-              denseDesktop={optionCount >= 6}
-              ultraDense={isUltraDense}
               className={clsx(
                 optionCount === 7 && index === optionCount - 1
                   && 'col-span-2 md:col-span-1 md:col-start-2 lg:col-start-auto',
