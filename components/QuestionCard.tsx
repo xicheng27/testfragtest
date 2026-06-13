@@ -39,26 +39,39 @@ function useGridColumns(count: number): number {
 export default function QuestionCard({ question, selected, onChange, optionsRef }: QuestionCardProps) {
   const headingId = `quiz-question-${question.id}`;
 
+  // An "exclusive" option (e.g. "None / I'm open to everything") can't coexist
+  // with other selections — picking it clears the rest, and picking anything
+  // else clears it.
+  const EXCLUSIVE_OPTION = 'none';
+
   const toggle = (optionId: string) => {
     if (question.type === 'single') {
       onChange([optionId]);
       return;
     }
     const max = question.maxSelections ?? 99;
-    if (selected.includes(optionId)) {
-      onChange(selected.filter(id => id !== optionId));
+
+    if (optionId === EXCLUSIVE_OPTION) {
+      onChange(selected.includes(EXCLUSIVE_OPTION) ? [] : [EXCLUSIVE_OPTION]);
+      return;
+    }
+
+    const base = selected.filter(id => id !== EXCLUSIVE_OPTION);
+    if (base.includes(optionId)) {
+      onChange(base.filter(id => id !== optionId));
+    } else if (base.length < max) {
+      onChange([...base, optionId]);
     } else {
-      if (selected.length < max) {
-        onChange([...selected, optionId]);
-      } else {
-        onChange([...selected.slice(1), optionId]);
-      }
+      // At the limit — drop the oldest pick so the newest tap still registers.
+      onChange([...base.slice(1), optionId]);
     }
   };
 
   const isImageCards = question.type === 'image-cards';
   const isCards = question.type === 'cards';
   const optionCount = question.options.length;
+  const isMultiSelect = (question.maxSelections ?? 1) > 1;
+  const selectionCount = selected.filter(id => id !== EXCLUSIVE_OPTION).length;
 
   const columns = useGridColumns(optionCount);
   const rows = Math.ceil(optionCount / columns);
@@ -101,9 +114,16 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
         <h2 id={headingId} className="mt-1 text-lg font-semibold leading-tight text-stone-900 sm:text-xl">
           {question.question}
         </h2>
-        {question.subtitle && (
-          <p className="mt-1 text-xs text-stone-500 sm:text-sm">{question.subtitle}</p>
-        )}
+        <div className="mt-1 flex items-center gap-2">
+          {question.subtitle && (
+            <p className="text-xs text-stone-500 sm:text-sm">{question.subtitle}</p>
+          )}
+          {isMultiSelect && (
+            <span className="rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-medium text-stone-500">
+              {selectionCount}/{question.maxSelections} selected
+            </span>
+          )}
+        </div>
       </div>
 
       {isImageCards ? (

@@ -44,6 +44,10 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
   const hasAnswer = currentAnswers.length > 0;
   const isLast = step === questions.length - 1;
   const isVisualQuestion = question.type === 'image-cards';
+  // Single-choice questions advance automatically on tap (no "Next" needed),
+  // matching the snappy feel of the personality quiz. Only genuine multi-select
+  // questions keep a confirm button.
+  const isSingleChoice = question.type === 'single' || (question.maxSelections ?? 99) === 1;
   const contentWidthClass = !isVisualQuestion
     ? 'mx-auto max-w-lg'
     : question.options.length <= 4
@@ -56,12 +60,25 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
     if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
   }, []);
 
-  const handleChange = (values: string[]) => {
-    setAnswers(previous => ({ ...previous, [question.id]: values }));
-  };
-
   const moveToStep = (nextStep: number) => {
     setStep(nextStep);
+  };
+
+  const handleChange = (values: string[]) => {
+    setAnswers(previous => ({ ...previous, [question.id]: values }));
+
+    // Auto-advance once a single-choice question has a selection. Deselecting
+    // (values empty) cancels any pending advance and stays put.
+    if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
+    if (isSingleChoice && values.length > 0) {
+      advanceTimeoutRef.current = window.setTimeout(() => {
+        if (isLast) {
+          onComplete({ ...answers, [question.id]: values });
+        } else {
+          moveToStep(step + 1);
+        }
+      }, 300);
+    }
   };
 
   const goNext = () => {
@@ -90,20 +107,6 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
       return;
     }
     moveToStep(step + 1);
-  };
-
-  const handleSingleChange = (values: string[]) => {
-    handleChange(values);
-    if (question.type !== 'single') return;
-
-    if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
-    advanceTimeoutRef.current = window.setTimeout(() => {
-      if (isLast) {
-        onComplete({ ...answers, [question.id]: values });
-      } else {
-        moveToStep(step + 1);
-      }
-    }, 320);
   };
 
   return (
@@ -142,33 +145,35 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
             <QuestionCard
               question={question}
               selected={currentAnswers}
-              onChange={question.type === 'single' ? handleSingleChange : handleChange}
+              onChange={handleChange}
               optionsRef={optionsRef}
             />
           </div>
         </div>
       </main>
 
-      {question.type !== 'single' && (
+      {(!isSingleChoice || question.allowSkip) && (
         <footer className="z-20 border-t border-stone-200/80 bg-stone-50/95 px-4 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2.5 shadow-[0_-8px_24px_rgba(28,25,23,0.05)] backdrop-blur sm:px-6 sm:py-3">
-          <div className={`mx-auto grid gap-2 ${question.allowSkip ? 'max-w-2xl grid-cols-[auto_minmax(0,1fr)]' : 'max-w-lg'}`}>
+          <div className={`mx-auto flex w-full items-center gap-2 ${!isSingleChoice ? 'max-w-2xl' : 'max-w-lg justify-center'}`}>
             {question.allowSkip && (
               <button
                 type="button"
                 onClick={skipQuestion}
-                className="min-h-12 rounded-xl border border-stone-300 bg-white px-5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+                className={`min-h-12 rounded-xl border border-stone-300 bg-white text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 ${!isSingleChoice ? 'shrink-0 px-5' : 'px-8'}`}
               >
                 {question.skipLabel ?? 'Skip'}
               </button>
             )}
-            <button
-              type="button"
-              onClick={goNext}
-              disabled={!hasAnswer}
-              className="min-h-12 w-full rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white transition-all duration-150 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500"
-            >
-              {isLast ? 'See my recommendations' : 'Next'}
-            </button>
+            {!isSingleChoice && (
+              <button
+                type="button"
+                onClick={goNext}
+                disabled={!hasAnswer}
+                className="min-h-12 flex-1 rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white transition-all duration-150 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500"
+              >
+                {isLast ? 'See my recommendations' : 'Next'}
+              </button>
+            )}
           </div>
         </footer>
       )}
