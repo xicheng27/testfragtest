@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { PersonalityQuizResult } from '@/lib/personality-quiz';
 import { useShelf } from '@/lib/shelf-context';
+import { useCurrency } from '@/lib/pricing';
 import FragranceCard from './FragranceCard';
 
 interface PersonalityResultPageProps {
@@ -21,6 +22,7 @@ export default function PersonalityResultPage({
 }: PersonalityResultPageProps) {
   const [shareLabel, setShareLabel] = useState('Share result');
   const { shelfIds } = useShelf();
+  const [currency] = useCurrency();
   const { profile, recommendations } = result;
 
   const shareResult = async () => {
@@ -102,7 +104,7 @@ export default function PersonalityResultPage({
           </div>
           <div className="space-y-4">
             {recommendations.map(fragrance => (
-              <FragranceCard key={fragrance.id} fragrance={fragrance} />
+              <FragranceCard key={fragrance.id} fragrance={fragrance} currency={currency} />
             ))}
           </div>
         </section>

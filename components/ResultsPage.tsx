@@ -1,11 +1,13 @@
 'use client';
 import { useMemo, useState } from 'react';
+import clsx from 'clsx';
 import Link from 'next/link';
 import { ScoredFragrance } from '@/lib/scoring';
 import FragranceCard from './FragranceCard';
 import AuthModal from './AuthModal';
 import { useAuth } from '@/lib/auth-context';
 import { useShelf } from '@/lib/shelf-context';
+import { CURRENCIES, PRICED_AS_OF, useCurrency } from '@/lib/pricing';
 
 interface ResultsPageProps {
   results: ScoredFragrance[];
@@ -19,6 +21,7 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, onView
   const { user, signOut } = useAuth();
   const { shelfIds } = useShelf();
   const [showSignIn, setShowSignIn] = useState(false);
+  const [currency, setCurrency] = useCurrency();
 
   const similarById = useMemo(() => {
     const map = new Map<string, ScoredFragrance>();
@@ -113,12 +116,43 @@ export default function ResultsPage({ results, onRestart, onExtendedQuiz, onView
             )}
           </div>
 
+          <div className="mb-6 flex flex-col items-center gap-2">
+            <div
+              role="radiogroup"
+              aria-label="Display currency"
+              className="inline-flex rounded-xl border border-stone-200 bg-white p-1"
+            >
+              {CURRENCIES.map(option => {
+                const active = option.code === currency;
+                return (
+                  <button
+                    key={option.code}
+                    type="button"
+                    role="radio"
+                    aria-checked={active}
+                    onClick={() => setCurrency(option.code)}
+                    className={clsx(
+                      'min-h-9 rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950',
+                      active ? 'bg-stone-950 text-white' : 'text-stone-500 hover:text-stone-900',
+                    )}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-stone-400">
+              Indicative retail prices at each fragrance&apos;s signature size · as of {PRICED_AS_OF}
+            </p>
+          </div>
+
           <div className="space-y-6">
             {results.map((result, i) => (
               <FragranceCard
                 key={result.fragrance.id}
                 result={result}
                 rank={i + 1}
+                currency={currency}
                 similarFragrance={similarById.get(result.fragrance.id)?.fragrance}
               />
             ))}

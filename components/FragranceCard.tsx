@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Fragrance } from '@/lib/fragrances';
 import { ScoredFragrance } from '@/lib/scoring';
 import { useShelf } from '@/lib/shelf-context';
+import { Currency, PRICED_AS_OF, formatPrice, getSignaturePrice } from '@/lib/pricing';
 import ProductImage from './ProductImage';
 
 interface FragranceCardProps {
@@ -12,6 +13,7 @@ interface FragranceCardProps {
   fragrance?: Fragrance;
   rank?: number;
   similarFragrance?: Fragrance;
+  currency?: Currency;
 }
 
 const recommendationCopy: Record<ScoredFragrance['recommendationType'], string> = {
@@ -31,6 +33,7 @@ export default function FragranceCard({
   fragrance: fragranceProp,
   rank,
   similarFragrance,
+  currency = 'USD',
 }: FragranceCardProps) {
   const { isOnShelf, addToShelf, removeFromShelf } = useShelf();
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -167,10 +170,24 @@ export default function FragranceCard({
               </dd>
             </div>
             <div>
-              <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Price range</dt>
-              <dd className="mt-1 text-sm font-medium text-stone-800">{fragrance.priceDisplay}</dd>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Price</dt>
+              <dd className="mt-1 text-sm font-medium text-stone-800">
+                {(() => {
+                  const price = getSignaturePrice(fragrance, currency);
+                  return (
+                    <>
+                      {!price.exact && <span aria-label="approximately">≈ </span>}
+                      {formatPrice(price.amount, currency)}
+                      <span className="mt-0.5 block text-[11px] font-normal text-stone-400">{price.size}</span>
+                    </>
+                  );
+                })()}
+              </dd>
             </div>
           </dl>
+          <p className="mt-2.5 text-[11px] text-stone-400">
+            Indicative {currency} retail at signature size · as of {PRICED_AS_OF}
+          </p>
 
           {reasonItems.length > 0 && (
             <section className="mt-6 rounded-2xl bg-stone-950 p-4.5 text-white sm:p-5" aria-labelledby={`why-${fragrance.id}`}>
@@ -263,7 +280,12 @@ export default function FragranceCard({
                       <h3 className="font-semibold text-stone-950">{similarFragrance.name}</h3>
                       <p className="mt-0.5 text-xs text-stone-500">{similarFragrance.brand}</p>
                     </div>
-                    <p className="text-sm font-medium text-stone-800">{similarFragrance.priceDisplay}</p>
+                    <p className="text-sm font-medium text-stone-800">
+                      {(() => {
+                        const sp = getSignaturePrice(similarFragrance, currency);
+                        return `${sp.exact ? '' : '≈ '}${formatPrice(sp.amount, currency)}`;
+                      })()}
+                    </p>
                   </div>
                   <p className="mt-3 text-sm leading-relaxed text-stone-600">{similarFragrance.shortDescription}</p>
                 </div>
