@@ -76,12 +76,12 @@ export default function AuthModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/45 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="auth-title"
     >
-      <div className="relative w-full max-w-md rounded-3xl border border-white/20 bg-white p-6 shadow-2xl sm:p-8">
+      <div className="relative w-full max-w-md rounded-2xl border border-stone-200 bg-white p-6 shadow-[0_24px_80px_rgba(28,25,23,0.18)] sm:p-8">
         <button
           type="button"
           onClick={onClose}
@@ -97,7 +97,7 @@ export default function AuthModal({
         <h2 id="auth-title" className="mt-2 text-2xl font-semibold tracking-tight text-stone-950">
           {mode === 'signup' ? 'Create your account' : 'Welcome back'}
         </h2>
-        <p className="mt-2 text-sm font-light leading-relaxed text-stone-500">
+        <p className="mt-2 text-sm leading-relaxed text-stone-500">
           Your Shelf and quiz matches stay connected to this account on this browser.
         </p>
 
@@ -128,7 +128,7 @@ export default function AuthModal({
                 autoComplete="name"
                 value={name}
                 onChange={event => { setName(event.target.value); setError(''); }}
-                className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500"
+                className="w-full rounded-xl border border-stone-200 bg-stone-50/50 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500 focus:bg-white"
                 placeholder="Your name"
               />
             </label>
@@ -140,7 +140,7 @@ export default function AuthModal({
               autoComplete="email"
               value={email}
               onChange={event => { setEmail(event.target.value); setError(''); }}
-              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500"
+              className="w-full rounded-xl border border-stone-200 bg-stone-50/50 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500 focus:bg-white"
               placeholder="you@example.com"
             />
           </label>
@@ -151,7 +151,7 @@ export default function AuthModal({
               autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
               value={password}
               onChange={event => { setPassword(event.target.value); setError(''); }}
-              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500"
+              className="w-full rounded-xl border border-stone-200 bg-stone-50/50 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500 focus:bg-white"
               placeholder={mode === 'signup' ? 'At least 8 characters' : 'Your password'}
             />
           </label>
@@ -163,7 +163,7 @@ export default function AuthModal({
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={event => { setConfirmPassword(event.target.value); setError(''); }}
-                className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500"
+                className="w-full rounded-xl border border-stone-200 bg-stone-50/50 px-4 py-3 text-sm text-stone-900 outline-none transition-colors placeholder:text-stone-400 focus:border-stone-500 focus:bg-white"
                 placeholder="Repeat your password"
               />
             </label>

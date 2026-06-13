@@ -24,7 +24,7 @@ const pageVariants = {
 };
 
 export default function Home() {
-  const { hasEnteredApp, isReady, profileId } = useAuth();
+  const { hasEnteredApp, isReady, profileId, continueAsGuest } = useAuth();
   const {
     answers: storedAnswers,
     isExtended: storedIsExtended,
@@ -40,12 +40,15 @@ export default function Home() {
   const [personalityRun, setPersonalityRun] = useState(0);
   const [shelfReturnView, setShelfReturnView] = useState<ShelfReturnView>('main');
   const previousProfileId = useRef<string | null>(null);
+  const startQuizAfterGuestEntry = useRef(false);
 
   useEffect(() => {
     if (!isReady || previousProfileId.current === profileId) return;
 
     previousProfileId.current = profileId;
-    setView(profileId ? 'main' : 'landing');
+    const shouldStartQuiz = profileId === 'guest' && startQuizAfterGuestEntry.current;
+    startQuizAfterGuestEntry.current = false;
+    setView(profileId ? (shouldStartQuiz ? 'quiz' : 'main') : 'landing');
     setResults([]);
     setQuizAnswers({});
     setIsExtended(false);
@@ -90,6 +93,14 @@ export default function Home() {
     setView('quiz');
   };
 
+  const handleLandingStartQuiz = () => {
+    setQuizAnswers({});
+    setIsExtended(false);
+    setView('quiz');
+    startQuizAfterGuestEntry.current = true;
+    continueAsGuest();
+  };
+
   const handleStartPersonalityQuiz = () => {
     setPersonalityResult(null);
     setPersonalityRun(current => current + 1);
@@ -112,7 +123,7 @@ export default function Home() {
     <AnimatePresence mode="wait">
       {currentView === 'landing' && (
         <motion.div key="landing" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <LandingPage />
+          <LandingPage onStartQuiz={handleLandingStartQuiz} />
         </motion.div>
       )}
       {currentView === 'main' && (

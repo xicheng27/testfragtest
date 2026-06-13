@@ -9,6 +9,7 @@ export interface ScoredFragrance {
   score: number;
   matchPercent: number;
   matchReason: string;
+  matchReasons: string[];
   recommendationType: RecommendationType;
   recommendationLabel: string;
 }
@@ -255,68 +256,88 @@ function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
   return score;
 }
 
-// Build a human-readable reason string based on answers vs fragrance properties
-function buildMatchReason(fragrance: Fragrance, answers: QuizAnswers): string {
-  const parts: string[] = [];
+const OCCASION_LABELS: Record<Occasion, string> = {
+  daily: 'everyday wear',
+  work: 'school or work',
+  date: 'date nights',
+  night: 'nights out',
+  special: 'special occasions',
+  casual: 'relaxed weekends',
+};
 
-  const vibe = getAnswer(answers, 'vibe');
-  const aesthetic = getAnswer(answers, 'aesthetic');
-  const occasion = getAnswer(answers, 'occasion');
+const AESTHETIC_LABELS: Record<Aesthetic, string> = {
+  'old-money': 'timeless, polished style',
+  clean: 'clean, minimal style',
+  'dark-academia': 'dark academia style',
+  beach: 'easy beach-holiday mood',
+  'quiet-luxury': 'quiet luxury taste',
+  streetwear: 'bold city style',
+  romantic: 'soft romantic style',
+};
+
+const VIBE_LABELS: Record<Vibe, string> = {
+  'rainy-castle': 'cosy, mysterious mood',
+  'sunny-beach': 'bright beach energy',
+  'late-night-city': 'confident after-dark mood',
+  'hotel-room': 'crisp, calm hotel-room mood',
+  'forest-rain': 'fresh forest-after-rain feeling',
+  'luxury-mall': 'polished, expensive-feeling mood',
+};
+
+function joinFriendly(values: string[]) {
+  if (values.length <= 1) return values[0] ?? '';
+  return `${values.slice(0, -1).join(', ')} and ${values.at(-1)}`;
+}
+
+function buildMatchReasons(fragrance: Fragrance, answers: QuizAnswers): string[] {
+  const reasons: string[] = [];
+  const likedFamilies = getAnswers(answers, 'scent-family') as ScentFamily[];
+  const matchedFamilies = likedFamilies.filter(family => fragrance.scentFamilies.includes(family));
+  if (matchedFamilies.length > 0) {
+    reasons.push(`You preferred ${joinFriendly(matchedFamilies)} scents, and this sits in that profile.`);
+  }
+
+  const occasion = getAnswer(answers, 'occasion') as Occasion;
+  if (occasion && fragrance.occasions.includes(occasion)) {
+    reasons.push(`You wanted something for ${OCCASION_LABELS[occasion]}, which is one of its strongest uses.`);
+  }
+
+  const priceAnswer = getAnswer(answers, 'price-range') as PriceRange;
+  const priceOrder: PriceRange[] = ['budget', 'mid', 'designer', 'niche'];
+  if (priceAnswer && priceOrder.indexOf(fragrance.priceRange) <= priceOrder.indexOf(priceAnswer)) {
+    reasons.push('It fits within the price range you selected.');
+  }
+
   const season = getAnswer(answers, 'season');
-
-  if (vibe && fragrance.vibes.includes(vibe as Vibe)) {
-    const vibeLabels: Record<string, string> = {
-      'rainy-castle': 'that dark, mysterious vibe you picked',
-      'sunny-beach': 'your sunny beach energy',
-      'late-night-city': 'your late-night city feel',
-      'hotel-room': 'the clean, crisp aesthetic you love',
-      'forest-rain': 'that fresh forest-after-rain feeling',
-      'luxury-mall': 'your polished, luxury sensibility',
-    };
-    parts.push(vibeLabels[vibe] || 'your chosen vibe');
-  }
-
-  if (aesthetic && fragrance.aesthetics.includes(aesthetic as Aesthetic)) {
-    const aestheticLabels: Record<string, string> = {
-      'old-money': 'your old money aesthetic',
-      'clean': 'your clean, minimal look',
-      'dark-academia': 'your dark academia style',
-      'beach': 'your beach holiday spirit',
-      'quiet-luxury': 'your quiet luxury taste',
-      'streetwear': 'your streetwear edge',
-      'romantic': 'your romantic softness',
-    };
-    parts.push(aestheticLabels[aesthetic] || 'your aesthetic');
-  }
-
   if (season && fragrance.seasons.includes(season)) {
-    parts.push(`perfect for ${season}`);
+    reasons.push(`Its character works especially well in ${season}.`);
   }
 
-  if (occasion && fragrance.occasions.includes(occasion as Occasion)) {
-    const occasionLabels: Record<string, string> = {
-      daily: 'everyday wear',
-      work: 'school or work',
-      date: 'dates',
-      night: 'nights out',
-      special: 'special occasions',
-      casual: 'casual days',
+  const projection = getAnswer(answers, 'projection') as Projection;
+  if (projection && fragrance.projection === projection) {
+    const projectionCopy: Record<Projection, string> = {
+      subtle: 'stays close and understated',
+      moderate: 'has a noticeable but balanced presence',
+      strong: 'has the stronger presence you asked for',
     };
-    parts.push(`great for ${occasionLabels[occasion] || occasion}`);
+    reasons.push(`It ${projectionCopy[projection]}.`);
   }
 
-  if (parts.length === 0) {
-    return fragrance.isDupe && fragrance.similarityNotes
-      ? `${fragrance.shortDescription} ${fragrance.similarityNotes}`
-      : fragrance.shortDescription;
+  const aesthetic = getAnswer(answers, 'aesthetic') as Aesthetic;
+  if (aesthetic && fragrance.aesthetics.includes(aesthetic)) {
+    reasons.push(`It matches your ${AESTHETIC_LABELS[aesthetic]}.`);
   }
 
-  if (parts.length === 1) {
-    return `Matches ${parts[0]}. ${fragrance.shortDescription}`;
+  const vibe = getAnswer(answers, 'vibe') as Vibe;
+  if (vibe && fragrance.vibes.includes(vibe)) {
+    reasons.push(`It carries the ${VIBE_LABELS[vibe]} you chose.`);
   }
 
-  const last = parts.pop();
-  return `Matches ${parts.join(', ')} and ${last}. ${fragrance.shortDescription}`;
+  if (reasons.length === 0) {
+    reasons.push(`Its ${joinFriendly(fragrance.scentFamilies.slice(0, 2))} profile was one of the closest overall fits.`);
+  }
+
+  return reasons.slice(0, 3);
 }
 
 const RECOMMENDATION_LABELS: Record<RecommendationType, string> = {
@@ -386,11 +407,15 @@ export function getRecommendations(answers: QuizAnswers, topN = 5): ScoredFragra
   return roleItems
     .filter((entry): entry is [RecommendationType, typeof scored[number]] => Boolean(entry[1]))
     .slice(0, topN)
-    .map(([recommendationType, item]) => ({
-      ...item,
-      recommendationType,
-      recommendationLabel: RECOMMENDATION_LABELS[recommendationType],
-      matchPercent: normalise(item.score),
-      matchReason: buildMatchReason(item.fragrance, answers),
-    }));
+    .map(([recommendationType, item]) => {
+      const matchReasons = buildMatchReasons(item.fragrance, answers);
+      return {
+        ...item,
+        recommendationType,
+        recommendationLabel: RECOMMENDATION_LABELS[recommendationType],
+        matchPercent: normalise(item.score),
+        matchReason: matchReasons.join(' '),
+        matchReasons,
+      };
+    });
 }

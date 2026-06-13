@@ -24,7 +24,7 @@ const terms = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-stone-50">
-      <header className="sticky top-0 z-20 border-b border-stone-200/80 bg-stone-50/90 px-4 py-4 backdrop-blur sm:px-6">
+      <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/90 px-4 py-4 backdrop-blur sm:px-6">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <Link href="/" className="text-sm font-semibold tracking-tight text-stone-950">ScentMatch</Link>
           <Link href="/" className="rounded-lg px-2 py-2 text-sm text-stone-500 transition-colors hover:text-stone-950">
@@ -39,29 +39,29 @@ export default function AboutPage() {
           <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-[-0.03em] text-stone-950 sm:text-6xl">
             Fragrance language, without the gatekeeping.
           </h1>
-          <p className="mt-6 text-base font-light leading-relaxed text-stone-600 sm:text-lg">
+          <p className="mt-6 text-base leading-relaxed text-stone-600 sm:text-lg">
             Fragrance can sound more complicated than it needs to be. This guide gives you the useful version of the terms you will see in recommendations, reviews, and product descriptions.
           </p>
         </section>
 
         <section className="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-4">
           {terms.map(([term, explanation], index) => (
-            <article key={term} className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6">
+            <article key={term} className="rounded-2xl border border-stone-200 bg-white p-5 transition-colors hover:border-stone-300 sm:p-6">
               <div className="flex items-start gap-4">
                 <span className="mt-0.5 text-xs font-medium tabular-nums text-stone-300">{String(index + 1).padStart(2, '0')}</span>
                 <div>
                   <h2 className="font-semibold text-stone-950">{term}</h2>
-                  <p className="mt-2 text-sm font-light leading-relaxed text-stone-600">{explanation}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-600">{explanation}</p>
                 </div>
               </div>
             </article>
           ))}
         </section>
 
-        <section className="mt-12 rounded-3xl bg-stone-950 px-6 py-8 text-white sm:px-10 sm:py-10">
+        <section className="mt-12 rounded-2xl bg-stone-950 px-6 py-8 text-white sm:px-10 sm:py-10">
           <p className="text-xs font-medium uppercase tracking-[0.22em] text-stone-500">The easiest rule</p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight">Your nose gets the final vote.</h2>
-          <p className="mt-3 max-w-2xl text-sm font-light leading-relaxed text-stone-300">
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-300">
             Concentration, notes, and fragrance families are useful clues, not guarantees. Skin, weather, and memory can make the same scent feel different to everyone.
           </p>
           <Link href="/" className="mt-6 inline-flex min-h-12 items-center rounded-xl bg-white px-6 text-sm font-medium text-stone-950 transition-colors hover:bg-stone-100">

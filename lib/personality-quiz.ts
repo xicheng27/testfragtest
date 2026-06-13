@@ -165,6 +165,18 @@ const aestheticChoices: PersonalityChoice[] = [
   },
 ];
 
+const reservedQuizFragranceIds = new Set([
+  'oud-wood-tf',
+  'kayali-vanilla-28',
+  'le-labo-rose-31',
+  'le-labo-bergamote-22',
+  'tobacco-vanille-tf',
+  'clean-reserve-skin',
+  'zoologist-squid',
+  'mfk-baccarat-rouge-540-extrait',
+  'molecule-01',
+]);
+
 function shuffle<T>(items: T[]): T[] {
   const copy = [...items];
   for (let index = copy.length - 1; index > 0; index -= 1) {
@@ -203,10 +215,16 @@ function toFragranceChoice(fragrance: Fragrance): PersonalityChoice {
 }
 
 export function createPersonalityRounds(): PersonalityRound[] {
+  const seenProductImages = new Set<string>();
   const eligible = shuffle(fragrances.filter(fragrance => (
     !fragrance.isDupe
     && fragrance.imageUrl !== '/images/products/fallback.svg'
-  )));
+    && !reservedQuizFragranceIds.has(fragrance.id)
+  )).filter(fragrance => {
+    if (seenProductImages.has(fragrance.imageUrl)) return false;
+    seenProductImages.add(fragrance.imageUrl);
+    return true;
+  }));
   const fragranceChoices = eligible.slice(0, 10).map(toFragranceChoice);
   const fragranceRounds: PersonalityRound[] = [];
 

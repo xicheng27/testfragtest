@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+@keyframes quiz-question-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quiz-question-enter {
+  animation: quiz-question-enter 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-question-enter {
+    animation: none;
+  }
+}
+
 :root {
   --background: #fafaf9;
   --foreground: #1c1917;
@@ -16,14 +37,43 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Remove tap highlight on mobile */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #292524;
+  color: #fafaf9;
+}
+
+:where(button, a, input):focus-visible {
+  outline: 2px solid #292524;
+  outline-offset: 3px;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

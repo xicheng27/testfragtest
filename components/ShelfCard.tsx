@@ -8,7 +8,7 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
   const { removeFromShelf } = useShelf();
 
   return (
-    <article className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm md:grid md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
+    <article className="overflow-hidden rounded-2xl border border-stone-200 bg-white md:grid md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
       <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-stone-100 bg-stone-50 md:aspect-square md:h-[220px] md:border-b-0 md:border-r">
         <ProductImage
           src={fragrance.imageUrl}
@@ -23,7 +23,7 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
           <h2 className="mt-1 break-words text-xl font-semibold leading-tight tracking-tight text-stone-950 sm:text-2xl">
             {fragrance.name}
           </h2>
-          <p className="mt-3 break-words text-sm font-light leading-relaxed text-stone-600">
+          <p className="mt-3 break-words text-sm leading-relaxed text-stone-600">
             {fragrance.shortDescription}
           </p>
         </div>

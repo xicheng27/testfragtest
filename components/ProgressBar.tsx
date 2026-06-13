@@ -16,7 +16,15 @@ export default function ProgressBar({ current, total, tone = 'light' }: Progress
         <span>Question {current} of {total}</span>
         <span>{percent}%</span>
       </div>
-      <div className={`relative h-px w-full overflow-hidden ${dark ? 'bg-white/15' : 'bg-stone-200'}`}>
+      <div
+        className={`relative h-1 w-full overflow-hidden rounded-full ${dark ? 'bg-white/15' : 'bg-stone-200'}`}
+        role="progressbar"
+        aria-label={`Quiz progress: question ${current} of ${total}`}
+        aria-valuemin={1}
+        aria-valuemax={total}
+        aria-valuenow={current}
+        aria-valuetext={`${percent}% complete`}
+      >
         <div
           className={`absolute left-0 top-0 h-full transition-all duration-500 ease-out ${dark ? 'bg-white' : 'bg-stone-800'}`}
           style={{ width: `${percent}%` }}

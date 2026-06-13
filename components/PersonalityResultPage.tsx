@@ -40,7 +40,7 @@ export default function PersonalityResultPage({
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <header className="border-b border-stone-200/80 bg-stone-50 px-4 py-4 sm:px-6">
+      <header className="border-b border-stone-200/70 bg-stone-50 px-4 py-4 sm:px-6">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
           <button type="button" onClick={onHome} className="text-sm font-semibold tracking-tight text-stone-950">
             ScentMatch
@@ -55,7 +55,7 @@ export default function PersonalityResultPage({
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
-        <section className={`relative overflow-hidden rounded-[2rem] bg-gradient-to-br ${profile.accent} p-6 shadow-sm sm:p-10`}>
+        <section className={`relative overflow-hidden rounded-2xl border border-stone-950/5 bg-gradient-to-br ${profile.accent} p-6 sm:p-10`}>
           <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full border border-white/70 bg-white/30" />
           <div className="absolute -bottom-20 -left-12 h-48 w-48 rounded-full border border-stone-950/5 bg-white/20" />
           <div className="relative">
@@ -63,7 +63,7 @@ export default function PersonalityResultPage({
             <h1 className="mt-4 max-w-2xl text-4xl font-semibold leading-[0.98] tracking-[-0.04em] text-stone-950 sm:text-6xl">
               {profile.title}
             </h1>
-            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-stone-700 sm:text-base">{profile.explanation}</p>
+            <p className="mt-6 max-w-xl text-sm leading-relaxed text-stone-700 sm:text-base">{profile.explanation}</p>
 
             <div className="mt-8">
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-stone-500">Your scent profile</p>
@@ -100,7 +100,7 @@ export default function PersonalityResultPage({
             <p className="text-xs font-medium uppercase tracking-[0.22em] text-stone-400">Your personality wardrobe</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-stone-950">Three scents for this version of you</h2>
           </div>
-          <div className="space-y-5">
+          <div className="space-y-4">
             {recommendations.map(fragrance => (
               <FragranceCard key={fragrance.id} fragrance={fragrance} />
             ))}
