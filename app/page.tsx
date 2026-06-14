@@ -1,202 +1,103 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useAuth } from '@/lib/auth-context';
-import LandingPage from '@/components/LandingPage';
-import MainPage from '@/components/MainPage';
-import Quiz from '@/components/Quiz';
-import ResultsPage from '@/components/ResultsPage';
-import ShelfPage from '@/components/ShelfPage';
-import PersonalityQuiz from '@/components/PersonalityQuiz';
-import PersonalityResultPage from '@/components/PersonalityResultPage';
-import { QuizAnswers, getRecommendations, ScoredFragrance } from '@/lib/scoring';
-import { additionalQuizQuestions, quizQuestions } from '@/lib/quiz';
-import { useQuizProgress } from '@/lib/quiz-progress-context';
-import { PersonalityQuizResult } from '@/lib/personality-quiz';
+import { useMemo } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { fragrances } from '@/lib/fragrances';
 
-type AppView = 'landing' | 'main' | 'quiz' | 'quiz-extended' | 'results' | 'shelf' | 'personality-quiz' | 'personality-result';
-type ShelfReturnView = 'main' | 'results' | 'personality-result';
-
-const pageVariants = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -16 },
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.045 } },
 };
 
-export default function Home() {
-  const { hasEnteredApp, isReady, profileId, continueAsGuest } = useAuth();
-  const {
-    answers: storedAnswers,
-    isExtended: storedIsExtended,
-    hasPreviousResults,
-    saveProgress,
-    clearProgress,
-  } = useQuizProgress();
-  const [view, setView] = useState<AppView>('landing');
-  const [results, setResults] = useState<ScoredFragrance[]>([]);
-  const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
-  const [isExtended, setIsExtended] = useState(false);
-  const [personalityResult, setPersonalityResult] = useState<PersonalityQuizResult | null>(null);
-  const [personalityRun, setPersonalityRun] = useState(0);
-  const [shelfReturnView, setShelfReturnView] = useState<ShelfReturnView>('main');
-  const previousProfileId = useRef<string | null>(null);
-  const startQuizAfterGuestEntry = useRef(false);
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.32, ease: 'easeOut' } },
+};
 
-  useEffect(() => {
-    if (!isReady || previousProfileId.current === profileId) return;
-
-    previousProfileId.current = profileId;
-    const shouldStartQuiz = profileId === 'guest' && startQuizAfterGuestEntry.current;
-    startQuizAfterGuestEntry.current = false;
-    setView(profileId ? (shouldStartQuiz ? 'quiz' : 'main') : 'landing');
-    setResults([]);
-    setQuizAnswers({});
-    setIsExtended(false);
-    setPersonalityResult(null);
-    setShelfReturnView('main');
-  }, [isReady, profileId]);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, [view]);
-
-  if (!isReady) {
-    return <div className="min-h-screen bg-stone-50" aria-label="Loading ScentMatch" />;
-  }
-
-  const currentView: AppView = !hasEnteredApp ? 'landing' : view === 'landing' ? 'main' : view;
-
-  const handleQuizComplete = (answers: QuizAnswers) => {
-    setQuizAnswers(answers);
-    saveProgress(answers, isExtended);
-    const recs = getRecommendations(answers, 5);
-    setResults(recs);
-    setView('results');
-  };
-
-  const handleRestart = () => {
-    setResults([]);
-    setQuizAnswers({});
-    setIsExtended(false);
-    clearProgress();
-    setView('main');
-  };
-
-  const handleExtendedQuiz = () => {
-    setIsExtended(true);
-    setView('quiz-extended');
-  };
-
-  const handleStartQuiz = () => {
-    setQuizAnswers({});
-    setIsExtended(false);
-    setView('quiz');
-  };
-
-  const handleLandingStartQuiz = () => {
-    setQuizAnswers({});
-    setIsExtended(false);
-    setView('quiz');
-    startQuizAfterGuestEntry.current = true;
-    continueAsGuest();
-  };
-
-  const handleStartPersonalityQuiz = () => {
-    setPersonalityResult(null);
-    setPersonalityRun(current => current + 1);
-    setView('personality-quiz');
-  };
-
-  const handleViewShelf = (returnView: ShelfReturnView) => {
-    setShelfReturnView(returnView);
-    setView('shelf');
-  };
-
-  const handleViewPreviousResults = () => {
-    setQuizAnswers(storedAnswers);
-    setIsExtended(storedIsExtended);
-    setResults(getRecommendations(storedAnswers, 5));
-    setView('results');
-  };
+export default function FragrancesPage() {
+  const brands = useMemo(() => {
+    const map = new Map<string, typeof fragrances>();
+    for (const f of fragrances) {
+      if (!map.has(f.brand)) map.set(f.brand, []);
+      map.get(f.brand)!.push(f);
+    }
+    return Array.from(map.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([brand, list]) => ({ brand, count: list.length, sample: list[0] }));
+  }, []);
 
   return (
-    <AnimatePresence mode="wait">
-      {currentView === 'landing' && (
-        <motion.div key="landing" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <LandingPage onStartQuiz={handleLandingStartQuiz} />
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className="min-h-screen bg-stone-50"
+    >
+      <header className="border-b border-stone-200/70 px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between">
+          <Link href="/" className="font-semibold tracking-tight text-stone-950 transition-colors hover:text-stone-600">
+            ScentMatch
+          </Link>
+          <div className="flex items-center gap-3 sm:gap-5">
+            <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">About</Link>
+            <span className="text-sm font-medium text-stone-950">Fragrances</span>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+        <div className="mb-10">
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-stone-400">Browse</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-950 sm:text-4xl">All Fragrances</h1>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-stone-500">
+            {fragrances.length} fragrances across {brands.length} brands. Select a brand to explore its collection.
+          </p>
+        </div>
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {brands.map(({ brand, count, sample }) => {
+            const slug = encodeURIComponent(brand.toLowerCase().replace(/\s+/g, '-'));
+            return (
+              <motion.div key={brand} variants={item}>
+                <Link
+                  href={`/fragrances/${slug}`}
+                  className="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition-all hover:border-stone-300 hover:shadow-sm sm:p-5"
+                >
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-stone-100 bg-stone-50">
+                    <Image
+                      src={sample.imageUrl || '/images/products/fallback.svg'}
+                      alt=""
+                      fill
+                      className="object-contain p-1"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-semibold text-stone-950 transition-colors group-hover:text-stone-700">
+                      {brand}
+                    </p>
+                    <p className="mt-0.5 text-xs text-stone-400">
+                      {count} {count === 1 ? 'fragrance' : 'fragrances'}
+                    </p>
+                  </div>
+                  <svg
+                    className="h-4 w-4 shrink-0 text-stone-300 transition-colors group-hover:text-stone-500"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </motion.div>
+            );
+          })}
         </motion.div>
-      )}
-      {currentView === 'main' && (
-        <motion.div key="main" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <MainPage
-            onStartQuiz={handleStartQuiz}
-            onViewShelf={() => handleViewShelf('main')}
-            onViewPreviousResults={handleViewPreviousResults}
-            onStartPersonalityQuiz={handleStartPersonalityQuiz}
-            hasPreviousResults={hasPreviousResults}
-          />
-        </motion.div>
-      )}
-      {currentView === 'quiz' && (
-        <motion.div key="quiz" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <Quiz
-            questions={quizQuestions}
-            initialAnswers={quizAnswers}
-            onComplete={handleQuizComplete}
-            onBack={() => setView('main')}
-          />
-        </motion.div>
-      )}
-      {currentView === 'quiz-extended' && (
-        <motion.div key="quiz-extended" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <Quiz
-            questions={additionalQuizQuestions}
-            initialAnswers={quizAnswers}
-            onComplete={handleQuizComplete}
-            onBack={() => setView('results')}
-          />
-        </motion.div>
-      )}
-      {currentView === 'results' && (
-        <motion.div key="results" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <ResultsPage
-            results={results}
-            onRestart={handleRestart}
-            onExtendedQuiz={handleExtendedQuiz}
-            onViewShelf={() => handleViewShelf('results')}
-            isExtended={isExtended}
-          />
-        </motion.div>
-      )}
-      {currentView === 'personality-quiz' && (
-        <motion.div key={`personality-quiz-${personalityRun}`} variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <PersonalityQuiz
-            onBack={() => setView('main')}
-            onComplete={result => {
-              setPersonalityResult(result);
-              setView('personality-result');
-            }}
-          />
-        </motion.div>
-      )}
-      {currentView === 'personality-result' && personalityResult && (
-        <motion.div key="personality-result" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <PersonalityResultPage
-            result={personalityResult}
-            onReplay={handleStartPersonalityQuiz}
-            onHome={() => setView('main')}
-            onViewShelf={() => handleViewShelf('personality-result')}
-          />
-        </motion.div>
-      )}
-      {currentView === 'shelf' && (
-        <motion.div key="shelf" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <ShelfPage
-            onBack={() => setView(shelfReturnView)}
-            onStartQuiz={handleStartQuiz}
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
+      </main>
+    </motion.div>
   );
 }
