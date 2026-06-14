@@ -1,30 +1,44 @@
 'use client';
-import { useMemo } from 'react';
+import { use, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { fragrances } from '@/lib/fragrances';
+import FragranceCard from '@/components/FragranceCard';
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.045 } },
+  show: { transition: { staggerChildren: 0.06 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.32, ease: 'easeOut' } },
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
 };
 
-export default function FragrancesPage() {
-  const brands = useMemo(() => {
-    const map = new Map<string, typeof fragrances>();
-    for (const f of fragrances) {
-      if (!map.has(f.brand)) map.set(f.brand, []);
-      map.get(f.brand)!.push(f);
-    }
-    return Array.from(map.entries())
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([brand, list]) => ({ brand, count: list.length, sample: list[0] }));
-  }, []);
+export default function BrandPage({ params }: { params: Promise<{ brand: string }> }) {
+  const { brand: brandSlug } = use(params);
+
+  const { brandName, brandFragrances } = useMemo(() => {
+    const decoded = decodeURIComponent(brandSlug);
+    const matched = fragrances.filter(
+      f => f.brand.toLowerCase().replace(/\s+/g, '-') === decoded
+    );
+    return {
+      brandName: matched[0]?.brand ?? decoded,
+      brandFragrances: matched,
+    };
+  }, [brandSlug]);
+
+  if (brandFragrances.length === 0) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-stone-50 px-4 text-center">
+        <p className="text-lg font-semibold text-stone-800">Brand not found</p>
+        <Link href="/fragrances" className="text-sm text-stone-500 underline underline-offset-4 hover:text-stone-800">
+          Back to all fragrances
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -39,18 +53,30 @@ export default function FragrancesPage() {
             ScentMatch
           </Link>
           <div className="flex items-center gap-3 sm:gap-5">
+            <Link href="/fragrances" className="text-sm text-stone-500 transition-colors hover:text-stone-800">Fragrances</Link>
             <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">About</Link>
-            <span className="text-sm font-medium text-stone-950">Fragrances</span>
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+        <div className="mb-3">
+          <Link
+            href="/fragrances"
+            className="inline-flex items-center gap-1.5 text-sm text-stone-400 transition-colors hover:text-stone-700"
+          >
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            All brands
+          </Link>
+        </div>
+
         <div className="mb-10">
-          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-stone-400">Browse</p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-950 sm:text-4xl">All Fragrances</h1>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-stone-500">
-            {fragrances.length} fragrances across {brands.length} brands. Select a brand to explore its collection.
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-stone-400">Brand</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-950 sm:text-4xl">{brandName}</h1>
+          <p className="mt-3 text-sm text-stone-500">
+            {brandFragrances.length} {brandFragrances.length === 1 ? 'fragrance' : 'fragrances'}
           </p>
         </div>
 
@@ -58,42 +84,13 @@ export default function FragrancesPage() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          className="flex flex-col gap-6"
         >
-          {brands.map(({ brand, count, sample }) => {
-            const slug = encodeURIComponent(brand.toLowerCase().replace(/\s+/g, '-'));
-            return (
-              <motion.div key={brand} variants={item}>
-                <Link
-                  href={`/fragrances/${slug}`}
-                  className="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition-all hover:border-stone-300 hover:shadow-sm sm:p-5"
-                >
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-stone-100 bg-stone-50">
-                    <img
-                      src={sample.imageUrl || '/images/products/fallback.svg'}
-                      alt=""
-                      className="h-12 w-12 object-contain"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold text-stone-950 transition-colors group-hover:text-stone-700">
-                      {brand}
-                    </p>
-                    <p className="mt-0.5 text-xs text-stone-400">
-                      {count} {count === 1 ? 'fragrance' : 'fragrances'}
-                    </p>
-                  </div>
-                  <svg
-                    className="h-4 w-4 shrink-0 text-stone-300 transition-colors group-hover:text-stone-500"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </motion.div>
-            );
-          })}
+          {brandFragrances.map(fragrance => (
+            <motion.div key={fragrance.id} variants={item}>
+              <FragranceCard fragrance={fragrance} />
+            </motion.div>
+          ))}
         </motion.div>
       </main>
     </motion.div>
