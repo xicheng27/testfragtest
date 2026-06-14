@@ -69,7 +69,7 @@ export default function FragrancesPage() {
                   href={`/fragrances/${slug}`}
                   className="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 transition-all hover:border-stone-300 hover:shadow-sm sm:p-5"
                 >
-                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-stone-100 bg-stone-50">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-stone-100 bg-stone-50">
                     <Image
                       src={sample.imageUrl || '/images/products/fallback.svg'}
                       alt=""
