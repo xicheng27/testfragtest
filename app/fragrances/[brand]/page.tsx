@@ -1,5 +1,5 @@
 'use client';
-import { use, useMemo } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { fragrances } from '@/lib/fragrances';
@@ -15,11 +15,9 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
 };
 
-export default function BrandPage({ params }: { params: Promise<{ brand: string }> }) {
-  const { brand: brandSlug } = use(params);
-
+export default function BrandPage({ params }: { params: { brand: string } }) {
   const { brandName, brandFragrances } = useMemo(() => {
-    const decoded = decodeURIComponent(brandSlug);
+    const decoded = decodeURIComponent(params.brand);
     const matched = fragrances.filter(
       f => f.brand.toLowerCase().replace(/\s+/g, '-') === decoded
     );
@@ -27,7 +25,7 @@ export default function BrandPage({ params }: { params: Promise<{ brand: string 
       brandName: matched[0]?.brand ?? decoded,
       brandFragrances: matched,
     };
-  }, [brandSlug]);
+  }, [params.brand]);
 
   if (brandFragrances.length === 0) {
     return (
@@ -93,6 +91,9 @@ export default function BrandPage({ params }: { params: Promise<{ brand: string 
           ))}
         </motion.div>
       </main>
+    </motion.div>
+  );
+}
     </motion.div>
   );
 }
