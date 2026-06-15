@@ -115,7 +115,7 @@ export default function FragranceCard({
           <div className="relative aspect-[4/3] w-full md:sticky md:top-0 md:aspect-auto md:h-[31rem]">
             <ProductImage
               src={fragrance.imageUrl}
-              alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
+              alt={`${fragrance.brand} ${fragrance.name} editorial fragrance artwork`}
               eager={rank === 1}
               sizes="(max-width: 767px) calc(100vw - 32px), 360px"
               className="object-contain p-7 sm:p-9"
@@ -257,7 +257,7 @@ export default function FragranceCard({
                         rel="noreferrer"
                         className="text-sm text-stone-500 underline decoration-stone-300 underline-offset-4 hover:text-stone-800"
                       >
-                        Image source
+                        Image reference
                       </a>
                     )}
                   </div>

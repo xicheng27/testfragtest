@@ -5,7 +5,7 @@ export interface QuizOption {
   label: string;
   description?: string;
   gradient?: string; // CSS gradient for image card placeholders
-  imageUrl?: string; // Quiz scene artwork only; product packshots live in fragrance data
+  imageUrl?: string; // Quiz scene artwork only; fragrance editorial artwork lives in fragrance data
   imageFit?: 'cover' | 'contain';
   emoji?: string;
 }
