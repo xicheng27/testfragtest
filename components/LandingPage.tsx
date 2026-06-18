@@ -184,7 +184,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                     <div className="relative h-40 border-b border-stone-100 bg-white sm:h-48">
                       <ProductImage
                         src={item.imageUrl}
-                        alt={`${item.brand} ${item.name} fragrance bottle`}
+                        alt={`${item.brand} ${item.name} editorial fragrance artwork`}
                         sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 260px"
                         className="object-contain p-5 sm:p-6"
                       />

@@ -29,35 +29,38 @@ export default function MainPage({
       <div className="flex min-h-screen flex-col bg-stone-50">
         <header className="border-b border-stone-200/70 px-4 py-4 sm:px-6">
           <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <span className="font-semibold tracking-tight text-stone-950">ScentMatch</span>
-          <div className="flex items-center gap-3 sm:gap-5">
-            <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
-              About
-            </Link>
-            <button
-              type="button"
-              onClick={onViewShelf}
-              className="text-sm text-stone-500 transition-colors hover:text-stone-800"
-            >
-              Shelf
-            </button>
-            {user ? (
-              <div className="flex items-center gap-2.5 sm:gap-3">
-                <span className="hidden text-sm text-stone-600 sm:inline">Hi, {user.name.split(' ')[0]}</span>
-                <button type="button" onClick={signOut} className="text-xs text-stone-400 transition-colors hover:text-stone-700">
-                  Sign out
-                </button>
-              </div>
-            ) : isGuest ? (
+            <span className="font-semibold tracking-tight text-stone-950">ScentMatch</span>
+            <div className="flex items-center gap-3 sm:gap-5">
+              <Link href="/fragrances" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
+                Fragrances
+              </Link>
+              <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
+                About
+              </Link>
               <button
                 type="button"
-                onClick={() => setShowSignIn(true)}
-                className="text-xs text-stone-500 transition-colors hover:text-stone-800 sm:text-sm"
+                onClick={onViewShelf}
+                className="text-sm text-stone-500 transition-colors hover:text-stone-800"
               >
-                Create account
+                Shelf
               </button>
-            ) : null}
-          </div>
+              {user ? (
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <span className="hidden text-sm text-stone-600 sm:inline">Hi, {user.name.split(' ')[0]}</span>
+                  <button type="button" onClick={signOut} className="text-xs text-stone-400 transition-colors hover:text-stone-700">
+                    Sign out
+                  </button>
+                </div>
+              ) : isGuest ? (
+                <button
+                  type="button"
+                  onClick={() => setShowSignIn(true)}
+                  className="text-xs text-stone-500 transition-colors hover:text-stone-800 sm:text-sm"
+                >
+                  Create account
+                </button>
+              ) : null}
+            </div>
           </div>
         </header>
 

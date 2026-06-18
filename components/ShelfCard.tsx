@@ -12,7 +12,7 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
       <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-stone-100 bg-stone-50 md:aspect-square md:h-[220px] md:border-b-0 md:border-r">
         <ProductImage
           src={fragrance.imageUrl}
-          alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
+          alt={`${fragrance.brand} ${fragrance.name} editorial fragrance artwork`}
           sizes="(max-width: 767px) calc(100vw - 32px), 220px"
           className="object-contain p-5 sm:p-6"
         />
