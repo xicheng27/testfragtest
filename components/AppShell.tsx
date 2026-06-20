@@ -149,7 +149,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
             onStartQuiz={handleStartQuiz}
             onViewShelf={() => handleViewShelf('main')}
             onViewPreviousResults={handleViewPreviousResults}
-            onStartPersonalityQuiz={handleStartPersonalityQuiz}
             hasPreviousResults={hasPreviousResults}
           />
         </motion.div>
