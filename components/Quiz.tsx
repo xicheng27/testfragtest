@@ -48,6 +48,9 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
   // matching the snappy feel of the personality quiz. Only genuine multi-select
   // questions keep a confirm button.
   const isSingleChoice = question.type === 'single' || (question.maxSelections ?? 99) === 1;
+  const sectionCopy = question.category === 'fun'
+    ? 'Tap your first instinct.'
+    : 'Built from your actual preferences.';
   const contentWidthClass = !isVisualQuestion
     ? 'mx-auto max-w-lg'
     : question.options.length <= 4
@@ -110,8 +113,8 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
   };
 
   return (
-    <div className="grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden bg-stone-50">
-      <header className="flex items-center justify-between border-b border-stone-100 px-4 py-3 sm:px-6 sm:py-4">
+    <div className="grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden bg-[radial-gradient(circle_at_top_left,#fce7f3_0,transparent_28%),radial-gradient(circle_at_bottom_right,#fef3c7_0,transparent_24%),#fafaf9]">
+      <header className="flex items-center justify-between border-b border-stone-100/80 bg-white/55 px-4 py-2.5 backdrop-blur-xl sm:px-6 sm:py-4">
         {step > 0 ? (
           <button
             type="button"
@@ -133,11 +136,12 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
       <div className="px-4 pb-0 pt-3 sm:px-6 sm:pt-4">
         <div className="mx-auto max-w-5xl">
           <ProgressBar current={step + 1} total={questions.length} />
+          <p className="mt-2 text-center text-[11px] font-medium text-stone-500 sm:text-xs">{sectionCopy}</p>
         </div>
       </div>
 
       <main
-        className="min-h-0 overflow-hidden px-4 py-2.5 sm:px-6 sm:py-3"
+        className="min-h-0 overflow-hidden px-3 py-2.5 sm:px-6 sm:py-3"
         aria-live="polite"
       >
         <div className={`${contentWidthClass} h-full min-h-0`}>
@@ -171,7 +175,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
                 disabled={!hasAnswer}
                 className="min-h-12 flex-1 rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white transition-all duration-150 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500"
               >
-                {isLast ? 'See my recommendations' : 'Next'}
+                {isLast ? 'Reveal my matches' : 'Next'}
               </button>
             )}
           </div>

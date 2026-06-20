@@ -42,7 +42,26 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
   // An "exclusive" option (e.g. "None / I'm open to everything") can't coexist
   // with other selections — picking it clears the rest, and picking anything
   // else clears it.
-  const EXCLUSIVE_OPTION = 'none';
+const EXCLUSIVE_OPTION = 'none';
+
+const SECTION_LABELS: Record<string, string> = {
+  'scent-family': 'Your scent energy',
+  occasion: 'Your plans',
+  projection: 'Main character level',
+  'gender-style': 'Your open-minded era',
+  'price-range': 'Your budget',
+  tier: 'Brand vibe',
+  'disliked-notes': 'Fragrance red flags',
+  vibe: 'Your vibe',
+  season: 'Your scent era',
+  aesthetic: 'Your aesthetic',
+  longevity: 'Performance check',
+  'time-of-day': 'Your timing',
+  'outfit-style': 'Your closet',
+  memory: 'Memory lane',
+  'desired-feel': 'The final energy',
+  'compliment-style': 'Compliment bait',
+};
 
   const toggle = (optionId: string) => {
     if (question.type === 'single') {
@@ -107,11 +126,16 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="mb-3 shrink-0 sm:mb-4">
-        {question.category === 'fun' && (
-          <span className="text-xs tracking-widest uppercase text-stone-400 font-light">Just for fun</span>
-        )}
-        <h2 id={headingId} className="mt-1 text-lg font-semibold leading-tight text-stone-900 sm:text-xl">
+      <div className="mb-2.5 shrink-0 sm:mb-4">
+        <span className={clsx(
+          'inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]',
+          question.category === 'fun'
+            ? 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700'
+            : 'border-stone-200 bg-white text-stone-500',
+        )}>
+          {SECTION_LABELS[question.id] ?? (question.category === 'fun' ? 'Just for fun' : 'Scent match')}
+        </span>
+        <h2 id={headingId} className="mt-2 text-xl font-semibold leading-tight tracking-[-0.02em] text-stone-950 sm:text-2xl">
           {question.question}
         </h2>
         <div className="mt-1 flex items-center gap-2">

@@ -26,8 +26,8 @@ export default function MainPage({
 
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-stone-50">
-        <header className="border-b border-stone-200/70 px-4 py-4 sm:px-6">
+      <div className="flex min-h-screen flex-col overflow-hidden bg-[radial-gradient(circle_at_top_left,_#fce7f3_0,_transparent_28%),radial-gradient(circle_at_top_right,_#fef3c7_0,_transparent_24%),#fafaf9]">
+        <header className="border-b border-white/70 bg-white/55 px-4 py-4 backdrop-blur sm:px-6">
           <div className="mx-auto flex max-w-6xl items-center justify-between">
             <span className="font-semibold tracking-tight text-stone-950">ScentMatch</span>
             <div className="flex items-center gap-3 sm:gap-5">
@@ -64,36 +64,41 @@ export default function MainPage({
           </div>
         </header>
 
-        <main className="flex flex-1 flex-col items-center justify-center px-4 py-12 text-center sm:px-6 sm:py-16">
+        <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 text-center sm:px-6 sm:py-16">
           <div className="w-full max-w-4xl">
-            <div className="mb-6 inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-stone-200 bg-white">
-              <svg className="h-5 w-5 text-stone-900" fill="currentColor" viewBox="0 0 24 24">
+            <div className="mb-5 inline-flex rounded-full border border-stone-200 bg-white/80 px-3 py-1 text-xs font-medium text-stone-600 shadow-sm">
+              No account needed. Shelf stays safe.
+            </div>
+            <div className="mx-auto mb-5 inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-stone-200 bg-white shadow-sm">
+              <svg className="h-5 w-5 text-stone-900" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 2C12 2 5 10.5 5 15a7 7 0 0014 0c0-4.5-7-13-7-13z" />
               </svg>
             </div>
 
-            <h1 className="text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
-              Discover your scent
+            <h1 className="text-4xl font-semibold tracking-[-0.06em] text-stone-950 sm:text-5xl">
+              Choose your scent era
             </h1>
-            <p className="mx-auto mb-9 mt-3 max-w-md text-sm leading-relaxed text-stone-500">
-              Find fragrances that fit your life, or take the less serious route and reveal your oddly specific scent personality.
+            <p className="mx-auto mb-8 mt-3 max-w-md text-sm leading-relaxed text-stone-600">
+              Take the practical quiz for recommendations, or run the personality quiz when you want a screenshot-worthy answer.
             </p>
 
             <div className="grid gap-4 text-left md:grid-cols-2">
-              <section className="flex flex-col rounded-2xl border border-stone-200 bg-white p-5 sm:p-6">
-                <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-stone-400">Find your match</p>
+              <section className="group flex flex-col rounded-[1.75rem] border border-white/80 bg-white/90 p-5 shadow-[0_22px_70px_rgba(28,25,23,0.08)] transition duration-300 hover:-translate-y-1 sm:p-6">
+                <p className="text-xs font-semibold text-fuchsia-700">For actually buying something</p>
                 <h2 className="mt-2 text-xl font-semibold tracking-tight text-stone-950">Recommendation Quiz</h2>
                 <p className="mt-2 text-sm leading-relaxed text-stone-500">
-                  Tell us what you enjoy, where you wear fragrance, and what you want to spend.
+                  Taste, budget, occasion, intensity. We turn your vibe into five useful fragrance directions.
                 </p>
                 <div className="my-6 space-y-3">
                   {[
                     { n: '01', text: 'Answer visual questions about your style' },
                     { n: '02', text: `We score ${fragrances.length} fragrances against your answers` },
-                    { n: '03', text: 'Get five personalised directions' },
+                    { n: '03', text: 'Get best match, everyday, date night, budget, and wildcard picks' },
                   ].map(item => (
                     <div key={item.n} className="flex items-center gap-3">
-                      <span className="w-6 shrink-0 text-xs font-medium tracking-widest text-stone-400">{item.n}</span>
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-100 text-[11px] font-semibold text-stone-500">
+                        {item.n}
+                      </span>
                       <span className="text-sm text-stone-700">{item.text}</span>
                     </div>
                   ))}
@@ -102,15 +107,15 @@ export default function MainPage({
                   <button
                     type="button"
                     onClick={onStartQuiz}
-                    className="min-h-12 w-full rounded-xl bg-stone-900 text-sm font-medium text-white transition-colors hover:bg-stone-800"
+                    className="min-h-12 w-full rounded-2xl bg-stone-950 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(28,25,23,0.18)] transition-all hover:-translate-y-0.5 hover:bg-stone-800 active:translate-y-0"
                   >
-                    Start recommendation quiz
+                    Find my scent
                   </button>
                   {hasPreviousResults && (
                     <button
                       type="button"
                       onClick={onViewPreviousResults}
-                      className="mt-3 min-h-12 w-full rounded-xl border border-stone-300 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
+                      className="mt-3 min-h-12 w-full rounded-2xl border border-stone-300 bg-white/70 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
                     >
                       View my saved matches
                     </button>
@@ -118,15 +123,17 @@ export default function MainPage({
                 </div>
               </section>
 
-              <section className="flex flex-col overflow-hidden rounded-2xl bg-stone-950 p-5 text-white sm:p-6">
-                <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-stone-500">Just for fun</p>
-                <h2 className="mt-2 text-xl font-semibold tracking-tight">Fragrance Personality Quiz</h2>
-                <p className="mt-2 text-sm leading-relaxed text-stone-400">
+              <section className="relative flex flex-col overflow-hidden rounded-[1.75rem] bg-stone-950 p-5 text-white shadow-[0_22px_70px_rgba(28,25,23,0.18)] sm:p-6">
+                <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-fuchsia-500/25 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-20 left-2 h-52 w-52 rounded-full bg-amber-300/20 blur-3xl" />
+                <p className="relative text-xs font-semibold text-amber-200">For the group chat</p>
+                <h2 className="relative mt-2 text-xl font-semibold tracking-tight">Fragrance Personality Quiz</h2>
+                <p className="relative mt-2 text-sm leading-relaxed text-stone-400">
                   Choose between randomized scents and scenes. We will reveal your Spotify Wrapped-style fragrance personality.
                 </p>
-                <div className="my-7 grid grid-cols-2 gap-2">
+                <div className="relative my-7 grid grid-cols-2 gap-2">
                   {['Midnight Library Romantic', 'Clean Girl With a Secret', 'Cedarwood Overthinker', 'Beach Club Daydreamer'].map(label => (
-                    <span key={label} className="rounded-xl border border-white/10 bg-white/5 p-3 text-xs leading-snug text-stone-300">
+                    <span key={label} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-xs leading-snug text-stone-300 backdrop-blur transition hover:bg-white/10">
                       {label}
                     </span>
                   ))}
@@ -134,11 +141,11 @@ export default function MainPage({
                 <button
                   type="button"
                   onClick={onStartPersonalityQuiz}
-                  className="mt-auto min-h-12 w-full rounded-xl bg-white text-sm font-medium text-stone-950 transition-colors hover:bg-stone-100"
+                  className="relative mt-auto min-h-12 w-full rounded-2xl bg-white text-sm font-semibold text-stone-950 transition-all hover:-translate-y-0.5 hover:bg-stone-100 active:translate-y-0"
                 >
                   Reveal my personality
                 </button>
-                <p className="mt-3 text-center text-xs text-stone-500">7 quick choices · new pairings each replay</p>
+                <p className="relative mt-3 text-center text-xs text-stone-500">7 quick choices - new pairings each replay</p>
               </section>
             </div>
           </div>

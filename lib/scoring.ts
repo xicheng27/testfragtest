@@ -118,7 +118,7 @@ function getAnswers(answers: QuizAnswers, id: string): string[] {
   return Array.isArray(val) ? val : [val];
 }
 
-function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
+export function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
   let score = 0;
 
   // ── Scent family ──────────────────────────────────────────────────────────
@@ -342,10 +342,10 @@ function buildMatchReasons(fragrance: Fragrance, answers: QuizAnswers): string[]
 
 const RECOMMENDATION_LABELS: Record<RecommendationType, string> = {
   best: 'Best Match',
-  affordable: 'More Affordable Alternative',
+  affordable: 'Budget Alternative',
   similar: 'Similar Vibe',
-  everyday: 'Safer Everyday Option',
-  unique: 'More Unique Option',
+  everyday: 'Everyday Scent',
+  unique: 'Wildcard Pick',
 };
 
 export function getRecommendations(answers: QuizAnswers, topN = 5): ScoredFragrance[] {

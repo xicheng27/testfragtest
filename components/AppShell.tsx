@@ -178,6 +178,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
         <motion.div key="results" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
           <ResultsPage
             results={results}
+            answers={quizAnswers}
             onRestart={handleRestart}
             onExtendedQuiz={handleExtendedQuiz}
             onViewShelf={() => handleViewShelf('results')}

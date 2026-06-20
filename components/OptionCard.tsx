@@ -45,11 +45,11 @@ export default function OptionCard({
           aria-pressed={selected}
           aria-label={option.description ? `${option.label}: ${option.description}` : option.label}
           className={clsx(
-            'group relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-2xl border bg-white text-left transition-all duration-200',
+            'group relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-[1.35rem] border bg-white text-left transition-all duration-200 active:scale-[0.98]',
             'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900',
             selected
-              ? 'border-stone-900 ring-2 ring-stone-900 ring-offset-2'
-              : 'border-stone-200 hover:border-stone-400 hover:shadow-md',
+              ? 'border-stone-900 shadow-[0_16px_40px_rgba(28,25,23,0.18)] ring-2 ring-stone-900 ring-offset-2'
+              : 'border-stone-200 hover:-translate-y-0.5 hover:border-stone-400 hover:shadow-md',
             className,
           )}
         >
@@ -78,9 +78,9 @@ export default function OptionCard({
         aria-pressed={selected}
         aria-label={option.description ? `${option.label}: ${option.description}` : option.label}
         className={clsx(
-          'group relative h-full min-h-0 w-full overflow-hidden rounded-2xl transition-all duration-200',
+          'group relative h-full min-h-0 w-full overflow-hidden rounded-[1.35rem] transition-all duration-200 active:scale-[0.98]',
           'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900',
-          selected ? 'ring-2 ring-stone-900 ring-offset-2' : 'hover:shadow-xl',
+          selected ? 'shadow-[0_18px_45px_rgba(28,25,23,0.22)] ring-2 ring-stone-900 ring-offset-2' : 'hover:-translate-y-0.5 hover:shadow-xl',
           className,
         )}
       >
@@ -115,11 +115,11 @@ export default function OptionCard({
       onClick={onClick}
       aria-pressed={selected}
       className={clsx(
-        'flex min-h-11 w-full items-start gap-3 rounded-xl border px-4 py-3.5 text-left transition-all duration-150',
+        'flex min-h-12 w-full items-start gap-3 rounded-2xl border px-4 py-3.5 text-left transition-all duration-150 active:scale-[0.99]',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900',
         selected
-          ? 'bg-stone-900 border-stone-900 text-white'
-          : 'bg-white border-stone-200 text-stone-800 hover:border-stone-400 hover:bg-stone-50',
+          ? 'bg-stone-900 border-stone-900 text-white shadow-[0_12px_28px_rgba(28,25,23,0.16)]'
+          : 'bg-white border-stone-200 text-stone-800 hover:-translate-y-0.5 hover:border-stone-400 hover:bg-stone-50',
         className,
       )}
     >

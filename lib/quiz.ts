@@ -5,7 +5,7 @@ export interface QuizOption {
   label: string;
   description?: string;
   gradient?: string; // CSS gradient for image card placeholders
-  imageUrl?: string; // Quiz scene artwork only; fragrance editorial artwork lives in fragrance data
+  imageUrl?: string; // Quiz scene artwork only; product images live in fragrance data
   imageFit?: 'cover' | 'contain';
   emoji?: string;
 }
@@ -28,8 +28,8 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'scent-family',
     type: 'image-cards',
     category: 'serious',
-    question: 'What kind of scent speaks to you?',
-    subtitle: 'Choose up to three',
+    question: 'Pick your scent energy',
+    subtitle: 'Choose up to three. No wrong answers.',
     maxSelections: 3,
     options: [
       { id: 'fresh', label: 'Fresh', description: 'Ocean breeze, linen, morning air', imageUrl: '/images/quiz/scents/fresh.webp' },
@@ -45,7 +45,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'image-cards',
     category: 'serious',
     maxSelections: 1,
-    question: 'What do you mainly need this fragrance for?',
+    question: 'What is the plan?',
     options: [
       { id: 'daily', label: 'Casual Everyday', description: 'Easy and naturally put together', imageUrl: '/images/quiz/relaxed-denim.jpg' },
       { id: 'work', label: 'School / Work', description: 'Polished without taking over', imageUrl: '/images/quiz/unique/school-work.webp' },
@@ -62,7 +62,7 @@ export const quizQuestions: QuizQuestion[] = [
     maxSelections: 1,
     allowSkip: true,
     skipLabel: 'Not sure',
-    question: 'How loud do you want your scent to be?',
+    question: 'How main character should it be?',
     subtitle: 'Projection = how far the scent radiates',
     options: [
       { id: 'subtle', label: 'Subtle', description: 'Only noticeable up close', imageUrl: '/images/quiz/choices/projection-subtle.webp' },
@@ -88,7 +88,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'image-cards',
     category: 'serious',
     maxSelections: 1,
-    question: 'What is your budget?',
+    question: 'What is the budget vibe?',
     options: [
       { id: 'budget', label: 'Under $80', description: 'Affordable finds', imageUrl: '/images/quiz/choices/budget-affordable.webp' },
       { id: 'mid', label: '$80–$150', description: 'Mid-range designer', imageUrl: '/images/quiz/choices/budget-mid.webp' },
@@ -101,7 +101,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'image-cards',
     category: 'serious',
     maxSelections: 1,
-    question: 'Any preference on the type of brand?',
+    question: 'What kind of brand era are we in?',
     options: [
       { id: 'designer', label: 'Designer', description: 'Polished fashion-house releases', imageUrl: '/images/quiz/choices/brand-designer.webp' },
       { id: 'niche', label: 'Niche', description: 'Artistic independent perfumery', imageUrl: '/images/quiz/choices/brand-niche.webp' },
@@ -112,7 +112,7 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'disliked-notes',
     type: 'image-cards',
     category: 'serious',
-    question: 'Any notes you definitely want to avoid?',
+    question: 'Any fragrance red flags?',
     subtitle: 'Select all that apply',
     options: [
       { id: 'oud', label: 'Oud', description: 'Dense resinous woods', imageUrl: '/images/products/oud-wood-tf.jpg', imageFit: 'contain' },
@@ -131,8 +131,8 @@ export const quizQuestions: QuizQuestion[] = [
     maxSelections: 1,
     allowSkip: true,
     skipLabel: 'Not sure',
-    question: 'Pick your vibe',
-    subtitle: 'Where do you feel most yourself?',
+    question: 'Pick your main character setting',
+    subtitle: 'Go with the scene you would actually post.',
     options: [
       { id: 'rainy-castle', label: 'Rainy Castle', description: 'Dark, cosy, mysterious', imageUrl: '/images/quiz/rainy-castle.jpg' },
       { id: 'sunny-beach', label: 'Sunny Beach', description: 'Bright, warm, carefree', imageUrl: '/images/quiz/unique/summer-pool.webp' },
@@ -149,7 +149,7 @@ export const quizQuestions: QuizQuestion[] = [
     maxSelections: 1,
     allowSkip: true,
     skipLabel: 'Not sure',
-    question: 'Pick your season',
+    question: 'Pick your scent era',
     options: [
       { id: 'spring', label: 'Spring', description: 'Blooming, airy, optimistic', imageUrl: '/images/quiz/months/april.webp' },
       { id: 'summer', label: 'Summer', description: 'Sun-soaked, bright, free', imageUrl: '/images/quiz/months/july.webp' },
@@ -164,7 +164,7 @@ export const quizQuestions: QuizQuestion[] = [
     maxSelections: 1,
     allowSkip: true,
     skipLabel: 'Not sure',
-    question: 'Which aesthetic is most you?',
+    question: 'Which aesthetic are you?',
     options: [
       { id: 'old-money', label: 'Old Money', description: 'Timeless, composed, precise', imageUrl: '/images/quiz/unique/old-money-garden.webp' },
       { id: 'clean', label: 'Clean Girl', description: 'Natural, bright, effortless', imageUrl: '/images/quiz/months/may.webp' },
