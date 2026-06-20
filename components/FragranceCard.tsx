@@ -84,7 +84,7 @@ export default function FragranceCard({
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-950">
               {result.recommendationLabel}
             </p>
-            <p className="mt-0.5 truncate text-sm text-stone-500">
+            <p className="mt-0.5 truncate text-base text-stone-500">
               {recommendationCopy[result.recommendationType]}
             </p>
           </div>
@@ -130,11 +130,11 @@ export default function FragranceCard({
 
         <div className="min-w-0 p-5 sm:p-7">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-stone-400">{fragrance.brand}</p>
-            <h2 className="mt-1 break-words text-[1.7rem] font-semibold leading-tight tracking-[-0.025em] text-stone-950 sm:text-3xl">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-stone-400">{fragrance.brand}</p>
+            <h2 className="mt-1 break-words text-[2rem] font-semibold leading-tight tracking-[-0.025em] text-stone-950 sm:text-3xl">
               {fragrance.name}
             </h2>
-            <p className="mt-3 text-[15px] leading-relaxed text-stone-600 sm:text-base">
+            <p className="mt-3 text-base leading-relaxed text-stone-600 sm:text-lg">
               {fragrance.shortDescription}
             </p>
             {fragrance.productUrl && (
@@ -163,25 +163,25 @@ export default function FragranceCard({
           <dl className="mt-6 grid grid-cols-2 gap-x-5 gap-y-4 border-y border-stone-100 py-5 sm:grid-cols-3">
             <div className="col-span-2 sm:col-span-3">
               <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Main notes</dt>
-              <dd className="mt-1.5 text-sm leading-relaxed text-stone-800">
+              <dd className="mt-1.5 text-base leading-relaxed text-stone-800">
                 {fragrance.notes.slice(0, 5).join(' · ')}
               </dd>
             </div>
             <div>
               <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Best for</dt>
-              <dd className="mt-1 text-sm font-medium capitalize text-stone-800">
+              <dd className="mt-1 text-base font-medium capitalize text-stone-800">
                 {fragrance.occasions.slice(0, 2).map(friendly).join(' · ')}
               </dd>
             </div>
             <div>
               <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Season</dt>
-              <dd className="mt-1 text-sm font-medium capitalize text-stone-800">
+              <dd className="mt-1 text-base font-medium capitalize text-stone-800">
                 {fragrance.seasons.slice(0, 2).join(' · ')}
               </dd>
             </div>
             <div>
               <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Price</dt>
-              <dd className="mt-1 text-sm font-medium text-stone-800">
+              <dd className="mt-1 text-base font-medium text-stone-800">
                 {(() => {
                   const price = getSignaturePrice(fragrance, currency);
                   return (
@@ -206,7 +206,7 @@ export default function FragranceCard({
               </h3>
               <ul className="mt-3 space-y-2.5">
                 {reasonItems.map(reason => (
-                  <li key={reason} className="flex gap-2.5 text-sm leading-relaxed text-stone-300">
+                  <li key={reason} className="flex gap-2.5 text-base leading-relaxed text-stone-300">
                     <svg className="mt-1 h-3.5 w-3.5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
