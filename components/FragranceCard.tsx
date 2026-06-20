@@ -84,7 +84,7 @@ export default function FragranceCard({
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-950">
               {result.recommendationLabel}
             </p>
-            <p className="mt-0.5 truncate text-xs text-stone-500">
+            <p className="mt-0.5 truncate text-sm text-stone-500">
               {recommendationCopy[result.recommendationType]}
             </p>
           </div>
@@ -130,11 +130,11 @@ export default function FragranceCard({
 
         <div className="min-w-0 p-5 sm:p-7">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone-400">{fragrance.brand}</p>
-            <h2 className="mt-1 break-words text-2xl font-semibold leading-tight tracking-[-0.025em] text-stone-950 sm:text-3xl">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-stone-400">{fragrance.brand}</p>
+            <h2 className="mt-1 break-words text-[1.7rem] font-semibold leading-tight tracking-[-0.025em] text-stone-950 sm:text-3xl">
               {fragrance.name}
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-stone-600 sm:text-[15px]">
+            <p className="mt-3 text-[15px] leading-relaxed text-stone-600 sm:text-base">
               {fragrance.shortDescription}
             </p>
             {fragrance.productUrl && (
@@ -310,7 +310,7 @@ export default function FragranceCard({
               aria-pressed={saved}
               aria-label={saved ? `Remove ${fragrance.name} from Shelf` : `Save ${fragrance.name} to Shelf`}
               className={clsx(
-                'flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950',
+                'flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-base font-medium transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950',
                 saved
                   ? 'border border-stone-300 bg-stone-100 text-stone-950'
                   : 'bg-stone-950 text-white hover:bg-stone-800',
@@ -328,7 +328,7 @@ export default function FragranceCard({
               onClick={() => setDetailsOpen(open => !open)}
               aria-expanded={detailsOpen}
               aria-controls={detailsId}
-              className="min-h-12 rounded-xl border border-stone-300 px-4 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+              className="min-h-12 rounded-xl border border-stone-300 px-4 text-base font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
             >
               {detailsOpen ? 'Hide details' : 'View details'}
             </button>
@@ -338,7 +338,7 @@ export default function FragranceCard({
                 onClick={() => setSimilarOpen(open => !open)}
                 aria-expanded={similarOpen}
                 aria-controls={similarId}
-                className="min-h-12 rounded-xl border border-stone-300 px-4 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+                className="min-h-12 rounded-xl border border-stone-300 px-4 text-base font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
                 aria-label={`Find a similar fragrance: ${similarFragrance.name}`}
               >
                 {similarOpen ? 'Hide similar' : 'Find similar'}
