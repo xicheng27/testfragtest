@@ -8,7 +8,6 @@ import AuthModal from './AuthModal';
 
 interface MainPageProps {
   onStartQuiz: () => void;
-  onStartPersonalityQuiz: () => void;
   onViewShelf: () => void;
   onViewPreviousResults: () => void;
   hasPreviousResults: boolean;
@@ -16,7 +15,6 @@ interface MainPageProps {
 
 export default function MainPage({
   onStartQuiz,
-  onStartPersonalityQuiz,
   onViewShelf,
   onViewPreviousResults,
   hasPreviousResults,
@@ -79,10 +77,10 @@ export default function MainPage({
               Choose your scent era
             </h1>
             <p className="mx-auto mb-8 mt-3 max-w-md text-sm leading-relaxed text-stone-600">
-              Take the practical quiz for recommendations, or run the personality quiz when you want a screenshot-worthy answer.
+              Take the practical quiz and we turn your vibe into five useful fragrance directions.
             </p>
 
-            <div className="grid gap-4 text-left md:grid-cols-2">
+            <div className="mx-auto max-w-xl text-left">
               <section className="group flex flex-col rounded-[1.75rem] border border-white/80 bg-white/90 p-5 shadow-[0_22px_70px_rgba(28,25,23,0.08)] transition duration-300 hover:-translate-y-1 sm:p-6">
                 <p className="text-xs font-semibold text-fuchsia-700">For actually buying something</p>
                 <h2 className="mt-2 text-xl font-semibold tracking-tight text-stone-950">Recommendation Quiz</h2>
@@ -121,31 +119,6 @@ export default function MainPage({
                     </button>
                   )}
                 </div>
-              </section>
-
-              <section className="relative flex flex-col overflow-hidden rounded-[1.75rem] bg-stone-950 p-5 text-white shadow-[0_22px_70px_rgba(28,25,23,0.18)] sm:p-6">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-fuchsia-500/25 blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-20 left-2 h-52 w-52 rounded-full bg-amber-300/20 blur-3xl" />
-                <p className="relative text-xs font-semibold text-amber-200">For the group chat</p>
-                <h2 className="relative mt-2 text-xl font-semibold tracking-tight">Fragrance Personality Quiz</h2>
-                <p className="relative mt-2 text-sm leading-relaxed text-stone-400">
-                  Choose between randomized scents and scenes. We will reveal your Spotify Wrapped-style fragrance personality.
-                </p>
-                <div className="relative my-7 grid grid-cols-2 gap-2">
-                  {['Midnight Library Romantic', 'Clean Girl With a Secret', 'Cedarwood Overthinker', 'Beach Club Daydreamer'].map(label => (
-                    <span key={label} className="rounded-2xl border border-white/10 bg-white/5 p-3 text-xs leading-snug text-stone-300 backdrop-blur transition hover:bg-white/10">
-                      {label}
-                    </span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={onStartPersonalityQuiz}
-                  className="relative mt-auto min-h-12 w-full rounded-2xl bg-white text-sm font-semibold text-stone-950 transition-all hover:-translate-y-0.5 hover:bg-stone-100 active:translate-y-0"
-                >
-                  Reveal my personality
-                </button>
-                <p className="relative mt-3 text-center text-xs text-stone-500">7 quick choices - new pairings each replay</p>
               </section>
             </div>
           </div>
