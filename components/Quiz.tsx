@@ -48,6 +48,10 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
   // matching the snappy feel of the personality quiz. Only genuine multi-select
   // questions keep a confirm button.
   const isSingleChoice = question.type === 'single' || (question.maxSelections ?? 99) === 1;
+  // The final question always shows an explicit submit button so the quiz never
+  // finishes on a silent auto-advance — every run ends on a deliberate
+  // "Reveal my matches" tap. Earlier single-choice questions still auto-advance.
+  const showSubmitButton = !isSingleChoice || isLast;
   const sectionCopy = question.category === 'fun'
     ? 'Tap your first instinct.'
     : 'Built from your actual preferences.';
@@ -70,16 +74,13 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
   const handleChange = (values: string[]) => {
     setAnswers(previous => ({ ...previous, [question.id]: values }));
 
-    // Auto-advance once a single-choice question has a selection. Deselecting
-    // (values empty) cancels any pending advance and stays put.
+    // Auto-advance once a single-choice question has a selection. The last
+    // question is excluded — it waits for an explicit "Reveal my matches" press.
+    // Deselecting (values empty) cancels any pending advance and stays put.
     if (advanceTimeoutRef.current) window.clearTimeout(advanceTimeoutRef.current);
-    if (isSingleChoice && values.length > 0) {
+    if (isSingleChoice && !isLast && values.length > 0) {
       advanceTimeoutRef.current = window.setTimeout(() => {
-        if (isLast) {
-          onComplete({ ...answers, [question.id]: values });
-        } else {
-          moveToStep(step + 1);
-        }
+        moveToStep(step + 1);
       }, 300);
     }
   };
@@ -156,19 +157,19 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete }: Qui
         </div>
       </main>
 
-      {(!isSingleChoice || question.allowSkip) && (
+      {(showSubmitButton || question.allowSkip) && (
         <footer className="z-20 border-t border-stone-200/80 bg-stone-50/95 px-4 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2.5 shadow-[0_-8px_24px_rgba(28,25,23,0.05)] backdrop-blur sm:px-6 sm:py-3">
-          <div className={`mx-auto flex w-full items-center gap-2 ${!isSingleChoice ? 'max-w-2xl' : 'max-w-lg justify-center'}`}>
+          <div className={`mx-auto flex w-full items-center gap-2 ${showSubmitButton ? 'max-w-2xl' : 'max-w-lg justify-center'}`}>
             {question.allowSkip && (
               <button
                 type="button"
                 onClick={skipQuestion}
-                className={`min-h-12 rounded-xl border border-stone-300 bg-white text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 ${!isSingleChoice ? 'shrink-0 px-5' : 'px-8'}`}
+                className={`min-h-12 rounded-xl border border-stone-300 bg-white text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 ${showSubmitButton ? 'shrink-0 px-5' : 'px-8'}`}
               >
                 {question.skipLabel ?? 'Skip'}
               </button>
             )}
-            {!isSingleChoice && (
+            {showSubmitButton && (
               <button
                 type="button"
                 onClick={goNext}
