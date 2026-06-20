@@ -39,7 +39,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
     saveProgress,
     clearProgress,
   } = useQuizProgress();
-  const [view, setView] = useState<AppView>('landing');
+  const [view, setView] = useState<AppView>(() => (autoStartQuiz ? 'quiz' : 'landing'));
   const [results, setResults] = useState<ScoredFragrance[]>([]);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
   const [isExtended, setIsExtended] = useState(false);
@@ -66,13 +66,11 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
 
   useEffect(() => {
     if (!autoStartQuiz || !isReady || autoStartHandled.current) return;
+    if (hasEnteredApp) return;
+
     autoStartHandled.current = true;
-    if (hasEnteredApp) {
-      setView('quiz');
-    } else {
-      startQuizAfterGuestEntry.current = true;
-      continueAsGuest();
-    }
+    startQuizAfterGuestEntry.current = true;
+    continueAsGuest();
   }, [autoStartQuiz, isReady, hasEnteredApp, continueAsGuest]);
 
   useEffect(() => {

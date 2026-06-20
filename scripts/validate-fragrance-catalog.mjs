@@ -31,6 +31,7 @@ const manifest = JSON.parse(
 );
 const sourceById = new Map(manifest.map(source => [source.id, source]));
 const failures = [];
+const minimumProductImageSize = 480;
 
 for (const id of ids) {
   const source = sourceById.get(id);
@@ -42,8 +43,15 @@ for (const id of ids) {
   const filePath = path.join(productDirectory, source.file);
   try {
     const metadata = await sharp(filePath).metadata();
-    if (metadata.width !== 900 || metadata.height !== 900) {
-      failures.push(`${id}: expected 900x900 image, received ${metadata.width}x${metadata.height}`);
+    if (
+      !metadata.width
+      || !metadata.height
+      || metadata.width < minimumProductImageSize
+      || metadata.height < minimumProductImageSize
+    ) {
+      failures.push(
+        `${id}: expected product image at least ${minimumProductImageSize}px on each side, received ${metadata.width}x${metadata.height}`,
+      );
     }
   } catch {
     failures.push(`${id}: product image file is missing or unreadable`);

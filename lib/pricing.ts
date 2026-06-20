@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Fragrance } from './fragrances';
 
 export type Currency = 'USD' | 'SGD' | 'EUR';
@@ -117,15 +117,21 @@ export function formatPrice(amount: number, currency: Currency): string {
 // Persisted currency preference, shared across the results/shelf views.
 const STORAGE_KEY = 'sm_currency';
 
-export function useCurrency(): [Currency, (next: Currency) => void] {
-  const [currency, setCurrency] = useState<Currency>('USD');
+function readStoredCurrency(): Currency {
+  if (typeof window === 'undefined') return 'USD';
 
-  useEffect(() => {
+  try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === 'USD' || stored === 'SGD' || stored === 'EUR') {
-      setCurrency(stored);
-    }
-  }, []);
+    if (stored === 'USD' || stored === 'SGD' || stored === 'EUR') return stored;
+  } catch {
+    /* ignore storage failures (private mode etc.) */
+  }
+
+  return 'USD';
+}
+
+export function useCurrency(): [Currency, (next: Currency) => void] {
+  const [currency, setCurrency] = useState<Currency>(readStoredCurrency);
 
   const update = (next: Currency) => {
     setCurrency(next);

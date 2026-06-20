@@ -12,7 +12,7 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
       <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-stone-100 bg-stone-50 md:aspect-square md:h-[220px] md:border-b-0 md:border-r">
         <ProductImage
           src={fragrance.imageUrl}
-          alt={`${fragrance.brand} ${fragrance.name} editorial fragrance artwork`}
+          alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
           sizes="(max-width: 767px) calc(100vw - 32px), 220px"
           className="object-contain p-5 sm:p-6"
         />
@@ -26,6 +26,16 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
           <p className="mt-3 break-words text-sm leading-relaxed text-stone-600">
             {fragrance.shortDescription}
           </p>
+          {fragrance.productUrl && (
+            <a
+              href={fragrance.productUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex text-sm font-medium text-stone-700 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950 hover:decoration-stone-700"
+            >
+              View official product&nbsp;<span aria-hidden="true">&rarr;</span>
+            </a>
+          )}
         </div>
 
         <div className="mt-5 min-w-0">

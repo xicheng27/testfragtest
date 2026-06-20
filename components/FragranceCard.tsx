@@ -115,7 +115,7 @@ export default function FragranceCard({
           <div className="relative aspect-[4/3] w-full md:sticky md:top-0 md:aspect-auto md:h-[31rem]">
             <ProductImage
               src={fragrance.imageUrl}
-              alt={`${fragrance.brand} ${fragrance.name} editorial fragrance artwork`}
+              alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
               eager={rank === 1}
               sizes="(max-width: 767px) calc(100vw - 32px), 360px"
               className="object-contain p-7 sm:p-9"
@@ -137,6 +137,16 @@ export default function FragranceCard({
             <p className="mt-3 text-sm leading-relaxed text-stone-600 sm:text-[15px]">
               {fragrance.shortDescription}
             </p>
+            {fragrance.productUrl && (
+              <a
+                href={fragrance.productUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex text-sm font-medium text-stone-700 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950 hover:decoration-stone-700"
+              >
+                View official product&nbsp;<span aria-hidden="true">&rarr;</span>
+              </a>
+            )}
           </div>
 
           <div className="mt-5 flex flex-wrap gap-1.5">
@@ -244,20 +254,20 @@ export default function FragranceCard({
                       <a
                         href={fragrance.productUrl}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="text-sm font-medium text-stone-800 underline decoration-stone-300 underline-offset-4 hover:decoration-stone-800"
                       >
-                        View product
+                        View official product &rarr;
                       </a>
                     )}
                     {fragrance.sourceUrl && (
                       <a
                         href={fragrance.sourceUrl}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="text-sm text-stone-500 underline decoration-stone-300 underline-offset-4 hover:text-stone-800"
                       >
-                        Image reference
+                        Image source
                       </a>
                     )}
                   </div>

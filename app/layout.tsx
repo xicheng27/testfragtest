@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { ShelfProvider } from "@/lib/shelf-context";
@@ -30,6 +31,19 @@ export default function RootLayout({
             </QuizProgressProvider>
           </ShelfProvider>
         </AuthProvider>
+        <footer className="shrink-0 border-t border-stone-200 bg-white/80 px-4 py-5 text-xs leading-relaxed text-stone-500 sm:px-6">
+          <div className="mx-auto flex max-w-6xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              ScentMatch is an independent fragrance recommendation tool and is not affiliated with any brand. All product names and images are used for identification purposes only.
+            </p>
+            <Link
+              href="/disclaimer"
+              className="shrink-0 font-medium text-stone-700 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950"
+            >
+              Disclaimer
+            </Link>
+          </div>
+        </footer>
       </body>
     </html>
   );

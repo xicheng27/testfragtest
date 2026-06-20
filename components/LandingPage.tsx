@@ -184,7 +184,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                     <div className="relative h-40 border-b border-stone-100 bg-white sm:h-48">
                       <ProductImage
                         src={item.imageUrl}
-                        alt={`${item.brand} ${item.name} editorial fragrance artwork`}
+                        alt={`${item.brand} ${item.name} fragrance bottle`}
                         sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 260px"
                         className="object-contain p-5 sm:p-6"
                       />
@@ -234,6 +234,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
               </div>
               <nav className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm sm:grid-cols-3" aria-label="Footer navigation">
                 <Link href="/about" className="text-stone-300 transition-colors hover:text-white">About</Link>
+                <Link href="/disclaimer" className="text-stone-300 transition-colors hover:text-white">Disclaimer</Link>
                 {pendingFooterLinks.map(label => (
                   <span
                     key={label}

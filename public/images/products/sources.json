@@ -3,2090 +3,1330 @@
     "id": "bleu-chanel",
     "status": "OK",
     "pageUrl": "https://www.chanel.com/gb/fragrance/p/107360/bleu-de-chanel-eau-de-parfum-spray/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "bleu-chanel.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/perfume-bottle-blue",
-    "brandPressPage": "https://www.chanel.com/us/fragrance/press/",
-    "sourceNotes": "Request press kit from Chanel press office",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.chanel.com/emea/img/prd-emea/sys-master/content/h04/hc7/9250236170270",
+    "file": "bleu-chanel.jpg"
   },
   {
     "id": "black-orchid",
     "status": "OK",
     "pageUrl": "https://www.sephora.it/p/black-orchid---eau-de-parfum-P55019.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "black-orchid.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/dark-perfume-bottle",
-    "brandPressPage": "https://www.tomfordbeauty.com/press",
-    "sourceNotes": "Request via Tom Ford Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/T/TOM%20FORD/P55019/12325-media_5.jpg?scaleWidth=750&scaleHeight=750&scaleMode=fit",
+    "file": "black-orchid.jpg"
   },
   {
     "id": "libre-ysl",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/libre---eau-de-parfum-P3800005.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "libre-ysl.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/perfume-gold",
-    "brandPressPage": "https://www.yslbeauty.com/en-us/press.html",
-    "sourceNotes": "Request via YSL Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dw450b9fcc/images/hi-res/alternates/PID_alternate1/PID_alternate1_1/P3800005_1.jpg",
+    "file": "libre-ysl.jpg"
   },
   {
     "id": "sauvage-dior",
     "status": "OK",
     "pageUrl": "https://www.dior.com/es_us/beauty/products/sauvage-eau-de-parfum-Y0785220.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "sauvage-dior.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/cologne-bottle",
-    "brandPressPage": "https://www.dior.com/en_us/beauty/dior-beauty-press",
-    "sourceNotes": "Request via Dior press portal",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Library-Sites-DiorSharedLibrary/default/dw2b50ea66/images/beauty/07-NAVIGATION/2024/09_September/iconic-push/Y0998004_C099600455_E01_GHC.jpg?sw=2560",
+    "file": "sauvage-dior.jpg"
   },
   {
     "id": "chance-chanel",
     "status": "OK",
     "pageUrl": "https://www.chanel.com/gb/fragrance/p/126260/chance-eau-tendre-eau-de-parfum-spray/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "chance-chanel.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/perfume-bottle-pink",
-    "brandPressPage": "https://www.chanel.com/us/fragrance/press/",
-    "sourceNotes": "Request press kit from Chanel press office",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.chanel.com/images/t_one/t_fragrance/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/chance-eau-tendre-eau-de-parfum-spray-3-4fl-oz--packshot-default-126260-9564866838558.jpg",
+    "file": "chance-chanel.jpg"
   },
   {
     "id": "aventus-creed",
     "status": "OK",
     "pageUrl": "https://images.selfridges.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "aventus-creed.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/luxury-cologne",
-    "brandPressPage": "https://creed.com/en-us/pages/press",
-    "sourceNotes": "Request via Creed press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.selfridges.com/is/image/selfridges/365-83022651-AVENTUS_ALT01?$CHANNEL_INTELLIGENCE$",
+    "file": "aventus-creed.jpg"
   },
   {
     "id": "oud-wood-tf",
     "status": "OK",
     "pageUrl": "https://shop.nordstrom.com/s/tom-ford-oud-wood-eau-de-parfum/3623561",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "oud-wood-tf.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/oud-perfume",
-    "brandPressPage": "https://www.tomfordbeauty.com/press",
-    "sourceNotes": "Request via Tom Ford Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/id/sr3/43bf5e3a-d638-4c30-96d7-bf43131e6e27.jpeg?crop=pad&pad_color=FFF&format=jpeg&w=780&h=1196&dpr=4",
+    "file": "oud-wood-tf.jpg"
   },
   {
     "id": "flowerbomb-vf",
     "status": "OK",
     "pageUrl": "https://us.viktor-rolf.com/fragrance/flowerbomb-eau-de-parfum-VKR_002.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "flowerbomb-vf.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/floral-perfume-bottle",
-    "brandPressPage": "https://www.viktor-rolf.com/pages/press",
-    "sourceNotes": "Request via Viktor & Rolf press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://us.viktor-rolf.com/on/demandware.static/-/Sites-vr-master-catalog/default/dw6d31d250/flowerbomb/Flowerbomb%20EDP/vkr_002-FlowerBomb-Edp-default.png",
+    "file": "flowerbomb-vf.jpg"
   },
   {
     "id": "silver-mountain-creed",
     "status": "OK",
     "pageUrl": "https://www.harrods.com/en-gb/p/creed-no-colour-silver-mountain-water-eau-de-parfum-50ml-000000000005695065",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "silver-mountain-creed.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/aquatic-perfume",
-    "brandPressPage": "https://creed.com/en-us/pages/press",
-    "sourceNotes": "Request via Creed press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://hrd-live.cdn.scayle.cloud/images/7bca6f204cf95e4e1227aef29b00e32b.jpg?brightness=1&width=922&height=1230&quality=75&bg=ffffff",
+    "file": "silver-mountain-creed.jpg"
   },
   {
     "id": "neroli-portofino-tf",
     "status": "OK",
     "pageUrl": "https://www.tomfordbeauty.com/product/neroli-portofino-set",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "neroli-portofino-tf.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/citrus-perfume",
-    "brandPressPage": "https://www.tomfordbeauty.com/press",
-    "sourceNotes": "Request via Tom Ford Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://sdcdn.io/tf/tf_sku_T4DC01_US_3000x3000_0.png?height=1400px&width=1400px",
+    "file": "neroli-portofino-tf.jpg"
   },
   {
     "id": "tobacco-vanille-tf",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/tom-ford-tobacco-vanille-eau-de-parfum-1-oz-30-ml-prod230340327",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "tobacco-vanille-tf.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/amber-perfume-bottle",
-    "brandPressPage": "https://www.tomfordbeauty.com/press",
-    "sourceNotes": "Request via Tom Ford Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.neimanmarcus.com/ca/1/product_assets/C/5/4/Z/U/NMC54ZU_mz.jpg",
+    "file": "tobacco-vanille-tf.jpg"
   },
   {
     "id": "good-girl-cg",
     "status": "OK",
     "pageUrl": "https://www.carolinaherrera.com/uk/en/p-fragrance/good-girl-eau-de-parfum",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "good-girl-cg.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/dark-floral-night",
-    "brandPressPage": "https://www.carolinaherrera.com/us/en/press",
-    "sourceNotes": "Request via Carolina Herrera press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://medias.carolinaherrera.com/cdn-cgi/image/width=1200,quality=90,format=auto,fit=contain/medias/sys_master/images/h06/h2b/9994898407454/LR-GG-Refillable-Visual-1/LR-GG-Refillable-Visual-1.jpg",
+    "file": "good-girl-cg.jpg"
   },
   {
     "id": "acqua-armani",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/acqua-di-gio-pour-homme---eau-de-toilette-18359.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "acqua-armani.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/ocean-aquatic-fresh",
-    "brandPressPage": "https://www.giorgioarmanibeauty.com/press",
-    "sourceNotes": "Request via Armani Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dw69aca628/images/hi-res/alternates/PID_alternate1/PID_alternate1_528/P2277_1.jpg",
+    "file": "acqua-armani.jpg"
   },
   {
     "id": "la-vie-est-belle",
     "status": "OK",
     "pageUrl": "https://www.sephora.pt/p/la-vie-est-belle---eau-de-parfum-P1067011.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "la-vie-est-belle.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/iris-floral-feminine",
-    "brandPressPage": "https://www.lancome.com/press",
-    "sourceNotes": "Request via Lancôme press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/L/LANC%C3%94ME/P1067011/1294-media_5.jpg?scaleWidth=750&scaleHeight=750&scaleMode=fit",
+    "file": "la-vie-est-belle.jpg"
   },
   {
     "id": "molecule-01",
     "status": "OK",
     "pageUrl": "https://www.escentric.com/en-us/products/molecule-01-100ml",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "molecule-01.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/minimalist-clean-bottle",
-    "brandPressPage": "https://www.escentric.com/pages/press",
-    "sourceNotes": "Request via Escentric Molecules press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.escentric.com/cdn/shop/files/M01_100ml_Bottle_Carton_St_On_OnBaseLine.jpg?v=1740485184&width=1946",
+    "file": "molecule-01.jpg"
   },
   {
     "id": "lost-cherry-tf",
     "status": "OK",
     "pageUrl": "https://www.sephora.it/p/private-blend-lost-cherry-eau-de-parfum---set-P1000209077.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "lost-cherry-tf.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/perfume-bottle-red",
-    "brandPressPage": "https://www.tomfordbeauty.com/press",
-    "sourceNotes": "Request via Tom Ford Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/T/TOM_FORD/P1000209077/112707-media_2.jpeg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "lost-cherry-tf.jpg"
   },
   {
     "id": "santal-33-le-labo",
     "status": "OK",
     "pageUrl": "https://www.lelabofragrances.com/santal-33-147.html?size=50ml",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "santal-33-le-labo.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/minimalist-perfume-bottle",
-    "brandPressPage": "https://www.lelabofragrances.com/press.html",
-    "sourceNotes": "Request via Le Labo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://lelabo.ips.photos/lelabo-java/images/skus/100PS33100__PRODUCT_01--IMG_1200--SANTAL33-1891576354.jpg",
+    "file": "santal-33-le-labo.jpg"
   },
   {
     "id": "miss-dior-dior",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "miss-dior-dior.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/perfume-bottle-feminine",
-    "brandPressPage": "https://www.dior.com/en_us/beauty/dior-beauty-press",
-    "sourceNotes": "Request via Dior press portal",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dwdc0d958f/images/hi-res/SKU/402975_swatch.jpg",
+    "file": "miss-dior-dior.jpg"
   },
   {
     "id": "rose-oud-bdk",
     "status": "OK",
     "pageUrl": "https://bdkparfums.com/en/products/gris-charnel",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "rose-oud-bdk.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-sandalwood",
-    "brandPressPage": "https://bdkparfums.com/pages/press",
-    "sourceNotes": "Request via BDK Parfums press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://bdkparfums.com/cdn/shop/files/Parfums-GrisCharnel_2-Packshot-Logo_1600x.png?v=1688468067",
+    "file": "rose-oud-bdk.jpg"
   },
   {
     "id": "light-blue-dolce",
     "status": "OK",
     "pageUrl": "https://www.dolcegabbana.com/en-us/beauty/perfumes-for-her/light-blue/light-blue-eau-de-toilette---VT01JMVT0009V000.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "light-blue-dolce.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sicily-lemon-fresh",
-    "brandPressPage": "https://www.dolcegabbana.com/beauty/press",
-    "sourceNotes": "Request via D&G Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.dolcegabbana.com/dw/image/v2/BKDB_PRD/on/demandware.static/-/Sites-15/default/dwda1eb78e/images/zoom/VT01JMVT000_9V000_3.jpg?sw=740&sh=944",
+    "file": "light-blue-dolce.jpg"
   },
   {
     "id": "eros-versace",
     "status": "OK",
     "pageUrl": "https://www.sephora.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "eros-versace.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/mint-green-fresh-cologne",
-    "brandPressPage": "https://www.versace.com/us/en/fragrance/press",
-    "sourceNotes": "Request via Versace press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.com/productimages/product/p382751-av-3-zoom.jpg",
+    "file": "eros-versace.jpg"
   },
   {
     "id": "si-armani",
     "status": "OK",
     "pageUrl": "https://www.sephora.com.au/products/armani-beauty-si-passione-eau-de-parfum",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "si-armani.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-blackcurrant",
-    "brandPressPage": "https://www.giorgioarmanibeauty.com/press",
-    "sourceNotes": "Request via Armani Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://image-optimizer-reg.production.sephora-asia.net/images/product_images/closeup_2_Product_3614271994844-Giorgio-Armani-Si-Passione-Eau-De-Pa_42961ab740586ddbd636aa3bdf00f58409d65155_1732509599.png",
+    "file": "si-armani.jpg"
   },
   {
     "id": "the-one-dolce",
     "status": "OK",
     "pageUrl": "https://www.dolcegabbana.com/en-ph/beauty/perfumes-for-him/the-one-for-men/the-one-for-men-eau-de-parfum---VT031GVT0009V000.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "the-one-dolce.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/amber-tobacco-warm",
-    "brandPressPage": "https://www.dolcegabbana.com/beauty/press",
-    "sourceNotes": "Request via D&G Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.dolcegabbana.com/dw/image/v2/BKDB_PRD/on/demandware.static/-/Sites-15/default/dwd30580a9/images/zoom/VT031GVT000_9V000_5.jpg?sw=740&sh=944",
+    "file": "the-one-dolce.jpg"
   },
   {
     "id": "black-phantom-kilian",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/black-phantom--memento-mori----eau-de-parfum-P4003088.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "black-phantom-kilian.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/dark-coffee-rum",
-    "brandPressPage": "https://www.bykilian.com/pages/press",
-    "sourceNotes": "Request via Kilian press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/K/KILIAN_PARIS/P4003088/51023-media_1.jpg?scaleWidth=750&scaleHeight=750&scaleMode=fit",
+    "file": "black-phantom-kilian.jpg"
   },
   {
     "id": "versace-bright-crystal",
     "status": "OK",
     "pageUrl": "https://www.sephora.com.au/products/versace-bright-crystal-eau-de-toilette",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "versace-bright-crystal.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/peony-magnolia-light",
-    "brandPressPage": "https://www.versace.com/us/en/fragrance/press",
-    "sourceNotes": "Request via Versace press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://image-optimizer-reg.production.sephora-asia.net/images/product_images/zoom_1_Product_183200_20Versace_20Bright_20Crystal_20EDT_2090ml_acd6b10792d760ecc74117744dca014640d23427_1528361435.png",
+    "file": "versace-bright-crystal.jpg"
   },
   {
     "id": "baccarat-rouge-540",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/uk-en/p/baccarat-rouge-540-eau-de-parfum-RA12238.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "baccarat-rouge-540.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/amber-crystal-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/on/demandware.static/-/Sites-mfk-master-catalog/default/dwf71310a6/BR540_GOLD_EDP_no-logo_1080x1080%20(1).jpg",
+    "file": "baccarat-rouge-540.jpg"
   },
   {
     "id": "replica-jazz-club",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela.com/de-de/replica-jazz-club-eau-de-toilette-S33YX0016S10930001.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-jazz-club.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/jazz-bar-dark",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela.com/dw/image/v2/AAPK_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dw4b01e89f/images/large/S33YX0016_S10930_001_F.jpg?sw=1024&q=80",
+    "file": "replica-jazz-club.jpg"
   },
   {
     "id": "replica-by-the-fireplace",
     "status": "OK",
     "pageUrl": "https://img.fragrancex.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-by-the-fireplace.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/fireplace-warm",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/RepMTD.jpg",
+    "file": "replica-by-the-fireplace.jpg"
   },
   {
     "id": "replica-lazy-sunday-morning",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela.com/de-de/replica-lazy-sunday-morning-eau-de-toilette-S33YX0018S10932001.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-lazy-sunday-morning.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/morning-linen",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela.com/dw/image/v2/AAPK_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dwd5bce2b7/images/large/S33YX0018_S10932_001_F.jpg?sw=1024&q=80",
+    "file": "replica-lazy-sunday-morning.jpg"
   },
   {
     "id": "dossier-ambery-saffron",
     "status": "OK",
     "pageUrl": "https://dossier.co/products/ambery-saffron",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "dossier-ambery-saffron.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/amber-saffron-warm",
-    "brandPressPage": "https://dossier.co/pages/press",
-    "sourceNotes": "Dossier may share press images freely — contact them directly",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://cdn.shopify.com/s/files/1/0047/4067/7699/files/Ambery-Saffron-Warm-Warm-Woody-Ambery-50ml.png?v=1727354102&width=2600&height=2600&crop=center",
+    "file": "dossier-ambery-saffron.jpg"
   },
   {
     "id": "dossier-woody-sandalwood",
     "status": "OK",
     "pageUrl": "https://dossier.co/products/woody-sandalwood",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "dossier-woody-sandalwood.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sandalwood-dry-woody",
-    "brandPressPage": "https://dossier.co/pages/press",
-    "sourceNotes": "Dossier may share press images freely — contact them directly",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://cdn.shopify.com/s/files/1/0047/4067/7699/files/100-50-ml-Double-Perfume-Woody-Sandalwood_618a4140-7181-490b-be64-e442ecb2b8ab.jpg?v=1721201049&width=1400&height=1400&crop=center",
+    "file": "dossier-woody-sandalwood.jpg"
   },
   {
     "id": "oakcha-sinful",
     "status": "OK",
     "pageUrl": "https://www.oakcha.com/products/sinful-perfume-oil",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "oakcha-sinful.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/cherry-almond-dark",
-    "brandPressPage": "https://www.oakcha.com/pages/press",
-    "sourceNotes": "Oakcha may share press images freely — contact them directly",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.oakcha.com/cdn/shop/files/SinfulLOOK1.jpg?v=1737580268",
+    "file": "oakcha-sinful.jpg"
   },
   {
     "id": "oakcha-sweven",
     "status": "OK",
     "pageUrl": "https://www.oakcha.com/products/sweven-perfume-oil",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "oakcha-sweven.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/amber-saffron-sweet",
-    "brandPressPage": "https://www.oakcha.com/pages/press",
-    "sourceNotes": "Oakcha may share press images freely — contact them directly",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.oakcha.com/cdn/shop/files/SwevenLOOK2_1600x.jpg?v=1737580319",
+    "file": "oakcha-sweven.jpg"
   },
   {
     "id": "alt-executive",
     "status": "OK",
     "pageUrl": "https://altfragrances.com/pages/executive-ht",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "alt-executive.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pineapple-birch-fresh",
-    "brandPressPage": "https://altfragrances.com/pages/press",
-    "sourceNotes": "ALT. may share press images freely — contact them directly",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://altfragrances.com/cdn/shop/files/800x800_Bottles_30ml_Executive.png?v=1695831121",
+    "file": "alt-executive.jpg"
   },
   {
     "id": "alt-farouche",
     "status": "OK",
     "pageUrl": "https://altfragrances.com/products/inspired-by-sauvage",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "alt-farouche.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/bergamot-pepper-woods",
-    "brandPressPage": "https://altfragrances.com/pages/press",
-    "sourceNotes": "ALT. may share press images freely — contact them directly",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://altfragrances.com/cdn/shop/files/800x800_Bottles_100ml_Farouche_800x.png?v=1686836981",
+    "file": "alt-farouche.jpg"
   },
   {
     "id": "alt-fireside-marshmallow",
     "status": "OK",
     "pageUrl": "https://altfragrances.com/products/inspired-by-by-the-fireplace",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "alt-fireside-marshmallow.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/marshmallow-vanilla-smoke",
-    "brandPressPage": "https://altfragrances.com/pages/press",
-    "sourceNotes": "ALT. may share press images freely — contact them directly",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://altfragrances.com/cdn/shop/files/800x800_Bottles_60ml_FiresideMarshmallow.png?v=1702879996",
+    "file": "alt-fireside-marshmallow.jpg"
   },
   {
     "id": "dior-homme-intense",
     "status": "OK",
     "pageUrl": "https://www.dior.com/en_int/beauty/products/dior-homme-intense-Y0479201.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "dior-homme-intense.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/mens-cologne",
-    "brandPressPage": "https://www.dior.com/en_us/beauty/dior-beauty-press",
-    "sourceNotes": "Request via Dior press portal",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dw006de9e6/Y0479201/Y0479201_F047924709_E01_GHC.jpg?sw=1850&sh=1850",
+    "file": "dior-homme-intense.jpg"
   },
   {
     "id": "ysl-y-edp",
     "status": "OK",
     "pageUrl": "https://www.yslbeautyus.com/fragrance/mens-fragrance/y/y-eau-de-parfum/727YSL.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "ysl-y-edp.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/mens-fragrance-bottle",
-    "brandPressPage": "https://www.yslbeauty.com/en-us/press.html",
-    "sourceNotes": "Request via YSL Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse3.mm.bing.net/th/id/OIP.gxbUEXqRYIKMgu6sv_s-kAHaHa?r=0&pid=Api",
+    "file": "ysl-y-edp.jpg"
   },
   {
     "id": "prada-lhomme",
     "status": "OK",
     "pageUrl": "https://www.prada-beauty.com/fragrance/lhomme-prada/lhomme-prada-eau-de-toilette/MPL01352.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "prada-lhomme.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/iris-woody-men",
-    "brandPressPage": "https://www.prada.com/us/en/press",
-    "sourceNotes": "Request via Prada press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse2.mm.bing.net/th/id/OIP.ZVgkY_ke8A5fiX5shUaApwHaHa?r=0&pid=Api",
+    "file": "prada-lhomme.jpg"
   },
   {
     "id": "terre-hermes",
     "status": "OK",
     "pageUrl": "https://www.hermes.com/es/es/product/terre-d-hermes-eau-de-toilette-V107188V0/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "terre-hermes.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/earth-woody-orange",
-    "brandPressPage": "https://www.hermes.com/us/en/content/press/",
-    "sourceNotes": "Request via Hermès press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.com.br/dw/image/v2/BFJC_PRD/on/demandware.static/-/Sites-masterCatalog_Sephora/pt_BR/dw5b0bf162/images/hi-res-BR/3346131400003_1500px.jpg?sw=1200&sh=1200&sm=fit",
+    "file": "terre-hermes.jpg"
   },
   {
     "id": "gucci-bloom",
     "status": "OK",
     "pageUrl": "https://www.gucci.com/uk/en_gb/pr/beauty/fragrances/womens-fragrances/gucci-bloom/gucci-bloom-100ml-eau-de-parfum-p-488830999990099",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "gucci-bloom.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/white-floral-bloom",
-    "brandPressPage": "https://www.gucci.com/us/en/st/press",
-    "sourceNotes": "Request via Gucci press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.gucci.com/style/DarkGray_Center_0_0_2400x2400/1492624814/488830_99999_0099_002_100_0000_Light-Gucci-Bloom-100ml-eau-de-parfum.jpg",
+    "file": "gucci-bloom.jpg"
   },
   {
     "id": "burberry-her",
     "status": "OK",
     "pageUrl": "https://int.burberry.com/her-eau-de-parfum-50ml-p40804581",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "burberry-her.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/berry-floral-feminine",
-    "brandPressPage": "https://uk.burberry.com/press/",
-    "sourceNotes": "Request via Burberry press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://assets.burberry.com/is/image/Burberryltd/2D69FAFE-2129-4BAC-9B19-DE027F64E4D9?$BBY_V3_SL_1$&wid=1501&hei=1500",
+    "file": "burberry-her.jpg"
   },
   {
     "id": "valentino-donna-born-in-roma",
     "status": "OK",
     "pageUrl": "https://www.sephora.it/p/born-in-roma-extradose-donna---eau-de-parfum-P1000206003.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "valentino-donna-born-in-roma.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-vanilla-feminine",
-    "brandPressPage": "https://www.valentino.com/en-us/fragrances/press",
-    "sourceNotes": "Request via Valentino press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/V/VALENTINO/762645/364783-media_swatch.jpeg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "valentino-donna-born-in-roma.jpg"
   },
   {
     "id": "armani-my-way",
     "status": "OK",
     "pageUrl": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/my-way-eau-de-parfum-nectar/ww-00837-arm.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "armani-my-way.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/floral-fresh-feminine",
-    "brandPressPage": "https://www.giorgioarmanibeauty.com/press",
-    "sourceNotes": "Request via Armani Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse4.mm.bing.net/th/id/OIP.iA4mE_ib3idWoIhM2eXK4QHaHa?pid=Api",
+    "file": "armani-my-way.jpg"
   },
   {
     "id": "mon-guerlain",
     "status": "OK",
     "pageUrl": "https://www.guerlain.com/uk/en-uk/p/mon-guerlain-eau-de-parfum-P013139.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mon-guerlain.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/lavender-vanilla-feminine",
-    "brandPressPage": "https://www.guerlain.com/us/en-us/l/press.html",
-    "sourceNotes": "Request via Guerlain press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.guerlain.com/dw/image/v2/BDCZ_PRD/on/demandware.static/-/Sites-GSA_master_catalog/default/dwa80e7e66/primary_packshot_3/2022/Fragrance/Mon_Guerlain/G013781_3346470137813_MON-G-19-INTSE-EDP-50ML-SPR.jpg?sw=655&sh=655&sfrm=png",
+    "file": "mon-guerlain.jpg"
   },
   {
     "id": "narciso-rodriguez-for-her",
     "status": "OK",
     "pageUrl": "https://www.narcisorodriguezparfums.com/en/narciso-rodriguez-for-her/for-her-edt.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "narciso-rodriguez-for-her.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/musk-rose-feminine",
-    "brandPressPage": "https://www.narcisorodriguezparfums.com/en/press",
-    "sourceNotes": "Request via Narciso Rodriguez press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.narcisorodriguezparfums.com/dw/image/v2/BCMQ_PRD/on/demandware.static/-/Sites-itemmaster_narcisorodriguez/default/dw9b9df683/for-her-edt/narciso-rodriguez-for-her-eau-de-toilette-perfume-100ml.png?sw=800&sh=900&sm=fit&q=100",
+    "file": "narciso-rodriguez-for-her.jpg"
   },
   {
     "id": "ck-one",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/ck-one---eau-de-toilette-P2481.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "ck-one.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/clean-unisex-fresh",
-    "brandPressPage": "https://www.calvinklein.com/en/press",
-    "sourceNotes": "Request via Calvin Klein press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/dw/image/v2/BCVW_PRD/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dw61a2d561/images/hi-res/SKU/SKU_3/27272_swatch.jpg?sw=585&sh=585&sm=fit",
+    "file": "ck-one.jpg"
   },
   {
     "id": "davidoff-cool-water",
     "status": "OK",
     "pageUrl": "https://www.fragrancenet.com/perfume/davidoff/cool-water/edt",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "davidoff-cool-water.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/water-aquatic-fresh",
-    "brandPressPage": "https://www.davidoff.com/en/press",
-    "sourceNotes": "Request via Davidoff press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://thf.bing.com/th/id/OIP.WfqFcuuPzrEgurzdteDvWQHaHa?r=0&cb=thfc1falcon2&pid=Api",
+    "file": "davidoff-cool-water.jpg"
   },
   {
     "id": "issey-miyake-leau-dissey",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/l-eau-d-issey---eau-de-parfum-intense-P1000206530.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "issey-miyake-leau-dissey.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/watery-fresh-clean",
-    "brandPressPage": "https://www.isseymiyake.com/en/press",
-    "sourceNotes": "Request via Issey Miyake press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/I/ISSEY_MIYAKE/P1000206530/110161-media_4.jpg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "issey-miyake-leau-dissey.jpg"
   },
   {
     "id": "mugler-alien",
     "status": "OK",
     "pageUrl": "https://inter.mugler.com/es_ES/fragancia/fragancias-para-mujer/alien/alien-eau-de-parfum/M010401002.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mugler-alien.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/jasmine-amber-purple",
-    "brandPressPage": "https://www.mugler.com/en-us/press",
-    "sourceNotes": "Request via Mugler press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse2.mm.bing.net/th/id/OIP.MVL6b9MIdFgM4uK77bIslwHaHa?pid=Api",
+    "file": "mugler-alien.jpg"
   },
   {
     "id": "mugler-angel",
     "status": "OK",
     "pageUrl": "https://inter.mugler.com/int/fragrance/women-s-fragrances/angel/angel-eau-de-parfum-refill/M020604263.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mugler-angel.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/chocolate-patchouli-sweet",
-    "brandPressPage": "https://www.mugler.com/en-us/press",
-    "sourceNotes": "Request via Mugler press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse4.mm.bing.net/th/id/OIP.fXt7EYYXTW3_uZMCJw30RQHaHa?pid=Api",
+    "file": "mugler-angel.jpg"
   },
   {
     "id": "jpg-le-male-le-parfum",
     "status": "OK",
     "pageUrl": "https://www.sephora.com/product/jean-paul-gaultier-le-male-eau-de-toilette-P510785",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "jpg-le-male-le-parfum.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/lavender-mint-mens",
-    "brandPressPage": "https://www.jeanpaulgaultier.com/en/press",
-    "sourceNotes": "Request via JPG press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.com/productimages/sku/s2775963-main-zoom.jpg?imwidth=630",
+    "file": "jpg-le-male-le-parfum.jpg"
   },
   {
     "id": "jpg-la-belle",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/eau-de-parfum-la-belle-paradise-garden-P10056965.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "jpg-la-belle.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pear-vanilla-feminine",
-    "brandPressPage": "https://www.jeanpaulgaultier.com/en/press",
-    "sourceNotes": "Request via JPG press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/J/JEAN_PAUL_GAULTIER/P10056965/98779-media_1-0.jpg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "jpg-la-belle.jpg"
   },
   {
     "id": "paco-rabanne-one-million",
     "status": "OK",
     "pageUrl": "https://www.sephora.it/p/1-million---eau-de-toilette-201463.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "paco-rabanne-one-million.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/gold-spice-mens",
-    "brandPressPage": "https://www.pacorabanne.com/en-us/press",
-    "sourceNotes": "Request via Paco Rabanne press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/R/RABANNE%20FRAGRANCES/P70703/7808-media_1.jpg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "paco-rabanne-one-million.jpg"
   },
   {
     "id": "chloe-signature",
     "status": "OK",
     "pageUrl": "https://www.selfridges.com/SG/en/product/chloe-atelier-des-fleurs-cedrus-limited-edition-eau-de-parfum-50ml_R04517808/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "chloe-signature.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-feminine-soft",
-    "brandPressPage": "https://www.chloe.com/en/press",
-    "sourceNotes": "Request via Chloé press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.selfridges.com/is/image/selfridges/R03824964_M?dpr=on%2C2",
+    "file": "chloe-signature.jpg"
   },
   {
     "id": "boss-bottled",
     "status": "OK",
     "pageUrl": "https://www.sephora.it/p/boss-bottled---eau-de-toilette-794299.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "boss-bottled.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/apple-sandalwood-mens",
-    "brandPressPage": "https://www.hugoboss.com/us/press",
-    "sourceNotes": "Request via Hugo Boss press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/H/HUGO_BOSS/P2384/18656-media_1.jpg?scaleWidth=750&scaleHeight=750&scaleMode=fit",
+    "file": "boss-bottled.jpg"
   },
   {
     "id": "le-labo-another-13",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/s/le-labo-another-13-eau-de-parfum/4835770",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "le-labo-another-13.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/clean-perfume-bottle",
-    "brandPressPage": "https://www.lelabofragrances.com/press.html",
-    "sourceNotes": "Request via Le Labo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/id/sr3/0d69cf99-b0d9-4532-9568-73be2067ef39.jpeg?crop=pad&pad_color=FFF&format=jpeg&w=780&h=1196",
+    "file": "le-labo-another-13.jpg"
   },
   {
     "id": "diptyque-philosykos",
     "status": "OK",
     "pageUrl": "https://www.diptyqueparis.com/en_eu/p/philosykos-eau-de-parfum-75ml-1.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "diptyque-philosykos.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/fig-tree",
-    "brandPressPage": "https://www.diptyqueparis.com/en_us/l/press.html",
-    "sourceNotes": "Request via Diptyque press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-philosykos-eau-de-parfum-75ml-philop75-1.jpg?quality=100&bg-color=255,255,255&fit=bounds&height=&width=&format=webp&width=1024&quality=90",
+    "file": "diptyque-philosykos.jpg"
   },
   {
     "id": "byredo-bal-dafrique",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/byredo-bal-dafrique-eau-de-parfum-8-4-oz-prod267910529",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "byredo-bal-dafrique.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/african-flowers",
-    "brandPressPage": "https://www.byredo.com/us_en/pages/press",
-    "sourceNotes": "Request via Byredo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_4704226_100000_a",
+    "file": "byredo-bal-dafrique.jpg"
   },
   {
     "id": "byredo-gypsy-water",
     "status": "OK",
     "pageUrl": "https://www.selfridges.com/US/en/product/byredo-gypsy-water-absolu-eau-de-parfum-100ml_R04590619/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "byredo-gypsy-water.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pine-forest-fresh",
-    "brandPressPage": "https://www.byredo.com/us_en/pages/press",
-    "sourceNotes": "Request via Byredo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.selfridges.com/is/image/selfridges/R04590617_ALT01?defaultimage=R04590617_M&dpr=on%2C2",
+    "file": "byredo-gypsy-water.jpg"
   },
   {
     "id": "byredo-mojave-ghost",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/s/mojave-ghost-eau-de-parfum/7208857",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "byredo-mojave-ghost.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/desert-minimalist",
-    "brandPressPage": "https://www.byredo.com/us_en/pages/press",
-    "sourceNotes": "Request via Byredo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/it/08e580e4-35de-40c8-ba21-97f1d88accf2.jpeg?crop=pad&w=780&h=1196",
+    "file": "byredo-mojave-ghost.jpg"
   },
   {
     "id": "parfums-de-marly-delina",
     "status": "OK",
     "pageUrl": "https://parfums-de-marly.com/products/delina",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "parfums-de-marly-delina.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pink-rose-luxury",
-    "brandPressPage": "https://parfums-de-marly.com/pages/press",
-    "sourceNotes": "Request via Parfums de Marly press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/DELINA_75ml_2.png?v=1728462022&width=1445",
+    "file": "parfums-de-marly-delina.jpg"
   },
   {
     "id": "parfums-de-marly-layton",
     "status": "OK",
     "pageUrl": "https://parfums-de-marly.com/products/layton",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "parfums-de-marly-layton.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/white-luxury-fragrance",
-    "brandPressPage": "https://parfums-de-marly.com/pages/press",
-    "sourceNotes": "Request via Parfums de Marly press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/2203_MARLY_LAYTON_200ml_01v2.jpg?v=1689256773",
+    "file": "parfums-de-marly-layton.jpg"
   },
   {
     "id": "parfums-de-marly-greenley",
     "status": "OK",
     "pageUrl": "https://us.parfums-de-marly.com/products/greenley",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "parfums-de-marly-greenley.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/green-fresh-fragrance",
-    "brandPressPage": "https://parfums-de-marly.com/pages/press",
-    "sourceNotes": "Request via Parfums de Marly press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "http://us.parfums-de-marly.com/cdn/shop/files/2207_MARLY_GREENLEY_125ml_2V4.jpg?v=1698409948",
+    "file": "parfums-de-marly-greenley.jpg"
   },
   {
     "id": "xerjoff-naxos",
     "status": "OK",
     "pageUrl": "https://www.fragrancex.com/products/xerjoff/xj-1861-naxos-perfume",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "xerjoff-naxos.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/honey-tobacco-warm",
-    "brandPressPage": "https://xerjoff.com/pages/press",
-    "sourceNotes": "Request via Xerjoff press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/naxos34w.jpg",
+    "file": "xerjoff-naxos.jpg"
   },
   {
     "id": "xerjoff-erba-pura",
     "status": "OK",
     "pageUrl": "https://www.fragrancex.com/products/xerjoff/xerjoff-erba-pura-perfume",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "xerjoff-erba-pura.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/citrus-musk-fresh",
-    "brandPressPage": "https://xerjoff.com/pages/press",
-    "sourceNotes": "Request via Xerjoff press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/xerxbs.jpg",
+    "file": "xerjoff-erba-pura.jpg"
   },
   {
     "id": "nishane-ani",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/browse/beauty?filterByBrand=nishane",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "nishane-ani.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/floral-woody-unisex",
-    "brandPressPage": "https://nishane.com/press",
-    "sourceNotes": "Request via Nishane press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/it/d53cde82-cba5-46c3-b2af-5bb623662d54.jpeg?h=368&w=240&dpr=2",
+    "file": "nishane-ani.jpg"
   },
   {
     "id": "nishane-wulong-cha",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/nishane-wulong-cha-extrait-de-parfum-3-4-oz-prod246440424",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "nishane-wulong-cha.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/tea-woody-fresh",
-    "brandPressPage": "https://nishane.com/press",
-    "sourceNotes": "Request via Nishane press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_4181728_100000_m",
+    "file": "nishane-wulong-cha.jpg"
   },
   {
     "id": "jo-malone-wood-sage-sea-salt",
     "status": "OK",
     "pageUrl": "https://www.sephora.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "jo-malone-wood-sage-sea-salt.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sea-salt-coastal",
-    "brandPressPage": "https://www.jomalone.com/press",
-    "sourceNotes": "Request via Jo Malone press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.com/productimages/sku/s2695815-av-6-zoom.jpg",
+    "file": "jo-malone-wood-sage-sea-salt.jpg"
   },
   {
     "id": "jo-malone-english-pear-freesia",
     "status": "OK",
     "pageUrl": "https://www.jomalone.com/product/25946/12553/colognes/english-pear-freesia-cologne",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "jo-malone-english-pear-freesia.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pear-freesia-soft",
-    "brandPressPage": "https://www.jomalone.com/press",
-    "sourceNotes": "Request via Jo Malone press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.jomalone.com/media/export/cms/products/1000x1000/jo_sku_L26L01_1000x1000_0.png",
+    "file": "jo-malone-english-pear-freesia.jpg"
   },
   {
     "id": "le-labo-the-matcha-26",
     "status": "OK",
     "pageUrl": "https://www.lelabofragrances.com/th-matcha-26-911.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "le-labo-the-matcha-26.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/green-perfume",
-    "brandPressPage": "https://www.lelabofragrances.com/press.html",
-    "sourceNotes": "Request via Le Labo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://lelabo.ips.photos/lelabo-java/images/skus/J34901R000__PRODUCT_01--IMG_1200--THMATCHA26-1617197160.jpg",
+    "file": "le-labo-the-matcha-26.jpg"
   },
   {
     "id": "mfk-gentle-fluidity-gold",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/maison-francis-kurkdjian-2-4-oz-gentle-fluidity-gold-eau-de-parfum-prod217260699",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-gentle-fluidity-gold.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/gold-fragrance",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.neimanmarcus.com/ca/7/product_assets/C/4/W/3/K/NMC4W3K_mz.jpg",
+    "file": "mfk-gentle-fluidity-gold.jpg"
   },
   {
     "id": "ariana-grande-cloud",
     "status": "OK",
     "pageUrl": "https://www.sephora.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "ariana-grande-cloud.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/lavender-pear-sweet",
-    "brandPressPage": "https://arianagrande.com/press",
-    "sourceNotes": "Request via Ariana Grande Fragrances press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.com/productimages/sku/s2809515-main-zoom.jpg?imwidth=2000",
+    "file": "ariana-grande-cloud.jpg"
   },
   {
     "id": "billie-eilish-eilish",
     "status": "OK",
     "pageUrl": "https://www.ulta.com/p/eilish-eau-de-parfum-pimprod2030620",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "billie-eilish-eilish.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/warm-musk-vanilla",
-    "brandPressPage": "https://beilish.com/press",
-    "sourceNotes": "Request via Eilish Fragrances press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.ulta.com/i/ulta/2594570?w=1080&h=1080&fmt=auto",
+    "file": "billie-eilish-eilish.jpg"
   },
   {
     "id": "ariana-grande-sweet-like-candy",
     "status": "OK",
     "pageUrl": "https://www.parfumo.com/Parfums/Ariana_Grande/sweet-like-candy-eau-de-parfum",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "ariana-grande-sweet-like-candy.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/berry-sweet-candy",
-    "brandPressPage": "https://arianagrande.com/press",
-    "sourceNotes": "Request via Ariana Grande Fragrances press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.parfumo.com/perfume_social/50/50f482-sweet-like-candy-eau-de-parfum-ariana-grande_1200.jpg?format=jpg&quality=90",
+    "file": "ariana-grande-sweet-like-candy.jpg"
   },
   {
     "id": "britney-spears-fantasy",
     "status": "OK",
     "pageUrl": "https://www.parfumo.com/Perfumes/Britney_Spears/Fantasy",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "britney-spears-fantasy.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pink-sweet-fruity",
-    "brandPressPage": "https://britneyspears.com/press",
-    "sourceNotes": "Generic press contact",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.parfumo.com/perfumes/c3/c359cf-fantasy-eau-de-parfum-britney-spears_1200.jpg?width=720&aspect_ratio=1:1",
+    "file": "britney-spears-fantasy.jpg"
   },
   {
     "id": "lattafa-khamrah",
     "status": "OK",
     "pageUrl": "https://www.fragrancex.com/products/lattafa/lattafa-khamrah-cologne",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "lattafa-khamrah.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/oud-amber-oriental",
-    "brandPressPage": "https://www.lattafa.ae/press",
-    "sourceNotes": "Request via Lattafa press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/latlj0.jpg",
+    "file": "lattafa-khamrah.jpg"
   },
   {
     "id": "lattafa-yara",
     "status": "OK",
     "pageUrl": "https://beautyhouse.com/products/lattafa-yara-eau-de-parfum-for-women",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "lattafa-yara.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/floral-musk-sweet",
-    "brandPressPage": "https://www.lattafa.ae/press",
-    "sourceNotes": "Request via Lattafa press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://beautyhouse.com/cdn/shop/files/01jokedobc_8189428f-39e0-4267-ac2c-759892ceff6a.png?v=1759859282&width=1600",
+    "file": "lattafa-yara.jpg"
   },
   {
     "id": "lattafa-asad",
     "status": "OK",
     "pageUrl": "https://www.fragrancex.com/products/lattafa/lattafa-asad-bourbon-cologne",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "lattafa-asad.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/woody-spice-mens",
-    "brandPressPage": "https://www.lattafa.ae/press",
-    "sourceNotes": "Request via Lattafa press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/latle0.jpg",
+    "file": "lattafa-asad.jpg"
   },
   {
     "id": "afnan-9pm",
     "status": "OK",
     "pageUrl": "https://us.afnan.com/collections/eau-de-parfum",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "afnan-9pm.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/night-spice-dark",
-    "brandPressPage": "https://us.afnan.com/pages/press",
-    "sourceNotes": "Request via Afnan press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://us.afnan.com/cdn/shop/files/9AM-Product-02.jpg?v=1730203790&width=1080",
+    "file": "afnan-9pm.jpg"
   },
   {
     "id": "armaf-club-de-nuit-intense-man",
     "status": "OK",
     "pageUrl": "https://armaf.com/products/club-de-nuit-intense-men-2",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "armaf-club-de-nuit-intense-man.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pineapple-birch-smoky",
-    "brandPressPage": "https://armaf.com/pages/press",
-    "sourceNotes": "Request via Armaf press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "http://armaf.com/cdn/shop/files/REVCDNIntenseMen200mlgift-1a.jpg?v=1739111371",
+    "file": "armaf-club-de-nuit-intense-man.jpg"
   },
   {
     "id": "al-haramain-amber-oud-gold",
     "status": "OK",
     "pageUrl": "https://www.parfumo.com/Perfumes/Al_Haramain/haramain-amber-oud-gold-edition-extreme",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "al-haramain-amber-oud-gold.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/amber-oud-gold",
-    "brandPressPage": "https://www.alharamain.com/press",
-    "sourceNotes": "Request via Al Haramain press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.parfumo.com/perfume_imagery/5f/5f4b36-amber-oud-gold-edition-extreme-al-haramain_1200.jpg",
+    "file": "al-haramain-amber-oud-gold.jpg"
   },
   {
     "id": "zara-red-temptation",
     "status": "OK",
     "pageUrl": "https://www.zara.com/mx/en/red-zara-temptation-edp-80ml--2-71-fl--oz---p20110242.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zara-red-temptation.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/red-sweet-warm",
-    "brandPressPage": "https://www.zara.com/us/en/z/press",
-    "sourceNotes": "Request via Zara press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://static.zara.net/assets/public/c880/a6aa/73db419f8f7f/df47d436c54f/20110242999-e1/20110242999-e1.jpg?ts=1728899115557&w=560",
+    "file": "zara-red-temptation.jpg"
   },
   {
     "id": "zara-gardenia",
     "status": "OK",
     "pageUrl": "https://www.zara.com/ca/fr/gardenia-edp-90%C2%A0ml--3-04-fl--oz---p20120824.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zara-gardenia.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/gardenia-white-floral",
-    "brandPressPage": "https://www.zara.com/us/en/z/press",
-    "sourceNotes": "Request via Zara press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://static.zara.net/assets/public/8b1d/6abb/95794afab2eb/044695b4ea1b/20120824999-e1/20120824999-e1.jpg?ts=1735562701484&w=560",
+    "file": "zara-gardenia.jpg"
   },
   {
     "id": "montblanc-explorer",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/s/montblanc-explorer-eau-de-parfum/5365258",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "montblanc-explorer.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/bergamot-vetiver-woods",
-    "brandPressPage": "https://www.montblanc.com/en-us/press",
-    "sourceNotes": "Request via Montblanc press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/it/1c12b68e-ee70-4f3e-92ed-b5d78f9d9c07.jpeg?crop=pad&w=780&h=1196&dpr=2",
+    "file": "montblanc-explorer.jpg"
   },
   {
     "id": "glossier-you",
     "status": "OK",
     "pageUrl": "https://www.sephora.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "glossier-you.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/skin-musk-clean",
-    "brandPressPage": "https://www.glossier.com/pages/press",
-    "sourceNotes": "Request via Glossier press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.com/productimages/sku/s2737690-main-zoom.jpg?imwidth=2000",
+    "file": "glossier-you.jpg"
   },
   {
     "id": "clean-reserve-skin",
     "status": "OK",
     "pageUrl": "https://www.cleanbeauty.com/products/clean-reserve-skin",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "clean-reserve-skin.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/clean-skin-neutral",
-    "brandPressPage": "https://www.cleanbeauty.com/pages/press",
-    "sourceNotes": "Request via Clean Reserve press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.cleanbeauty.com/cdn/shop/files/100ML_RESERVE_Skin_CartonBottle.png?v=1702407063&width=3000",
+    "file": "clean-reserve-skin.jpg"
   },
   {
     "id": "chanel-coco-mademoiselle",
     "status": "OK",
     "pageUrl": "https://www.chanel.com/in/fragrance/p/116520/coco-mademoiselle-eau-de-parfum-spray/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "chanel-coco-mademoiselle.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/perfume-bottle",
-    "brandPressPage": "https://www.chanel.com/us/fragrance/press/",
-    "sourceNotes": "Request press kit from Chanel press office",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.chanel.com/images/t_one/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/coco-mademoiselle-hair-perfume-1-2fl-oz--packshot-default-116997-9536312999966.jpg",
+    "file": "chanel-coco-mademoiselle.jpg"
   },
   {
     "id": "chanel-no-5",
     "status": "OK",
     "pageUrl": "https://www.chanel.com/in/fragrance/p/125530/n5-eau-de-parfum-spray/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "chanel-no-5.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/perfume-bottle-classic",
-    "brandPressPage": "https://www.chanel.com/us/fragrance/press/",
-    "sourceNotes": "Request press kit from Chanel press office",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.chanel.com/images/t_one/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-the-hair-mist-1-2fl-oz--packshot-default-105798-8835357900830.jpg",
+    "file": "chanel-no-5.jpg"
   },
   {
     "id": "dior-jadore",
     "status": "OK",
     "pageUrl": "https://www.harrods.com/en-in/p/dior-jadore-eau-de-parfum-100ml-000000000007749682",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "dior-jadore.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/gold-perfume-bottle",
-    "brandPressPage": "https://www.dior.com/en_us/beauty/dior-beauty-press",
-    "sourceNotes": "Request via Dior press portal",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://hrd-live.cdn.scayle.cloud/images/13f29e6e5f0b18af7a1b0b6ef0ba1208.jpg?brightness=1&width=922&height=1230&quality=75&bg=ffffff",
+    "file": "dior-jadore.jpg"
   },
   {
     "id": "ysl-black-opium",
     "status": "OK",
     "pageUrl": "https://www.sephora.it/p/black-opium---eau-de-parfum-306748.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "ysl-black-opium.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/coffee-vanilla-dark",
-    "brandPressPage": "https://www.yslbeauty.com/en-us/press.html",
-    "sourceNotes": "Request via YSL press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/Y/YVES_SAINT_LAURENT/P1920022/23512-media_1.jpg?scaleWidth=750&scaleHeight=750&scaleMode=fit",
+    "file": "ysl-black-opium.jpg"
   },
   {
     "id": "prada-paradoxe",
     "status": "OK",
     "pageUrl": "https://www.prada.com/us/en/p/paradoxe-edp-90-ml/1A1351_2HDZ_F0Z99_P_ML090",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "prada-paradoxe.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/neroli-musk-feminine",
-    "brandPressPage": "https://www.prada.com/us/en/press",
-    "sourceNotes": "Request via Prada press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.prada.com/content/dam/pradabkg_products/1/1A1/1A1351/2HDZF0Z99/1A1351_2HDZ_F0Z99_P_ML090_SLF.jpg",
+    "file": "prada-paradoxe.jpg"
   },
   {
     "id": "dolce-gabbana-devotion",
     "status": "OK",
     "pageUrl": "https://img.fragrancex.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "dolce-gabbana-devotion.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/floral-vanilla-feminine",
-    "brandPressPage": "https://www.dolcegabbana.com/beauty/press",
-    "sourceNotes": "Request via D&G Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/DolDAE.jpg",
+    "file": "dolce-gabbana-devotion.jpg"
   },
   {
     "id": "lancome-idole",
     "status": "OK",
     "pageUrl": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/idole/idole-eau-de-parfum/LAN387.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "lancome-idole.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-peony-bottle",
-    "brandPressPage": "https://www.lancome.com/press",
-    "sourceNotes": "Request via Lancôme press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse1.mm.bing.net/th/id/OIP.nCaV1SaMzkJooJ_MMJC6FQHaHa?pid=Api",
+    "file": "lancome-idole.jpg"
   },
   {
     "id": "viktor-rolf-spicebomb-extreme",
     "status": "OK",
     "pageUrl": "https://www.viktor-rolf.com/products/spicebomb-extreme-eau-de-parfum-90ml",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "viktor-rolf-spicebomb-extreme.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/spice-cologne",
-    "brandPressPage": "https://www.viktor-rolf.com/pages/press",
-    "sourceNotes": "Request via Viktor & Rolf press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.viktor-rolf.com/cdn/shop/files/model_front_vr_SB-EXTREME_90ml_Packshot_1600x2400_0c73ecfe-4725-41de-87c9-5b97765b40f3.jpg?v=1720703511",
+    "file": "viktor-rolf-spicebomb-extreme.jpg"
   },
   {
     "id": "armani-stronger-with-you-intensely",
     "status": "OK",
     "pageUrl": "https://www.fragrantica.com/news/Stronger-With-You-Parfum-A-New-Chapter-in-Giorgio-Armani-s-Iconic-Line-21659.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "armani-stronger-with-you-intensely.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/warm-spice-mens",
-    "brandPressPage": "https://www.giorgioarmanibeauty.com/press",
-    "sourceNotes": "Request via Armani Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://fimgs.net/himg/o.3NW17TMcwEb.png",
+    "file": "armani-stronger-with-you-intensely.jpg"
   },
   {
     "id": "valentino-uomo-born-in-roma-intense",
     "status": "OK",
     "pageUrl": "https://www.valentino-beauty.us/fragrances/fragrances-men/born-in-roma-uomo-intense/born-in-roma-uomo-eau-de-parfum-intense-MPL01907.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "valentino-uomo-born-in-roma-intense.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/spice-mens-intense",
-    "brandPressPage": "https://www.valentino.com/en-us/fragrances/press",
-    "sourceNotes": "Request via Valentino press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://thfvnext.bing.com/th/id/OIP.B9z7nST2N_s4Ux6rLwnCgwHaHa?cb=thfvnextfalcon2&pid=Api",
+    "file": "valentino-uomo-born-in-roma-intense.jpg"
   },
   {
     "id": "givenchy-gentleman-reserve-privee",
     "status": "OK",
     "pageUrl": "https://www.givenchybeauty.com/us/p/gentleman-givenchy-reserve-privee---3pc-gift-set-F70000312.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "givenchy-gentleman-reserve-privee.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/iris-leather-mens",
-    "brandPressPage": "https://www.givenchy.com/us/en-US/press",
-    "sourceNotes": "Request via Givenchy press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.givenchybeauty.com/dw/image/v2/BBZW_PRD/on/demandware.static/-/Sites-givenchy-beauty-master/default/dwd693c4ad/images/P100208/P100208_3274872481091_GENTLEMAN_GIVENCHY_RESERVE_PRIVEE_2.jpg?sw=1200&sh=1500&sm=fit",
+    "file": "givenchy-gentleman-reserve-privee.jpg"
   },
   {
     "id": "acqua-di-gio-profondo",
     "status": "OK",
     "pageUrl": "https://www.fragrantica.com/news/Giorgio-Armani-Acqua-di-Gio-Profondo-13300.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "acqua-di-gio-profondo.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/deep-blue-ocean",
-    "brandPressPage": "https://www.giorgioarmanibeauty.com/press",
-    "sourceNotes": "Request via Armani Beauty press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://fimgs.net/himg/o.90018.jpg",
+    "file": "acqua-di-gio-profondo.jpg"
   },
   {
     "id": "versace-dylan-blue",
     "status": "OK",
     "pageUrl": "https://www.ulta.com/p/dylan-blue-eau-de-toilette-xlsImpprod14531023?sku=2500264",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "versace-dylan-blue.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/blue-aquatic-mens",
-    "brandPressPage": "https://www.versace.com/us/en/fragrance/press",
-    "sourceNotes": "Request via Versace press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.ulta.com/i/ulta/2500264?w=1080&h=1080&fmt=auto",
+    "file": "versace-dylan-blue.jpg"
   },
   {
     "id": "amouage-guidance",
     "status": "OK",
     "pageUrl": "https://www.selfridges.com/GB/en/product/amouage-guidance-eau-de-parfum-100ml_R04182072/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "amouage-guidance.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/incense-oud-luxury",
-    "brandPressPage": "https://www.amouage.com/en-us/press",
-    "sourceNotes": "Request via Amouage press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.selfridges.com/is/image/selfridges/R04475237_M?dpr=on%2C2",
+    "file": "amouage-guidance.jpg"
   },
   {
     "id": "amouage-reflection-man",
     "status": "OK",
     "pageUrl": "https://img.fragrancex.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "amouage-reflection-man.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/white-floral-mens",
-    "brandPressPage": "https://www.amouage.com/en-us/press",
-    "sourceNotes": "Request via Amouage press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/amref34m.jpg",
+    "file": "amouage-reflection-man.jpg"
   },
   {
     "id": "initio-side-effect",
     "status": "OK",
     "pageUrl": "https://www.fragrancex.com/products/initio-parfums-prives/initio-side-effect-cologne",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "initio-side-effect.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/vanilla-rum-warm",
-    "brandPressPage": "https://initio-parfums-prives.com/press",
-    "sourceNotes": "Request via Initio press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/INII4T.jpg",
+    "file": "initio-side-effect.jpg"
   },
   {
     "id": "initio-musk-therapy",
     "status": "OK",
     "pageUrl": "https://www.parfumo.com/Perfumes/Initio/musk-therapy-parfum-pour-cheveux",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "initio-musk-therapy.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/clean-musk-minimal",
-    "brandPressPage": "https://initio-parfums-prives.com/press",
-    "sourceNotes": "Request via Initio press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.parfumo.com/perfumes/60/6092d3-musk-therapy-parfum-pour-cheveux-initio_1200.jpg?width=720&aspect_ratio=1:1",
+    "file": "initio-musk-therapy.jpg"
   },
   {
     "id": "mancera-cedrat-boise",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/mancera-cedrat-boise-eau-de-parfum-2-oz-prod263030713",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mancera-cedrat-boise.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/citrus-wood-fresh",
-    "brandPressPage": "https://www.mancera.fr/en/press",
-    "sourceNotes": "Request via Mancera press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_456/01/nm_4595459_100000_m",
+    "file": "mancera-cedrat-boise.jpg"
   },
   {
     "id": "mancera-instant-crush",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/mancera-intense-instant-crush-eau-de-parfum-4-oz-prod283510130",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mancera-instant-crush.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sweet-floral-warm",
-    "brandPressPage": "https://www.mancera.fr/en/press",
-    "sourceNotes": "Request via Mancera press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_5064558_100000_a",
+    "file": "mancera-instant-crush.jpg"
   },
   {
     "id": "montale-intense-cafe",
     "status": "OK",
     "pageUrl": "https://www.sephora.com/product/intense-cafe-eau-de-parfum-travel-spray-P513028",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "montale-intense-cafe.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/coffee-rose-warm",
-    "brandPressPage": "https://www.montaleparis.com/press",
-    "sourceNotes": "Request via Montale press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.com/productimages/sku/s2822138-main-zoom.jpg?imwidth=315",
+    "file": "montale-intense-cafe.jpg"
   },
   {
     "id": "juliette-has-a-gun-not-a-perfume",
     "status": "OK",
     "pageUrl": "https://www.juliettehasagun.com/en/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "juliette-has-a-gun-not-a-perfume.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/clean-ambrette-skin",
-    "brandPressPage": "https://www.juliettehasagun.com/pages/press",
-    "sourceNotes": "Request via Juliette Has a Gun press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.juliettehasagun.com/cdn/shop/files/NOT_BESTSELLER_VIAL_100ml.png?v=1708098785",
+    "file": "juliette-has-a-gun-not-a-perfume.jpg"
   },
   {
     "id": "kayali-vanilla-28",
     "status": "OK",
     "pageUrl": "https://www.parfumo.com/Parfums/Kayali/vanilla-28-eau-de-parfum",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "kayali-vanilla-28.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/vanilla-warm-sweet",
-    "brandPressPage": "https://kayali.com/pages/press",
-    "sourceNotes": "Request via Kayali press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.parfumo.com/perfume_imagery/ad/adee56_vanilla-28-kayali_1200.jpg",
+    "file": "kayali-vanilla-28.jpg"
   },
   {
     "id": "kayali-yum-pistachio-gelato",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/yum-pistachio-gelato--33---eau-de-parfum-intense-P10048546.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "kayali-yum-pistachio-gelato.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pistachio-sweet-gourmand",
-    "brandPressPage": "https://kayali.com/pages/press",
-    "sourceNotes": "Request via Kayali press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dw1d02cd37/images/hi-res/SKU/SKU_3963/659758_swatch.jpg",
+    "file": "kayali-yum-pistachio-gelato.jpg"
   },
   {
     "id": "commodity-milk-expressive",
     "status": "OK",
     "pageUrl": "https://commodityfragrances.com/products/milk-expressive",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "commodity-milk-expressive.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/clean-milky-soft",
-    "brandPressPage": "https://commodityfragrances.com/pages/press",
-    "sourceNotes": "Request via Commodity press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "http://commodityfragrances.com/cdn/shop/files/ProductImagery_72dpi_ScentSpace100ml_PPage_V1_MilkExpressive_1200x1200.png?v=1697061468",
+    "file": "commodity-milk-expressive.jpg"
   },
   {
     "id": "phlur-missing-person",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/s/missing-person-eau-de-parfum/7593321",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "phlur-missing-person.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/soft-musk-linen",
-    "brandPressPage": "https://phlur.com/pages/press",
-    "sourceNotes": "Request via Phlur press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/it/811a8087-d5d5-4ff8-b76e-112fd8822f09.jpeg?crop=pad&w=780&h=1196",
+    "file": "phlur-missing-person.jpg"
   },
   {
     "id": "replica-beach-walk",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/fragrances/replica/replica-beach-walk/MM003.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-beach-walk.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/beach-summer",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://thfvnext.bing.com/th/id/OIP.KWkft0hY8fQBznBLulnHWwHaHa?cb=thfvnextfalcon2&pid=Api",
+    "file": "replica-beach-walk.jpg"
   },
   {
     "id": "replica-coffee-break",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/en/product/570571/replica-coffee-break",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-coffee-break.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/coffee-morning",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://cdn-prod.scalefast.com/public/assets/img/resized/loreal-maison-margiela-store/130f031e6189c708477640cd6de07d01_1920_KR.jpg",
+    "file": "replica-coffee-break.jpg"
   },
   {
     "id": "lattafa-eclaire",
     "status": "OK",
     "pageUrl": "https://www.fragrantica.com/perfume/Lattafa-Perfumes/Eclaire-93628.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "lattafa-eclaire.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sweet-gourmand-oriental",
-    "brandPressPage": "https://www.lattafa.ae/press",
-    "sourceNotes": "Request via Lattafa press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://fimgs.net/photogram/p1200/hu/xj/I64im6ezMf3hF2R1.jpg",
+    "file": "lattafa-eclaire.jpg"
   },
   {
     "id": "lattafa-liam-grey",
     "status": "OK",
     "pageUrl": "https://www.fragrancex.com/products/lattafa/lattafa-liam-grey-cologne",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "lattafa-liam-grey.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/fresh-woody-grey",
-    "brandPressPage": "https://www.lattafa.ae/press",
-    "sourceNotes": "Request via Lattafa press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/LatLUQ.jpg",
+    "file": "lattafa-liam-grey.jpg"
   },
   {
     "id": "maison-alhambra-bright-peach",
     "status": "OK",
     "pageUrl": "https://www.fragrancenet.com/perfume/maison-alhambra/maison-alhambra-bright-peach/eau-de-parfum",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "maison-alhambra-bright-peach.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/peach-fruity-sweet",
-    "brandPressPage": "https://www.maisonalhambra.com/press",
-    "sourceNotes": "Request via Maison Alhambra press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse3.mm.bing.net/th/id/OIP.GwwTwRSWGmq2iMjJAjs00wAAAA?r=0&pid=Api",
+    "file": "maison-alhambra-bright-peach.jpg"
   },
   {
     "id": "maison-alhambra-lovely-cherie",
     "status": "OK",
     "pageUrl": "https://www.fragrantica.com/perfume/Maison-Alhambra/Lovely-Cherie-79944.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "maison-alhambra-lovely-cherie.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/cherry-sweet-floral",
-    "brandPressPage": "https://www.maisonalhambra.com/press",
-    "sourceNotes": "Request via Maison Alhambra press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://fimgs.net/mdimg/perfume/social.79944.jpg",
+    "file": "maison-alhambra-lovely-cherie.jpg"
   },
   {
     "id": "zoologist-bee",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-bee-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-bee.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/honeybee-flower",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/Box-Bottle-JD-60ml-Bee_2000x.jpg?v=1736730052",
+    "file": "zoologist-bee.jpg"
   },
   {
     "id": "zoologist-squid",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-squid-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-squid.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/ocean-dark",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/products/60mL-Front-Squid-Shopify-2000_2000x.jpg?v=1682275622",
+    "file": "zoologist-squid.jpg"
   },
   {
     "id": "zoologist-cow",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-bat-2020-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-cow.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/meadow-farm",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/products/60mL-Front-Cow-Shopify-2000_2048x.jpg?v=1682274988",
+    "file": "zoologist-cow.jpg"
   },
   {
     "id": "zoologist-harvest-mouse",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-harvest-mouse-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-harvest-mouse.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/wheat-field-autumn",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/Box-Bottle-Harvest-Mouse-Shopify-2000_2000x.jpg?v=1715266145",
+    "file": "zoologist-harvest-mouse.jpg"
   },
   {
     "id": "zoologist-rabbit",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-rabbit-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-rabbit.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/forest-green-fresh",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/60mL-JD-Box-Bottle-Rabbit-2000_1200x.jpg?v=1730655501",
+    "file": "zoologist-rabbit.jpg"
   },
   {
     "id": "zoologist-penguin",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-penguin-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-penguin.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/icy-cold-fresh",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/60mL-Front-Penguin-Special-Shopify-2000_2000x.jpg?v=1704944975",
+    "file": "zoologist-penguin.jpg"
   },
   {
     "id": "zoologist-tyrannosaurus-rex",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-tyrannosaurus-rex-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-tyrannosaurus-rex.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/dark-earthy-smoke",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/Box-Bottle-JD-60ml-Tyrannosaurus-Rex_800x.jpg?v=1736730052",
+    "file": "zoologist-tyrannosaurus-rex.jpg"
   },
   {
     "id": "zoologist-moth",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-moth-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-moth.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/night-dark-minimal",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/60mL-JD-Box-Bottle-Moth-2000_1200x.jpg?v=1730655500",
+    "file": "zoologist-moth.jpg"
   },
   {
     "id": "zoologist-seahorse",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-seahorse-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-seahorse.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sea-ocean-aquatic",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://cdn.shopify.com/s/files/1/0396/9165/products/60mL-Front-Seahorse-Shopify-2000_2000x.jpg?v=1682275572",
+    "file": "zoologist-seahorse.jpg"
   },
   {
     "id": "zoologist-snowy-owl",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-snowy-owl-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-snowy-owl.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/snow-winter-white",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/Box-Bottle-JD-60ml-Snowy-Owl_2048x.jpg?v=1736730052",
+    "file": "zoologist-snowy-owl.jpg"
   },
   {
     "id": "zoologist-camel",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-camel-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-camel.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/desert-sand-warm",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/60mL-JD-Box-Bottle-Camel-2000_5000x.jpg?v=1730655500",
+    "file": "zoologist-camel.jpg"
   },
   {
     "id": "zoologist-panda",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/panda",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-panda.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/bamboo-fresh-green",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/Bottle-Front-Panda_600x.jpg?v=1772388281",
+    "file": "zoologist-panda.jpg"
   },
   {
     "id": "zoologist-hummingbird",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/hummingbird",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-hummingbird.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/tropical-flower-bright",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/products/Box-Bottle-Hummingbird-Shopify-2000_5000x.jpg?v=1682275138",
+    "file": "zoologist-hummingbird.jpg"
   },
   {
     "id": "zoologist-chameleon",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-chameleon-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-chameleon.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/green-jungle-tropical",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/products/Box-Bottle-Chameleon-Shopify-2000_2000x.jpg?v=1682274915",
+    "file": "zoologist-chameleon.jpg"
   },
   {
     "id": "zoologist-sacred-scarab",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-sacred-scarab-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-sacred-scarab.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/egypt-warm-spice",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/products/60mL-Front-Sacred-Scarab-Shopify-2000_2048x.jpg?v=1682275555",
+    "file": "zoologist-sacred-scarab.jpg"
   },
   {
     "id": "zoologist-tiger",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-tiger-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-tiger.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/warm-spice-amber",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/60mL-JD-Box-Bottle-Tiger-2000_2048x.jpg?v=1730655501",
+    "file": "zoologist-tiger.jpg"
   },
   {
     "id": "zoologist-king-cobra",
     "status": "OK",
     "pageUrl": "https://www.zoologistperfumes.com/products/zoologist-king-cobra-deluxe-bottle",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-king-cobra.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/dark-green-mysterious",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.zoologistperfumes.com/cdn/shop/files/60mL-JD-Box-Bottle-King-Cobra-2000_1200x.jpg?v=1730655502",
+    "file": "zoologist-king-cobra.jpg"
   },
   {
     "id": "zoologist-portuguese-man-o-war",
     "status": "OK",
     "pageUrl": "https://www.parfumo.com/Perfumes/Zoologist/portuguese-man-o-war",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "zoologist-portuguese-man-o-war.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/ocean-blue-deep",
-    "brandPressPage": "https://www.zoologistperfumes.com/pages/press",
-    "sourceNotes": "Request via Zoologist press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.parfumo.com/perfume_imagery/f5/f55baa_portuguese-man-o-war-zoologist_1200.jpg",
+    "file": "zoologist-portuguese-man-o-war.jpg"
   },
   {
     "id": "replica-whispers-in-the-library",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/fragrances/by-collection/replica/replica-whispers-in-the-library/MM015.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-whispers-in-the-library.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/library-books",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dwbf3526b6/images/products/MM015/MM015_MAIN.jpg",
+    "file": "replica-whispers-in-the-library.jpg"
   },
   {
     "id": "replica-when-the-rain-stops",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/fragrances/replica-eau-de-toilette/replica-when-the-rain-stops/MM014.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-when-the-rain-stops.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rain-window",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse4.mm.bing.net/th/id/OIP.PImUnY-9xoxOCw1t_OZGvgHaHa?pid=Api",
+    "file": "replica-when-the-rain-stops.jpg"
   },
   {
     "id": "replica-autumn-vibes",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/en/product/641529/replica-autumn-vibes",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-autumn-vibes.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/autumn-leaves",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://cdn-prod.scalefast.com/public/assets/img/resized/loreal-maison-margiela-store/3167073848b11b3c78c86135f97f824c_1920_KR.jpg",
+    "file": "replica-autumn-vibes.jpg"
   },
   {
     "id": "replica-matcha-meditation",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/fragrances/by-collection/replica-memories-eau-de-toilette/replica-matcha-meditation/MM010.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-matcha-meditation.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/matcha-tea",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dw48736c3f/images/products/MM010/3Ingredients_MatchaMeditation_EDT.jpg?sw=1224&sh=1224&sm=cut&sfrm=jpg&q=70",
+    "file": "replica-matcha-meditation.jpg"
   },
   {
     "id": "replica-bubble-bath",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-bubble-bath.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/bath-bubbles",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse2.mm.bing.net/th/id/OIP.ALx7-Ik5ZfTIMmDo7Q2nVwHaHa?r=0&pid=Api",
+    "file": "replica-bubble-bath.jpg"
   },
   {
     "id": "replica-sailing-day",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/product/484554/replica-sailing-day",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-sailing-day.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sailing-boat",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://cdn-prod.scalefast.com/public/assets/img/resized/loreal-maison-margiela-store/95faef3ffb7f12b03f7a652517ed93bb_1920_KR.jpg",
+    "file": "replica-sailing-day.jpg"
   },
   {
     "id": "replica-springtime-in-a-park",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/fragrances/by-collection/replica/replica-springtime-in-a-park/MM012.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-springtime-in-a-park.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/spring-park-flowers",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dw98b059b6/images/products/MM012/3614272661271/MM012_MAIN.jpg",
+    "file": "replica-springtime-in-a-park.jpg"
   },
   {
     "id": "replica-under-the-lemon-trees",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/fragrances/replica-eau-de-toilette/replica-under-the-lemon-trees/MM013.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-under-the-lemon-trees.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/lemon-tree",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse3.mm.bing.net/th/id/OIP.4HlJCeFxEVTdGAXJdfnsswHaHa?pid=Api",
+    "file": "replica-under-the-lemon-trees.jpg"
   },
   {
     "id": "replica-flower-market",
     "status": "OK",
     "pageUrl": "https://img.fragrancex.com/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-flower-market.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/flower-market",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/RepM0G.jpg",
+    "file": "replica-flower-market.jpg"
   },
   {
     "id": "replica-at-the-barbers",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/s/maison-margiela-replica-at-the-barbers-eau-de-toilette-fragrance/4134898?siteid=zmNbNw6aNM4-fk4cakx30HEJgVRPWSsL1Q",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-at-the-barbers.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/barbershop",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/it/c65e0c5a-8d3c-4b05-bebd-9ff1ab476ab1.jpeg?crop=pad&w=780&h=1196",
+    "file": "replica-at-the-barbers.jpg"
   },
   {
     "id": "replica-afternoon-delight",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/fragrances/replica-eau-de-toilette/replica-afternoon-delight/MM159.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-afternoon-delight.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/afternoon-sun",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse4.mm.bing.net/th/id/OIP.HynJonyFaeNRfHzMkqj3qwHaHa?pid=Api",
+    "file": "replica-afternoon-delight.jpg"
   },
   {
     "id": "replica-up-at-dawn",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/replica-up-at-dawn---eau-de-toilette-florale-boisee-P1000211949.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-up-at-dawn.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sunrise-morning",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/M/MAISON_MARGIELA/P1000211949/115579-media_1-0.jpeg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "replica-up-at-dawn.jpg"
   },
   {
     "id": "replica-chasing-sunsets",
     "status": "OK",
     "pageUrl": "https://www.parfumo.com/Perfumes/Maison_Margiela/chasing-sunsets",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-chasing-sunsets.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sunset-golden",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.parfumo.com/perfume_imagery/ba/ba4759_chasing-sunsets-maison-margiela_1200.jpg",
+    "file": "replica-chasing-sunsets.jpg"
   },
   {
     "id": "replica-never-ending-summer",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/fragrances/replica/replica-never-ending-summer/MM163.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-never-ending-summer.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/summer-beach-light",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse1.mm.bing.net/th/id/OIP.eqm_rxzPz8m4ulPh_7ociwHaHa?pid=Api",
+    "file": "replica-never-ending-summer.jpg"
   },
   {
     "id": "replica-on-a-date",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/fragrances/discover/replica-memories/replica-on-a-date/MM016.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-on-a-date.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/candlelit-dinner",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dwcfcb439e/images/products/MM016/MM016_MAIN.jpg",
+    "file": "replica-on-a-date.jpg"
   },
   {
     "id": "replica-from-the-garden",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.us/fragrances/replica-eau-de-toilette/replica-from-the-garden/MM1355.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-from-the-garden.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/garden-flowers",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://tse3.mm.bing.net/th/id/OIP.7WTJtD2tCqFc8Hkgd_pZ7gHaHa?r=0&pid=Api",
+    "file": "replica-from-the-garden.jpg"
   },
   {
     "id": "replica-soul-of-the-forest",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/replica-soul-of-the-forest/MM151.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-soul-of-the-forest.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/forest-misty",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dw6f69a6ea/images/products/MM151/MaisonMargiela-REPLICA-EDT-3614271429902-ProductPage_Desktop_030.jpg?sw=1152&sh=1152&sm=cut&sfrm=jpg&q=70",
+    "file": "replica-soul-of-the-forest.jpg"
   },
   {
     "id": "replica-celestial-whispers",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/fragrances/replica-celestial-whispers-eau-de-parfum/MM165.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-celestial-whispers.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/stars-night-sky",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dw2d6b7b67/images/products/MM165/mm_replica_fantaisies_celestial-whispers_packshot_Box&Product_edp_03614274347425.jpg?sw=768&sh=768&sm=cut&sfrm=png&q=70",
+    "file": "replica-celestial-whispers.jpg"
   },
   {
     "id": "replica-flying",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/replica-flying---eau-de-parfum-P3685251.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-flying.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sky-clouds",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dwb2884d13/images/hi-res/alternates/PID_alternate2/PID_alternate2_3617/P3685251_2.jpg",
+    "file": "replica-flying.jpg"
   },
   {
     "id": "replica-dancing-on-the-moon",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/replica-dancing-on-the-moon/MM153.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-dancing-on-the-moon.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/moon-night",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dwb2bea881/images/products/MM153/1_2000x2000.jpg",
+    "file": "replica-dancing-on-the-moon.jpg"
   },
   {
     "id": "replica-ideal-one",
     "status": "OK",
     "pageUrl": "https://www.maisonmargiela-fragrances.eu/en_GB/fragrances/discover/replica-memories/replica-ideal-one/MM164.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "replica-ideal-one.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/romantic-light",
-    "brandPressPage": "https://www.maisonmargiela.com/en-us/press",
-    "sourceNotes": "Request via Maison Margiela press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.maisonmargiela-fragrances.eu/dw/image/v2/BDCR_PRD/on/demandware.static/-/Sites-margiela-master-catalog/default/dwb5a2544d/images/products/MM164/1.jpg",
+    "file": "replica-ideal-one.jpg"
   },
   {
     "id": "mfk-baccarat-rouge-540-extrait",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/uk-en/p/baccarat-rouge-540-eau-de-parfum-RA12238.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-baccarat-rouge-540-extrait.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/luxury-perfume-gold",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/on/demandware.static/-/Library-Sites-MaisonFrancisKurkdjianSharedLibrary/default/dw01bde98d/BR540_GOLD_EDP_no-logo_1080x1080V.jpg",
+    "file": "mfk-baccarat-rouge-540-extrait.jpg"
   },
   {
     "id": "mfk-724",
     "status": "OK",
     "pageUrl": "https://www.bloomingdales.com/shop/product/maison-francis-kurkdjian-724-eau-de-parfum?ID=4494833",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-724.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/modern-perfume-bottle",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.bloomingdalesassets.com/is/image/BLM/products/6/optimized/12345736_fpx.tif?op_sharpen=1&wid=700&fit=fit,1&$filtersm$",
+    "file": "mfk-724.jpg"
   },
   {
     "id": "mfk-aqua-universalis",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/eu-es/p/aqua-universalis-eau-de-toilette-RA130321.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-aqua-universalis.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/white-perfume-bottle",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/on/demandware.static/-/Sites-mfk-master-catalog/default/dwc44f9056/AquaUniversalis/PDP-triptych-AU-1-840x840.jpg",
+    "file": "mfk-aqua-universalis.jpg"
   },
   {
     "id": "mfk-aqua-vitae",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/aqua-vitae---eau-de-toilette-P10016604.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-aqua-vitae.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/aqua-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dwb0560941/images/hi-res/SKU/SKU_2307/427327_swatch.jpg",
+    "file": "mfk-aqua-vitae.jpg"
   },
   {
     "id": "mfk-aqua-celestia-cologne-forte",
     "status": "OK",
     "pageUrl": "https://www.bloomingdales.com/shop/product/maison-francis-kurkdjian-aqua-celestia-cologne-forte-eau-de-parfum-6.8-oz.?ID=4391946",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-aqua-celestia-cologne-forte.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/blue-perfume-bottle",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://images.bloomingdalesassets.com/is/image/BLM/products/5/optimized/12772475_fpx.tif?op_sharpen=1&wid=700&fit=fit,1&$filtersm$",
+    "file": "mfk-aqua-celestia-cologne-forte.jpg"
   },
   {
     "id": "mfk-aqua-media-cologne-forte",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/int-en/p/aqua-media-cologne-forte-eau-de-parfum-RA12362.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-aqua-media-cologne-forte.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/cologne-luxury",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/on/demandware.static/-/Sites-mfk-master-catalog/default/dw9bf31e32/AquaMedia_PDP_Triptych_KV2_840x840.jpg",
+    "file": "mfk-aqua-media-cologne-forte.jpg"
   },
   {
     "id": "mfk-petit-matin",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/us-en/p/petit-matin-eau-de-parfum-RA122421.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-petit-matin.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/morning-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/on/demandware.static/-/Sites-mfk-master-catalog/default/dw8dcaddcc/PMGS2024_Triptych_visuel-secondaire_05_Petit-Matin_70ml_1080X1080.jpg",
+    "file": "mfk-petit-matin.jpg"
   },
   {
     "id": "mfk-grand-soir",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/grand-soir---eau-de-parfum-P1000202782.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-grand-soir.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/evening-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.sephora.fr/on/demandware.static/-/Sites-masterCatalog_Sephora/default/dw5e83b9d4/images/hi-res/SKU/SKU_4809/652470_swatch.jpg",
+    "file": "mfk-grand-soir.jpg"
   },
   {
     "id": "mfk-gentle-fluidity-silver",
     "status": "OK",
     "pageUrl": "https://www.fragrancex.com/products/maison-francis-kurkdjian/gentle-fluidity-silver-perfume",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-gentle-fluidity-silver.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/silver-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://img.fragrancex.com/images/products/sku/large/genmfx.jpg",
+    "file": "mfk-gentle-fluidity-silver.jpg"
   },
   {
     "id": "mfk-oud",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/oud----eau-de-parfum-P10061983.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-oud.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/oud-fragrance",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/M/MAISON_FRANCIS_KURKDJIAN/767173/367424-media_swatch.jpg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "mfk-oud.jpg"
   },
   {
     "id": "mfk-oud-satin-mood",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/maison-francis-kurkdjian-2-4-oz-oud-satin-mood-extrait-de-parfum-prod205350014?childItemId=NMC4NDJ_&navpath=cat000000_cat000730_cat24260734_cat24520759&page=0&position=3",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-oud-satin-mood.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/satin-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_2259800_100000_m",
+    "file": "mfk-oud-satin-mood.jpg"
   },
   {
     "id": "mfk-oud-satin-mood-extrait",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/maison-francis-kurkdjian-2-4-oz-oud-satin-mood-extrait-de-parfum-prod205350014?childItemId=NMC4NDJ_&navpath=cat000000_cat000730_cat24260734_cat24520759&page=0&position=3",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-oud-satin-mood-extrait.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/extrait-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_2259800_100000_m",
+    "file": "mfk-oud-satin-mood-extrait.jpg"
   },
   {
     "id": "mfk-oud-silk-mood",
     "status": "OK",
     "pageUrl": "https://www.sephora.fr/p/oud-silk-mood---extrait-de-parfum-P1000202733.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-oud-silk-mood.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/silk-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.sephora.eu/content/dam/digital/pim/published/M/MAISON_FRANCIS_KURKDJIAN/635792/302026-media_swatch.jpg?scaleWidth=undefined&scaleHeight=undefined&scaleMode=undefined",
+    "file": "mfk-oud-silk-mood.jpg"
   },
   {
     "id": "mfk-apom",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/us-en/p/apom-eau-de-parfum-RA120481.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-apom.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/unisex-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/dw/image/v2/BJSB_PRD/on/demandware.static/-/Sites-mfk-master-catalog/default/dweccf1ade/PDP_APOM_2024_triptych_7_1080x1080.png?sw=1000&sh=1000&sfrm=jpg&q=85&strip=true",
+    "file": "mfk-apom.jpg"
   },
   {
     "id": "mfk-a-la-rose",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/us-en/p/a-la-rose-eau-de-parfum-RA12241.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-a-la-rose.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-fragrance-bottle",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/dw/image/v2/BJSB_PRD/on/demandware.static/-/Sites-mfk-master-catalog/default/dw2ddda9d3/A_LA_ROSE/FRAGRANCE/3700559612255_A_LA_ROSE_EDP_70ML_1.png?sw=1600&sh=1600&sfrm=png&q=85&strip=true",
+    "file": "mfk-a-la-rose.jpg"
   },
   {
     "id": "mfk-lhomme-a-la-rose",
     "status": "OK",
     "pageUrl": "https://www.franciskurkdjian.com/us-en/p/lhomme-a-la-rose-eau-de-parfum-RA12312.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-lhomme-a-la-rose.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-mens-fragrance",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.franciskurkdjian.com/on/demandware.static/-/Sites-mfk-master-catalog/default/dw2edccb0e/PDP-HALR-eau-de-parfum-70ml-10231021-triptyque-01-840x840.jpg",
+    "file": "mfk-lhomme-a-la-rose.jpg"
   },
   {
     "id": "mfk-amyris-femme",
     "status": "OK",
     "pageUrl": "https://www.saksfifthavenue.com/product/maison-francis-kurkdjian-amyris-femme-eau-de-parfum-0400017885436.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-amyris-femme.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/feminine-perfume",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://image.s5a.com/is/image/saks/0400017885436?wid=900",
+    "file": "mfk-amyris-femme.jpg"
   },
   {
     "id": "mfk-amyris-homme",
     "status": "OK",
     "pageUrl": "https://www.neimanmarcus.com/p/maison-francis-kurkdjian-amyris-pour-homme-eau-de-toilette-6-8-oz-prod271510351",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "mfk-amyris-homme.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/mens-perfume-bottle",
-    "brandPressPage": "https://www.franciskurkdjian.com/en-us/pages/press",
-    "sourceNotes": "Request via MFK press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_4479041_100000_m",
+    "file": "mfk-amyris-homme.jpg"
   },
   {
     "id": "diptyque-eau-duelle-edp",
     "status": "OK",
     "pageUrl": "https://www.diptyqueparis.com/en_us/p/eau-duelle-eau-de-parfum-75ml-1.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "diptyque-eau-duelle-edp.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/vanilla-warm",
-    "brandPressPage": "https://www.diptyqueparis.com/en_us/l/press.html",
-    "sourceNotes": "Request via Diptyque press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-eau-duelle-eau-de-parfum-75ml-duellep75-1.jpg?quality=100&bg-color=255,255,255&fit=bounds",
+    "file": "diptyque-eau-duelle-edp.jpg"
   },
   {
     "id": "diptyque-orpheon",
     "status": "OK",
     "pageUrl": "https://www.diptyqueparis.com/en_us/p/orpheon-eau-de-parfum-75ml.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "diptyque-orpheon.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/dark-wood-perfume",
-    "brandPressPage": "https://www.diptyqueparis.com/en_us/l/press.html",
-    "sourceNotes": "Request via Diptyque press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-orpheon-eau-de-parfum-75ml-orphp75c-1.jpg?quality=100&bg-color=255,255,255&fit=bounds",
+    "file": "diptyque-orpheon.jpg"
   },
   {
     "id": "diptyque-fleur-de-peau",
     "status": "OK",
     "pageUrl": "https://www.diptyqueparis.com/en_us/p/fleur-de-peau-eau-de-parfum-1.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "diptyque-fleur-de-peau.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/skin-musk-flower",
-    "brandPressPage": "https://www.diptyqueparis.com/en_us/l/press.html",
-    "sourceNotes": "Request via Diptyque press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.diptyqueparis.com/media/catalog/product/d/i/diptyque-fleur-de-peau-eau-de-parfum-75ml-fleurp75c-1.jpg?quality=100&bg-color=255",
+    "file": "diptyque-fleur-de-peau.jpg"
   },
   {
     "id": "le-labo-rose-31",
     "status": "OK",
     "pageUrl": "https://www.harrods.com/__trashed-7/p/le-labo-rose-31-eau-de-parfum-50ml-000000000006491715",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "le-labo-rose-31.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/rose-perfume-bottle",
-    "brandPressPage": "https://www.lelabofragrances.com/press.html",
-    "sourceNotes": "Request via Le Labo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://hrd-live.cdn.scayle.cloud/images/1663fdcf286d9cb1180ff73946172e42.jpg?brightness=1&width=922&height=1230&quality=75&bg=ffffff",
+    "file": "le-labo-rose-31.jpg"
   },
   {
     "id": "le-labo-the-noir-29",
     "status": "OK",
     "pageUrl": "https://shop.nordstrom.com/s/le-labo-the-noir-29-eau-de-parfum/4335704",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "le-labo-the-noir-29.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/dark-fragrance",
-    "brandPressPage": "https://www.lelabofragrances.com/press.html",
-    "sourceNotes": "Request via Le Labo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/id/sr3/51d5c047-f214-48a3-a69c-4c2061af1b4e.jpeg?crop=pad&pad_color=FFF&format=jpeg&w=780&h=1196&dpr=4",
+    "file": "le-labo-the-noir-29.jpg"
   },
   {
     "id": "le-labo-bergamote-22",
     "status": "OK",
     "pageUrl": "https://www.lelabofragrances.com/bergamote-22-131.html",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "le-labo-bergamote-22.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/citrus-fragrance",
-    "brandPressPage": "https://www.lelabofragrances.com/press.html",
-    "sourceNotes": "Request via Le Labo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://lelabo.ips.photos/lelabo-java/images/skus/100PB22100__PRODUCT_01--IMG_1200--BERGAMOTE22--1562685279.jpg",
+    "file": "le-labo-bergamote-22.jpg"
   },
   {
     "id": "byredo-blanche",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/s/byredo-blanche-eau-de-parfum/7235553",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "byredo-blanche.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/white-clean-minimal",
-    "brandPressPage": "https://www.byredo.com/us_en/pages/press",
-    "sourceNotes": "Request via Byredo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/it/07eb2951-7605-4c97-9bb9-06a86432d1f6.jpeg?crop=pad&w=780&h=1196&dpr=2",
+    "file": "byredo-blanche.jpg"
   },
   {
     "id": "byredo-bibliotheque",
     "status": "OK",
     "pageUrl": "https://www.byredo.com/us_en/p/bibliotheque-eau-de-parfum",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "byredo-bibliotheque.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/old-library-books",
-    "brandPressPage": "https://www.byredo.com/us_en/pages/press",
-    "sourceNotes": "Request via Byredo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.byredo.com/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/1/0/100219_1_full_no.jpg",
+    "file": "byredo-bibliotheque.jpg"
   },
   {
     "id": "byredo-sundazed",
     "status": "OK",
     "pageUrl": "https://www.nordstrom.com/s/byredo-sundazed-eau-de-parfum/5208467",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "byredo-sundazed.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/sunny-summer-haze",
-    "brandPressPage": "https://www.byredo.com/us_en/pages/press",
-    "sourceNotes": "Request via Byredo press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://n.nordstrommedia.com/id/sr3/3cc3c978-a30f-4c77-9607-95ed1b7bfdc4.jpeg?crop=pad&w=780&h=1196&dpr=2",
+    "file": "byredo-sundazed.jpg"
   },
   {
     "id": "parfums-de-marly-herod",
     "status": "OK",
     "pageUrl": "https://parfums-de-marly.com/products/herod",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "parfums-de-marly-herod.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/tobacco-dark-perfume",
-    "brandPressPage": "https://parfums-de-marly.com/pages/press",
-    "sourceNotes": "Request via Parfums de Marly press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/2203_MARLY_HEROD_75ml_1v2.jpg?v=1683792105",
+    "file": "parfums-de-marly-herod.jpg"
   },
   {
     "id": "parfums-de-marly-althair",
     "status": "OK",
     "pageUrl": "https://parfums-de-marly.com/products/althair",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "parfums-de-marly-althair.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/fresh-woods-cologne",
-    "brandPressPage": "https://parfums-de-marly.com/pages/press",
-    "sourceNotes": "Request via Parfums de Marly press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/2204_MARLY_ALTHAIR_75ml_01.jpg?v=1693217593",
+    "file": "parfums-de-marly-althair.jpg"
   },
   {
     "id": "parfums-de-marly-valaya",
     "status": "OK",
     "pageUrl": "https://parfums-de-marly.com/products/valaya",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "parfums-de-marly-valaya.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/floral-luxury-bottle",
-    "brandPressPage": "https://parfums-de-marly.com/pages/press",
-    "sourceNotes": "Request via Parfums de Marly press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://parfums-de-marly.com/cdn/shop/files/Valaya_75ml_bottle_pack_1024x.jpg?v=1721112388",
+    "file": "parfums-de-marly-valaya.jpg"
   },
   {
     "id": "kilian-angels-share",
     "status": "OK",
     "pageUrl": "https://www.bykilian.com/product/19797/82905/perfume/angels-share/the-liquors",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "kilian-angels-share.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/whiskey-cognac-warm",
-    "brandPressPage": "https://www.bykilian.com/pages/press",
-    "sourceNotes": "Request via Kilian press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.bykilian.com/media/images/products/833x968/kl_sku_N36E01_833x968_0.jpg",
+    "file": "kilian-angels-share.jpg"
   },
   {
     "id": "kilian-love-dont-be-shy",
     "status": "OK",
     "pageUrl": "https://www.bykilian.com/product/19797/50771/perfume/love-dont-be-shy/the-narcotics",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "kilian-love-dont-be-shy.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/pink-sweet-caramel",
-    "brandPressPage": "https://www.bykilian.com/pages/press",
-    "sourceNotes": "Request via Kilian press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://www.bykilian.com/media/images/products/833x968/kl_sku_N3E601_833x968_0.jpg",
+    "file": "kilian-love-dont-be-shy.jpg"
   },
   {
     "id": "nishane-hacivat",
     "status": "OK",
     "pageUrl": "https://nishane.com/product/hacivat/",
-    "imageSourceUrl": "original-editorial-artwork",
-    "file": "nishane-hacivat.jpg",
-    "copyrightSafeReferenceUrl": "https://unsplash.com/s/photos/citrus-woody-unisex",
-    "brandPressPage": "https://nishane.com/press",
-    "sourceNotes": "Request via Nishane press",
-    "imageKind": "editorial-scent-study"
+    "imageSourceUrl": "https://nishane.com/wp-content/uploads/2022/09/a-50ml-19-HACIVAT.jpg",
+    "file": "nishane-hacivat.jpg"
   }
 ]
