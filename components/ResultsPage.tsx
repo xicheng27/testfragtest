@@ -274,11 +274,11 @@ export default function ResultsPage({
               <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full bg-fuchsia-400/30 blur-3xl" />
               <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-amber-300/25 blur-3xl" />
               <div className="relative">
-                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-fuchsia-200">Screenshot this</p>
-                <h1 className="mt-3 text-4xl font-black leading-[0.9] tracking-[-0.06em] sm:text-6xl">
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-fuchsia-200">Screenshot this</p>
+                <h1 className="mt-3 text-[2.6rem] font-black leading-[0.95] tracking-[-0.06em] sm:text-6xl">
                   {personality.title}
                 </h1>
-                <p className="mt-4 text-sm leading-relaxed text-stone-300 sm:text-base">{personality.description}</p>
+                <p className="mt-4 text-base leading-relaxed text-stone-300 sm:text-lg">{personality.description}</p>
 
                 {topFragrance && (
                   <div className="mt-6 overflow-hidden rounded-[1.5rem] bg-white text-stone-950">
@@ -292,9 +292,9 @@ export default function ResultsPage({
                       />
                     </div>
                     <div className="border-t border-stone-100 p-4">
-                      <p className="text-[10px] font-black uppercase tracking-[0.16em] text-fuchsia-600">Top match</p>
-                      <h2 className="mt-1 text-2xl font-black tracking-[-0.04em]">{topFragrance.name}</h2>
-                      <p className="mt-1 text-sm text-stone-500">{topFragrance.brand}</p>
+                      <p className="text-[11px] font-black uppercase tracking-[0.16em] text-fuchsia-600">Top match</p>
+                      <h2 className="mt-1 text-3xl font-black tracking-[-0.04em]">{topFragrance.name}</h2>
+                      <p className="mt-1 text-base text-stone-500">{topFragrance.brand}</p>
                     </div>
                   </div>
                 )}
@@ -303,14 +303,14 @@ export default function ResultsPage({
                   <button
                     type="button"
                     onClick={shareResult}
-                    className="min-h-12 rounded-2xl bg-white px-5 text-sm font-bold text-stone-950 transition-transform hover:-translate-y-0.5 active:scale-[0.99]"
+                    className="min-h-12 rounded-2xl bg-white px-5 text-base font-bold text-stone-950 transition-transform hover:-translate-y-0.5 active:scale-[0.99]"
                   >
                     {shareLabel}
                   </button>
                   <button
                     type="button"
                     onClick={copyCaption}
-                    className="min-h-12 rounded-2xl border border-white/20 px-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                    className="min-h-12 rounded-2xl border border-white/20 px-5 text-base font-bold text-white transition-colors hover:bg-white/10"
                   >
                     {copyLabel}
                   </button>
@@ -323,7 +323,7 @@ export default function ResultsPage({
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-600">Your matches</p>
                   <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950">Recommendations that adapt.</h2>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-stone-600">
+                  <p className="mt-2 max-w-xl text-base leading-relaxed text-stone-600">
                     Filter by mood or nudge the list if you want it cheaper, stronger, or less obvious.
                   </p>
                 </div>
@@ -354,7 +354,7 @@ export default function ResultsPage({
               </div>
 
               <div className="mt-6">
-                <p className="mb-2 text-xs font-bold text-stone-500">Mood filters</p>
+                <p className="mb-2 text-sm font-bold text-stone-500">Mood filters</p>
                 <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
                   {moodFilters.map(filter => (
                     <button
@@ -362,7 +362,7 @@ export default function ResultsPage({
                       type="button"
                       onClick={() => setActiveMood(filter.id)}
                       className={clsx(
-                        'min-h-10 shrink-0 rounded-full border px-4 text-sm font-bold transition-all',
+                        'min-h-11 shrink-0 rounded-full border px-4 text-base font-bold transition-all',
                         activeMood === filter.id
                           ? 'border-stone-950 bg-stone-950 text-white'
                           : 'border-stone-200 bg-white text-stone-600 hover:border-stone-400',
@@ -387,8 +387,8 @@ export default function ResultsPage({
                         : 'border-stone-200 bg-white text-stone-800 hover:-translate-y-0.5 hover:border-stone-400',
                     )}
                   >
-                    <span className="block text-sm font-black">{mode.label}</span>
-                    <span className={clsx('mt-1 block text-[11px] leading-snug', adjustMode === mode.id ? 'text-stone-300' : 'text-stone-500')}>
+                    <span className="block text-base font-black">{mode.label}</span>
+                    <span className={clsx('mt-1 block text-xs leading-snug', adjustMode === mode.id ? 'text-stone-300' : 'text-stone-500')}>
                       {mode.description}
                     </span>
                   </button>
@@ -425,13 +425,13 @@ export default function ResultsPage({
 
           {!isExtended && (
             <div className="mt-8 rounded-[1.5rem] border border-stone-200 bg-white/85 p-6 text-center shadow-sm sm:p-8">
-              <h3 className="mb-1 text-xl font-black tracking-[-0.03em] text-stone-950">Want an even more accurate match?</h3>
-              <p className="mb-4 text-sm text-stone-500">
+              <h3 className="mb-1 text-2xl font-black tracking-[-0.03em] text-stone-950">Want an even more accurate match?</h3>
+              <p className="mb-4 text-base text-stone-500">
                 Answer a few extra style questions and we will fine-tune your scent era.
               </p>
               <button
                 onClick={onExtendedQuiz}
-                className="min-h-12 rounded-2xl bg-stone-950 px-6 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+                className="min-h-12 rounded-2xl bg-stone-950 px-6 py-2.5 text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
               >
                 Take the extended quiz
               </button>
@@ -441,13 +441,13 @@ export default function ResultsPage({
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <button
               onClick={onRestart}
-              className="min-h-11 rounded-full border border-stone-300 bg-white px-5 text-sm font-bold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+              className="min-h-11 rounded-full border border-stone-300 bg-white px-5 text-base font-bold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
             >
               Retake quiz
             </button>
             <button
               onClick={onViewShelf}
-              className="min-h-11 rounded-full px-5 text-sm font-bold text-stone-500 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950"
+              className="min-h-11 rounded-full px-5 text-base font-bold text-stone-500 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950"
             >
               Open my Shelf
             </button>
