@@ -242,9 +242,9 @@ export default function ResultsPage({
     <>
       <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#fce7f3_0,transparent_28%),radial-gradient(circle_at_top_right,#dbeafe_0,transparent_24%),#fafaf9]">
         <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/85 px-4 py-3 backdrop-blur-xl sm:px-6">
-          <div className="mx-auto flex max-w-6xl items-center justify-between">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
             <span className="font-black tracking-tight text-stone-950">ScentMatch</span>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
                 Terms
               </Link>
@@ -282,13 +282,13 @@ export default function ResultsPage({
 
                 {topFragrance && (
                   <div className="mt-6 overflow-hidden rounded-[1.5rem] bg-white text-stone-950">
-                    <div className="relative h-52 bg-white">
+                    <div className="relative h-48 bg-white sm:h-60">
                       <ProductImage
                         src={topFragrance.imageUrl}
                         alt={`${topFragrance.brand} ${topFragrance.name} fragrance bottle`}
                         eager
                         sizes="(max-width: 1023px) 90vw, 420px"
-                        className="object-contain p-6"
+                        className="object-contain p-5 sm:p-6"
                       />
                     </div>
                     <div className="border-t border-stone-100 p-4">
