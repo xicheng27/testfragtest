@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
@@ -14,6 +14,16 @@ const geist = Geist({
 export const metadata: Metadata = {
   title: "ScentMatch — Find a fragrance that actually feels like you",
   description: "Take a personalised quiz and discover fragrances matched to your taste, lifestyle, and aesthetic.",
+};
+
+// Without an explicit viewport, mobile browsers fall back to a ~980px layout
+// width and shrink the page to fit — which makes content look zoomed-in and
+// clipped, forcing users to pinch-zoom. `width=device-width` lays the page out
+// at the real device width; `viewportFit: 'cover'` lets safe-area insets work.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

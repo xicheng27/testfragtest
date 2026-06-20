@@ -78,6 +78,19 @@ body {
 
 html {
   scroll-behavior: smooth;
+  /* Guard against accidental horizontal scroll on small screens. `clip`
+     (not `hidden`) avoids creating a scroll container, so position: sticky
+     headers keep working. */
+  overflow-x: clip;
+}
+
+/* Replaced/inline media should never be able to push past its container and
+   create horizontal overflow on mobile. */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 * {
