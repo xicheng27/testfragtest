@@ -33,39 +33,6 @@ const moodFilters: Array<{ id: MoodFilter; label: string; signals: string[] }> =
   { id: 'date-night', label: 'Date night', signals: ['date', 'night', 'romantic', 'intimate', 'addictive'] },
 ];
 
-const personalityProfiles = [
-  {
-    title: 'Fresh Out The Shower',
-    test: (top: Fragrance) => top.scentFamilies.includes('clean') || top.scentFamilies.includes('fresh'),
-    description: 'Clean, bright, and impossible to dislike. Your scent vibe says put together without trying too hard.',
-  },
-  {
-    title: 'Vanilla Soft Launch',
-    test: (top: Fragrance) => top.scentFamilies.includes('sweet') || top.scentFamilies.includes('gourmand'),
-    description: 'Soft, warm, and a little addictive. You want comfort, but make it main character.',
-  },
-  {
-    title: 'Rainy Library Romantic',
-    test: (top: Fragrance) => top.aesthetics.includes('dark-academia') || top.vibes.includes('rainy-castle'),
-    description: 'Atmospheric, intimate, and quietly dramatic. Your fragrance needs a little plot.',
-  },
-  {
-    title: 'Expensive Hotel Lobby',
-    test: (top: Fragrance) => top.aesthetics.includes('quiet-luxury') || top.vibeTags.includes('expensive'),
-    description: 'Polished, smooth, and expensive-feeling. You want compliments that sound like whispered questions.',
-  },
-  {
-    title: 'Beach Club Daydreamer',
-    test: (top: Fragrance) => top.aesthetics.includes('beach') || top.scentFamilies.includes('aquatic'),
-    description: 'Sunny, fresh, and easy to wear. Your internal forecast is basically vacation mode.',
-  },
-  {
-    title: 'Cool Girl Smoky',
-    test: () => true,
-    description: 'A little bold, a little mysterious, and not trying to smell like everyone else.',
-  },
-] as const;
-
 const adjustModes: Array<{ id: AdjustMode; label: string; description: string }> = [
   { id: 'default', label: 'Best vibe', description: 'Original match order' },
   { id: 'cheaper', label: 'I want cheaper', description: 'Prioritise budget picks' },
@@ -149,8 +116,6 @@ export default function ResultsPage({
   const [currency, setCurrency] = useCurrency();
   const [activeMood, setActiveMood] = useState<MoodFilter>('all');
   const [adjustMode, setAdjustMode] = useState<AdjustMode>('default');
-  const [copyLabel, setCopyLabel] = useState('Copy TikTok caption');
-  const [shareLabel, setShareLabel] = useState('Share my result');
 
   const personalisedPool = useMemo(() => {
     if (activeMood === 'all' && adjustMode === 'default') return results;
@@ -166,39 +131,6 @@ export default function ResultsPage({
 
     return enhanced.length ? enhanced.slice(0, 5) : results;
   }, [activeMood, adjustMode, answers, results]);
-
-  const topFragrance = personalisedPool[0]?.fragrance ?? results[0]?.fragrance;
-  const personality = useMemo(() => {
-    if (!topFragrance) return personalityProfiles.at(-1)!;
-    return personalityProfiles.find(profile => profile.test(topFragrance)) ?? personalityProfiles.at(-1)!;
-  }, [topFragrance]);
-
-  const caption = `I took the ScentMatch quiz and apparently I'm a ${personality.title} 💀 My top match is ${topFragrance?.name ?? 'a mystery scent'}.`;
-
-  const copyCaption = async () => {
-    try {
-      await navigator.clipboard.writeText(caption);
-      setCopyLabel('Copied');
-      window.setTimeout(() => setCopyLabel('Copy TikTok caption'), 1600);
-    } catch {
-      setCopyLabel('Copy failed');
-      window.setTimeout(() => setCopyLabel('Copy TikTok caption'), 1600);
-    }
-  };
-
-  const shareResult = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: `My ScentMatch result: ${personality.title}`, text: caption });
-      } else {
-        await navigator.clipboard.writeText(caption);
-        setShareLabel('Copied share text');
-        window.setTimeout(() => setShareLabel('Share my result'), 1600);
-      }
-    } catch {
-      setShareLabel('Share my result');
-    }
-  };
 
   const resultMix = useMemo(() => {
     const tiers = new Set(personalisedPool.map(result => result.fragrance.tier));
@@ -245,54 +177,7 @@ export default function ResultsPage({
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
-          <section className="grid gap-5 lg:grid-cols-[0.86fr_1.14fr] lg:items-stretch">
-            <article className="relative min-w-0 overflow-hidden rounded-[2rem] border border-stone-200 bg-stone-950 p-5 text-white shadow-[0_24px_70px_rgba(28,25,23,0.18)] sm:p-8">
-              <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full bg-fuchsia-400/30 blur-3xl" />
-              <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-amber-300/25 blur-3xl" />
-              <div className="relative">
-                <h1 className="break-words text-[clamp(2rem,9.5vw,2.6rem)] font-black leading-[0.95] tracking-[-0.06em] sm:text-6xl">
-                  {personality.title}
-                </h1>
-                <p className="mt-4 text-lg leading-relaxed text-stone-300 sm:text-xl">{personality.description}</p>
-
-                {topFragrance && (
-                  <div className="mt-6 overflow-hidden rounded-[1.5rem] bg-white text-stone-950">
-                    <div className="relative h-48 bg-white sm:h-60">
-                      <ProductImage
-                        src={topFragrance.imageUrl}
-                        alt={`${topFragrance.brand} ${topFragrance.name} fragrance bottle`}
-                        eager
-                        sizes="(max-width: 1023px) 90vw, 420px"
-                        className="object-contain p-5 sm:p-6"
-                      />
-                    </div>
-                    <div className="border-t border-stone-100 p-4">
-                      <p className="text-xs font-black uppercase tracking-[0.16em] text-fuchsia-600">Top match</p>
-                      <h2 className="mt-1 break-words text-[clamp(1.6rem,7vw,2.1rem)] font-black leading-tight tracking-[-0.04em]">{topFragrance.name}</h2>
-                      <p className="mt-1 text-lg text-stone-500">{topFragrance.brand}</p>
-                    </div>
-                  </div>
-                )}
-
-                <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={shareResult}
-                    className="min-h-12 rounded-2xl bg-white px-5 py-3 text-lg font-bold text-stone-950 transition-transform hover:-translate-y-0.5 active:scale-[0.99]"
-                  >
-                    {shareLabel}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={copyCaption}
-                    className="min-h-12 rounded-2xl border border-white/20 px-5 py-3 text-lg font-bold text-white transition-colors hover:bg-white/10"
-                  >
-                    {copyLabel}
-                  </button>
-                </div>
-              </div>
-            </article>
-
+          <section>
             <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
