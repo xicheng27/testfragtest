@@ -270,12 +270,12 @@ export default function ResultsPage({
 
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
           <section className="grid gap-5 lg:grid-cols-[0.86fr_1.14fr] lg:items-stretch">
-            <article className="relative overflow-hidden rounded-[2rem] border border-stone-200 bg-stone-950 p-5 text-white shadow-[0_24px_70px_rgba(28,25,23,0.18)] sm:p-8">
+            <article className="relative min-w-0 overflow-hidden rounded-[2rem] border border-stone-200 bg-stone-950 p-5 text-white shadow-[0_24px_70px_rgba(28,25,23,0.18)] sm:p-8">
               <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full bg-fuchsia-400/30 blur-3xl" />
               <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-amber-300/25 blur-3xl" />
               <div className="relative">
                 <p className="text-base font-black uppercase tracking-[0.24em] text-fuchsia-200">Screenshot this</p>
-                <h1 className="mt-3 text-[3rem] font-black leading-[0.95] tracking-[-0.06em] sm:text-7xl">
+                <h1 className="mt-3 break-words text-[clamp(2.25rem,11vw,3rem)] font-black leading-[0.95] tracking-[-0.06em] sm:text-7xl">
                   {personality.title}
                 </h1>
                 <p className="mt-4 text-xl leading-relaxed text-stone-300 sm:text-2xl">{personality.description}</p>
@@ -293,7 +293,7 @@ export default function ResultsPage({
                     </div>
                     <div className="border-t border-stone-100 p-4">
                       <p className="text-sm font-black uppercase tracking-[0.16em] text-fuchsia-600">Top match</p>
-                      <h2 className="mt-1 text-[2.4rem] font-black leading-tight tracking-[-0.04em]">{topFragrance.name}</h2>
+                      <h2 className="mt-1 break-words text-[clamp(1.75rem,8vw,2.4rem)] font-black leading-tight tracking-[-0.04em]">{topFragrance.name}</h2>
                       <p className="mt-1 text-xl text-stone-500">{topFragrance.brand}</p>
                     </div>
                   </div>
@@ -318,11 +318,11 @@ export default function ResultsPage({
               </div>
             </article>
 
-            <section className="rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
+            <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div>
+                <div className="min-w-0">
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-600">Your matches</p>
-                  <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950">Recommendations that adapt.</h2>
+                  <h2 className="mt-2 break-words text-[clamp(1.6rem,7vw,1.875rem)] font-black tracking-[-0.05em] text-stone-950">Recommendations that adapt.</h2>
                   <p className="mt-2 max-w-xl text-xl leading-relaxed text-stone-600">
                     Filter by mood or nudge the list if you want it cheaper, stronger, or less obvious.
                   </p>

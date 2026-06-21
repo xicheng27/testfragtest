@@ -131,7 +131,7 @@ export default function FragranceCard({
         <div className="min-w-0 p-5 sm:p-7">
           <div>
             <p className="text-base font-medium uppercase tracking-[0.2em] text-stone-400">{fragrance.brand}</p>
-            <h2 className="mt-1 break-words text-[2.25rem] font-semibold leading-tight tracking-[-0.025em] text-stone-950 sm:text-4xl">
+            <h2 className="mt-1 break-words text-[clamp(1.7rem,7vw,2.25rem)] font-semibold leading-tight tracking-[-0.025em] text-stone-950 sm:text-4xl">
               {fragrance.name}
             </h2>
             <p className="mt-3 text-lg leading-relaxed text-stone-600 sm:text-xl">
