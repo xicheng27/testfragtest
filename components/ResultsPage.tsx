@@ -250,8 +250,7 @@ export default function ResultsPage({
               <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full bg-fuchsia-400/30 blur-3xl" />
               <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-amber-300/25 blur-3xl" />
               <div className="relative">
-                <p className="text-sm font-black uppercase tracking-[0.24em] text-fuchsia-200">Screenshot this</p>
-                <h1 className="mt-3 break-words text-[clamp(2rem,9.5vw,2.6rem)] font-black leading-[0.95] tracking-[-0.06em] sm:text-6xl">
+                <h1 className="break-words text-[clamp(2rem,9.5vw,2.6rem)] font-black leading-[0.95] tracking-[-0.06em] sm:text-6xl">
                   {personality.title}
                 </h1>
                 <p className="mt-4 text-lg leading-relaxed text-stone-300 sm:text-xl">{personality.description}</p>
