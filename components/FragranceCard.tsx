@@ -74,7 +74,7 @@ export default function FragranceCard({
       tabIndex={-1}
       data-fragrance-id={fragrance.id}
       className={clsx(
-        'overflow-hidden rounded-3xl border bg-white transition-all duration-300 focus:outline-none',
+        'scroll-mt-24 overflow-hidden rounded-3xl border bg-white transition-all duration-300 focus:outline-none',
         rank === 1 ? 'border-stone-300 shadow-sm' : 'border-stone-200',
       )}
     >

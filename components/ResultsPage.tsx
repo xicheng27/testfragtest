@@ -4,12 +4,11 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { ScoredFragrance, QuizAnswers, getRecommendations, scoreFragrance } from '@/lib/scoring';
 import { Fragrance } from '@/lib/fragrances';
-import FragranceCard from './FragranceCard';
 import AuthModal from './AuthModal';
 import ProductImage from './ProductImage';
 import { useAuth } from '@/lib/auth-context';
 import { useShelf } from '@/lib/shelf-context';
-import { CURRENCIES, PRICED_AS_OF, useCurrency } from '@/lib/pricing';
+import { CURRENCIES, PRICED_AS_OF, formatPrice, getSignaturePrice, useCurrency } from '@/lib/pricing';
 
 interface ResultsPageProps {
   results: ScoredFragrance[];
@@ -130,31 +129,10 @@ function adjustScore(result: ScoredFragrance, mode: AdjustMode) {
   return result.score;
 }
 
-function buildSimilarMap(results: ScoredFragrance[]) {
-  const map = new Map<string, ScoredFragrance>();
-  for (const result of results) {
-    const candidates = results
-      .filter(candidate => candidate.fragrance.id !== result.fragrance.id)
-      .map(candidate => {
-        const sharedFamilies = candidate.fragrance.scentFamilies.filter(family => (
-          result.fragrance.scentFamilies.includes(family)
-        )).length;
-        const sharedAccords = candidate.fragrance.accords.filter(accord => (
-          result.fragrance.accords.includes(accord)
-        )).length;
-        const sharedOccasions = candidate.fragrance.occasions.filter(occasion => (
-          result.fragrance.occasions.includes(occasion)
-        )).length;
-        return {
-          candidate,
-          similarity: (sharedFamilies * 4) + (sharedAccords * 2) + sharedOccasions,
-        };
-      })
-      .sort((a, b) => b.similarity - a.similarity || b.candidate.score - a.candidate.score);
-
-    if (candidates[0]) map.set(result.fragrance.id, candidates[0].candidate);
-  }
-  return map;
+// Build a stable URL slug for a fragrance's brand page (matches the decoding
+// in app/fragrances/[brand]/page.tsx).
+function brandSlug(brand: string) {
+  return brand.toLowerCase().replace(/\s+/g, '-');
 }
 
 export default function ResultsPage({
@@ -188,8 +166,6 @@ export default function ResultsPage({
 
     return enhanced.length ? enhanced.slice(0, 5) : results;
   }, [activeMood, adjustMode, answers, results]);
-
-  const similarById = useMemo(() => buildSimilarMap(personalisedPool), [personalisedPool]);
 
   const topFragrance = personalisedPool[0]?.fragrance ?? results[0]?.fragrance;
   const personality = useMemo(() => {
@@ -411,16 +387,50 @@ export default function ResultsPage({
             </section>
           </section>
 
-          <section className="mt-7 space-y-5">
-            {personalisedPool.map((result, i) => (
-              <FragranceCard
-                key={`${result.fragrance.id}-${activeMood}-${adjustMode}`}
-                result={result}
-                rank={i + 1}
-                currency={currency}
-                similarFragrance={similarById.get(result.fragrance.id)?.fragrance}
-              />
-            ))}
+          <section className="mt-7" aria-label="Your top 3 fragrance matches">
+            <h2 className="mb-3 text-lg font-black tracking-[-0.02em] text-stone-950">Your top 3</h2>
+            <ul className="space-y-3">
+              {personalisedPool.slice(0, 3).map((result, i) => {
+                const fragrance = result.fragrance;
+                const price = getSignaturePrice(fragrance, currency);
+                return (
+                  <li key={`${fragrance.id}-${activeMood}-${adjustMode}`}>
+                    <Link
+                      href={`/fragrances/${brandSlug(fragrance.brand)}#result-${fragrance.id}`}
+                      className="group flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-stone-400 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 sm:gap-4 sm:p-4"
+                      aria-label={`${fragrance.name} by ${fragrance.brand}, ${result.matchPercent}% match — view fragrance`}
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-950 text-sm font-black text-white">
+                        {i + 1}
+                      </span>
+                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-stone-100 bg-stone-50 sm:h-20 sm:w-20">
+                        <ProductImage
+                          src={fragrance.imageUrl}
+                          alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
+                          eager={i === 0}
+                          sizes="80px"
+                          className="object-contain p-2"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[11px] font-medium uppercase tracking-[0.14em] text-stone-400">{fragrance.brand}</p>
+                        <h3 className="truncate text-base font-bold tracking-[-0.01em] text-stone-950 sm:text-lg">{fragrance.name}</h3>
+                        <p className="mt-0.5 truncate text-xs text-stone-500">{result.recommendationLabel}</p>
+                      </div>
+                      <div className="flex shrink-0 flex-col items-end gap-0.5 text-right">
+                        <span className="text-lg font-black leading-none text-stone-950">{result.matchPercent}%</span>
+                        <span className="text-[11px] text-stone-500">
+                          {price.exact ? '' : '≈ '}{formatPrice(price.amount, currency)}
+                        </span>
+                        <svg className="mt-0.5 h-4 w-4 text-stone-400 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </section>
 
           {!isExtended && (
