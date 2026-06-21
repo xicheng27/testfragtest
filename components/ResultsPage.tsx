@@ -1,4 +1,5 @@
 'use client';
+
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -96,8 +97,6 @@ function adjustScore(result: ScoredFragrance, mode: AdjustMode) {
   return result.score;
 }
 
-// Build a stable URL slug for a fragrance's brand page (matches the decoding
-// in app/fragrances/[brand]/page.tsx).
 function brandSlug(brand: string) {
   return brand.toLowerCase().replace(/\s+/g, '-');
 }
@@ -154,7 +153,7 @@ export default function ResultsPage({
             <span className="font-black tracking-tight text-stone-950">ScentMatch</span>
             <div className="flex items-center gap-2 sm:gap-3">
               <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
-                Terms
+                About
               </Link>
               <button
                 onClick={onViewShelf}
@@ -188,7 +187,7 @@ export default function ResultsPage({
                     <Link
                       href={`/fragrances/${brandSlug(fragrance.brand)}#result-${fragrance.id}`}
                       className="group flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-stone-400 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 sm:gap-4 sm:p-4"
-                      aria-label={`${fragrance.name} by ${fragrance.brand}, ${result.matchPercent}% match — view fragrance`}
+                      aria-label={`${fragrance.name} by ${fragrance.brand}, ${result.matchPercent}% match - view fragrance`}
                     >
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-950 text-sm font-black text-white">
                         {i + 1}
@@ -210,7 +209,7 @@ export default function ResultsPage({
                       <div className="flex shrink-0 flex-col items-end gap-0.5 text-right">
                         <span className="text-lg font-black leading-none text-stone-950">{result.matchPercent}%</span>
                         <span className="text-[11px] text-stone-500">
-                          {price.exact ? '' : '≈ '}{formatPrice(price.amount, currency)}
+                          {price.exact ? '' : 'approx. '}{formatPrice(price.amount, currency)}
                         </span>
                         <svg className="mt-0.5 h-4 w-4 text-stone-400 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -312,16 +311,16 @@ export default function ResultsPage({
               )}
 
               <p className="mt-4 text-[11px] text-stone-400">
-                Indicative retail prices at each fragrance&apos;s signature size · as of {PRICED_AS_OF}
+                Indicative retail prices at each fragrance&apos;s signature size - as of {PRICED_AS_OF}
               </p>
             </section>
           </section>
 
           {!isExtended && (
             <div className="mt-8 rounded-[1.5rem] border border-stone-200 bg-white/85 p-6 text-center shadow-sm sm:p-8">
-              <h3 className="mb-1 text-2xl font-black tracking-[-0.03em] text-stone-950">Want an even more accurate match?</h3>
-              <p className="mb-4 text-base text-stone-500">
-                Answer a few extra style questions and we will fine-tune your scent era.
+              <h3 className="mb-1 text-xl font-black tracking-[-0.03em] text-stone-950">Want an even more accurate match?</h3>
+              <p className="mb-4 text-sm text-stone-500">
+                Answer a few extra style questions and we will fine-tune your fragrance recommendations.
               </p>
               <button
                 onClick={onExtendedQuiz}

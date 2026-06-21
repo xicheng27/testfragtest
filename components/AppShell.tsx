@@ -7,15 +7,12 @@ import MainPage from '@/components/MainPage';
 import Quiz from '@/components/Quiz';
 import ResultsPage from '@/components/ResultsPage';
 import ShelfPage from '@/components/ShelfPage';
-import PersonalityQuiz from '@/components/PersonalityQuiz';
-import PersonalityResultPage from '@/components/PersonalityResultPage';
 import { QuizAnswers, getRecommendations, ScoredFragrance } from '@/lib/scoring';
 import { additionalQuizQuestions, quizQuestions } from '@/lib/quiz';
 import { useQuizProgress } from '@/lib/quiz-progress-context';
-import { PersonalityQuizResult } from '@/lib/personality-quiz';
 
-type AppView = 'landing' | 'main' | 'quiz' | 'quiz-extended' | 'results' | 'shelf' | 'personality-quiz' | 'personality-result';
-type ShelfReturnView = 'main' | 'results' | 'personality-result';
+type AppView = 'landing' | 'main' | 'quiz' | 'quiz-extended' | 'results' | 'shelf';
+type ShelfReturnView = 'main' | 'results';
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
@@ -43,8 +40,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
   const [results, setResults] = useState<ScoredFragrance[]>([]);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
   const [isExtended, setIsExtended] = useState(false);
-  const [personalityResult, setPersonalityResult] = useState<PersonalityQuizResult | null>(null);
-  const [personalityRun, setPersonalityRun] = useState(0);
   const [shelfReturnView, setShelfReturnView] = useState<ShelfReturnView>('main');
   const previousProfileId = useRef<string | null>(null);
   const startQuizAfterGuestEntry = useRef(false);
@@ -60,7 +55,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
     setResults([]);
     setQuizAnswers({});
     setIsExtended(false);
-    setPersonalityResult(null);
     setShelfReturnView('main');
   }, [isReady, profileId]);
 
@@ -116,12 +110,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
     setView('quiz');
     startQuizAfterGuestEntry.current = true;
     continueAsGuest();
-  };
-
-  const handleStartPersonalityQuiz = () => {
-    setPersonalityResult(null);
-    setPersonalityRun(current => current + 1);
-    setView('personality-quiz');
   };
 
   const handleViewShelf = (returnView: ShelfReturnView) => {
@@ -182,27 +170,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
             onExtendedQuiz={handleExtendedQuiz}
             onViewShelf={() => handleViewShelf('results')}
             isExtended={isExtended}
-          />
-        </motion.div>
-      )}
-      {currentView === 'personality-quiz' && (
-        <motion.div key={`personality-quiz-${personalityRun}`} variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <PersonalityQuiz
-            onBack={() => setView('main')}
-            onComplete={result => {
-              setPersonalityResult(result);
-              setView('personality-result');
-            }}
-          />
-        </motion.div>
-      )}
-      {currentView === 'personality-result' && personalityResult && (
-        <motion.div key="personality-result" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <PersonalityResultPage
-            result={personalityResult}
-            onReplay={handleStartPersonalityQuiz}
-            onHome={() => setView('main')}
-            onViewShelf={() => handleViewShelf('personality-result')}
           />
         </motion.div>
       )}

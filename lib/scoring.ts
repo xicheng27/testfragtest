@@ -14,7 +14,7 @@ export interface ScoredFragrance {
   recommendationLabel: string;
 }
 
-export type RecommendationType = 'best' | 'affordable' | 'similar' | 'everyday' | 'unique';
+export type RecommendationType = 'best' | 'affordable' | 'similar' | 'everyday' | 'dateNight' | 'unique';
 
 // ──────────────────────────────────────────────────────────────────────────────
 // SCORING SYSTEM
@@ -345,6 +345,7 @@ const RECOMMENDATION_LABELS: Record<RecommendationType, string> = {
   affordable: 'Budget Alternative',
   similar: 'Similar Vibe',
   everyday: 'Everyday Scent',
+  dateNight: 'Date Night Pick',
   unique: 'Wildcard Pick',
 };
 
@@ -378,22 +379,27 @@ export function getRecommendations(answers: QuizAnswers, topN = 5): ScoredFragra
     item.fragrance.isDupe
     && (!best || item.fragrance.dupeOf === best.fragrance.name || item.score >= best.score * 0.65)
   )) ?? pick(item => item.fragrance.priceRange === 'budget');
-  const similar = pick(item => (
-    !best
-    || item.fragrance.scentFamilies.some(family => best.fragrance.scentFamilies.includes(family))
-  ));
   const everyday = pick(item => (
     item.fragrance.occasions.includes('daily')
     && item.fragrance.projection !== 'strong'
+  ));
+  const dateNight = pick(item => (
+    item.fragrance.occasions.includes('date')
+    || item.fragrance.occasions.includes('night')
+  ));
+  const similar = pick(item => (
+    !best
+    || item.fragrance.scentFamilies.some(family => best.fragrance.scentFamilies.includes(family))
   ));
   const unique = pick(item => item.fragrance.tier === 'niche' && !item.fragrance.isDupe);
 
   const roleItems: Array<[RecommendationType, typeof scored[number] | undefined]> = [
     ['best', best],
-    ['affordable', affordable],
-    ['similar', similar],
     ['everyday', everyday],
+    ['dateNight', dateNight],
+    ['affordable', affordable],
     ['unique', unique],
+    ['similar', similar],
   ];
 
   for (const item of scored) {

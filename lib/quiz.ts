@@ -164,10 +164,10 @@ export const quizQuestions: QuizQuestion[] = [
     maxSelections: 1,
     allowSkip: true,
     skipLabel: 'Not sure',
-    question: 'Which aesthetic are you?',
+    question: 'Pick an aesthetic direction',
     options: [
       { id: 'old-money', label: 'Old Money', description: 'Timeless, composed, precise', imageUrl: '/images/quiz/unique/old-money-garden.webp' },
-      { id: 'clean', label: 'Clean Girl', description: 'Natural, bright, effortless', imageUrl: '/images/quiz/months/may.webp' },
+      { id: 'clean', label: 'Fresh Minimal', description: 'Natural, bright, effortless', imageUrl: '/images/quiz/months/may.webp' },
       { id: 'dark-academia', label: 'Dark Academia', description: 'Books, mystery, intellect', imageUrl: '/images/quiz/secret-library.jpg' },
       { id: 'beach', label: 'Beach Holiday', description: 'Relaxed, salty, golden', imageUrl: '/images/quiz/months/june.webp' },
       { id: 'quiet-luxury', label: 'Quiet Luxury', description: 'Understated, premium, calm', imageUrl: '/images/quiz/luxury-boutique.jpg' },
