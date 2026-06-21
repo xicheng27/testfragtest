@@ -44,8 +44,9 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'occasion',
     type: 'image-cards',
     category: 'serious',
-    maxSelections: 1,
+    maxSelections: 3,
     question: 'What is the plan?',
+    subtitle: 'Choose up to three.',
     options: [
       { id: 'daily', label: 'Casual Everyday', description: 'Easy and naturally put together', imageUrl: '/images/quiz/relaxed-denim.jpg' },
       { id: 'work', label: 'School / Work', description: 'Polished without taking over', imageUrl: '/images/quiz/unique/school-work.webp' },

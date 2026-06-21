@@ -127,8 +127,9 @@ export function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): numb
   score += familyMatches * WEIGHTS.scentFamily;
 
   // ── Occasion ──────────────────────────────────────────────────────────────
-  const occasion = getAnswer(answers, 'occasion') as Occasion;
-  if (occasion && fragrance.occasions.includes(occasion)) {
+  // Multi-select: award the occasion weight if any chosen occasion fits.
+  const occasions = getAnswers(answers, 'occasion') as Occasion[];
+  if (occasions.some(o => fragrance.occasions.includes(o))) {
     score += WEIGHTS.occasion;
   }
 
@@ -297,9 +298,9 @@ function buildMatchReasons(fragrance: Fragrance, answers: QuizAnswers): string[]
     reasons.push(`You preferred ${joinFriendly(matchedFamilies)} scents, and this sits in that profile.`);
   }
 
-  const occasion = getAnswer(answers, 'occasion') as Occasion;
-  if (occasion && fragrance.occasions.includes(occasion)) {
-    reasons.push(`You wanted something for ${OCCASION_LABELS[occasion]}, which is one of its strongest uses.`);
+  const matchedOccasion = (getAnswers(answers, 'occasion') as Occasion[]).find(o => fragrance.occasions.includes(o));
+  if (matchedOccasion) {
+    reasons.push(`You wanted something for ${OCCASION_LABELS[matchedOccasion]}, which is one of its strongest uses.`);
   }
 
   const priceAnswer = getAnswer(answers, 'price-range') as PriceRange;
