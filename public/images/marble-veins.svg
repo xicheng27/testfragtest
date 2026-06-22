@@ -1,85 +1,70 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
   <defs>
     <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="5"/>
+      <feGaussianBlur stdDeviation="3.5"/>
     </filter>
     <filter id="cloud" x="-40%" y="-40%" width="180%" height="180%">
       <feGaussianBlur stdDeviation="22"/>
     </filter>
   </defs>
 
-  <rect width="1600" height="1000" fill="#f6f5f1"/>
+  <rect width="1600" height="1000" fill="#f7f6f3"/>
 
-  <!-- Soft grey marble clouds for stone depth -->
-  <g filter="url(#cloud)" fill="none" stroke-linecap="round" stroke="#aaa49a">
-    <path d="M-60 220 C 260 140, 470 360, 760 250 S 1220 140, 1700 300" stroke-width="36" stroke-opacity="0.24"/>
-    <path d="M-60 720 C 320 600, 620 800, 920 670 S 1320 540, 1700 700" stroke-width="40" stroke-opacity="0.22"/>
-    <path d="M330 -60 C 390 250, 250 520, 440 800 S 540 1070, 470 1160" stroke-width="32" stroke-opacity="0.20"/>
-    <path d="M1180 -60 C 1240 200, 1120 430, 1280 710 S 1360 990, 1300 1130" stroke-width="30" stroke-opacity="0.18"/>
-    <path d="M-60 470 C 300 430, 560 560, 900 470 S 1320 380, 1700 500" stroke-width="30" stroke-opacity="0.16"/>
+  <!-- Grey marble clouds: heavier upper-left & centre, like the reference -->
+  <g filter="url(#cloud)" fill="none" stroke-linecap="round" stroke="#a39d93">
+    <path d="M-80 120 C 180 60, 360 220, 520 160 S 760 60, 900 170" stroke-width="42" stroke-opacity="0.22"/>
+    <path d="M260 -80 C 320 180, 220 420, 360 660 S 430 900, 380 1080" stroke-width="34" stroke-opacity="0.20"/>
+    <path d="M-80 760 C 200 700, 420 860, 700 780 S 1040 700, 1180 760" stroke-width="30" stroke-opacity="0.16"/>
+    <path d="M820 120 C 980 80, 1180 200, 1420 150" stroke-width="26" stroke-opacity="0.12"/>
   </g>
 
-  <!-- Black / charcoal vein network -->
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="#1f1b16">
-    <!-- primary veins -->
-    <path d="M-40 280 C 240 230, 430 400, 700 320 S 1180 200, 1700 320" stroke-width="3" stroke-opacity="0.42"/>
-    <path d="M-40 540 C 280 500, 520 650, 820 540 S 1280 430, 1700 560" stroke-width="2.8" stroke-opacity="0.38"/>
-    <path d="M-40 830 C 300 790, 560 910, 900 825 S 1320 740, 1700 845" stroke-width="2.6" stroke-opacity="0.34"/>
-    <path d="M260 -40 C 320 240, 200 480, 360 760 S 420 1050, 360 1140" stroke-width="2.6" stroke-opacity="0.36"/>
-    <path d="M820 -40 C 880 230, 740 460, 920 730 S 1020 1010, 960 1140" stroke-width="2.8" stroke-opacity="0.40"/>
-    <path d="M1300 -40 C 1360 200, 1240 410, 1380 670 S 1460 950, 1400 1140" stroke-width="2.6" stroke-opacity="0.36"/>
-    <!-- branches -->
-    <path d="M430 392 C 478 470, 560 506, 604 612" stroke-width="1.6" stroke-opacity="0.30"/>
-    <path d="M700 320 C 752 280, 786 346, 858 314" stroke-width="1.4" stroke-opacity="0.28"/>
-    <path d="M820 540 C 868 590, 940 596, 1000 668" stroke-width="1.4" stroke-opacity="0.26"/>
-    <path d="M360 760 C 430 786, 470 850, 556 858" stroke-width="1.3" stroke-opacity="0.26"/>
-    <path d="M920 730 C 982 758, 1028 726, 1110 776" stroke-width="1.4" stroke-opacity="0.26"/>
-    <path d="M1380 670 C 1440 686, 1492 650, 1580 690" stroke-width="1.3" stroke-opacity="0.24"/>
-    <path d="M200 480 C 150 520, 96 506, 20 548" stroke-width="1.2" stroke-opacity="0.24"/>
-    <path d="M520 650 C 560 706, 520 760, 566 826" stroke-width="1.2" stroke-opacity="0.24"/>
-    <!-- fine hairlines -->
-    <path d="M-40 360 C 240 322, 446 470, 720 404" stroke-width="1" stroke-opacity="0.20"/>
-    <path d="M-40 660 C 260 624, 470 740, 760 660" stroke-width="0.9" stroke-opacity="0.18"/>
-    <path d="M900 -40 C 950 180, 880 360, 980 600" stroke-width="0.9" stroke-opacity="0.18"/>
-    <path d="M1140 380 C 1200 430, 1180 520, 1260 580" stroke-width="0.9" stroke-opacity="0.18"/>
-    <path d="M120 900 C 300 870, 520 940, 760 900" stroke-width="0.9" stroke-opacity="0.16"/>
+  <!-- Grey crisp veining -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="#7d776c">
+    <path d="M-40 130 C 200 185, 305 120, 470 225 S 760 300, 900 250" stroke-width="2.4" stroke-opacity="0.26"/>
+    <path d="M210 -40 C 250 170, 185 330, 270 540 S 320 760, 280 920" stroke-width="2.2" stroke-opacity="0.24"/>
+    <path d="M-40 770 C 210 720, 415 845, 705 785 S 1060 720, 1200 775" stroke-width="2" stroke-opacity="0.20"/>
+    <path d="M120 250 C 180 320, 150 430, 230 520" stroke-width="1.3" stroke-opacity="0.18"/>
+    <path d="M470 225 C 520 300, 470 380, 520 470" stroke-width="1.3" stroke-opacity="0.18"/>
+    <path d="M900 250 C 1010 235, 1120 300, 1260 270" stroke-width="1.2" stroke-opacity="0.16"/>
   </g>
 
-  <!-- Gold kintsugi vein network: glow, crisp, branches, highlight -->
+  <!-- Gold kintsugi network: central-left trunk fanning right, with offshoots -->
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <g filter="url(#soft)" stroke="#e7c878" stroke-opacity="0.55">
-      <path d="M-30 300 C 240 248, 432 402, 690 338 S 1120 228, 1700 338" stroke-width="9"/>
-      <path d="M872 -30 C 932 208, 800 412, 962 690 S 1062 972, 1002 1070" stroke-width="8"/>
-      <path d="M150 1045 C 342 800, 706 882, 985 600 S 1330 360, 1700 432" stroke-width="8"/>
-      <path d="M-30 630 C 270 588, 480 705, 770 622 S 1190 532, 1700 642" stroke-width="7"/>
-      <path d="M1290 -30 C 1345 195, 1225 375, 1355 635" stroke-width="7"/>
-      <path d="M540 -30 C 600 210, 470 430, 560 720" stroke-width="6"/>
+    <!-- soft glow underlay -->
+    <g filter="url(#soft)" stroke="#e7c878" stroke-opacity="0.5">
+      <path d="M470 -40 C 522 130, 470 305, 545 485 S 605 705, 560 770" stroke-width="7"/>
+      <path d="M500 165 C 705 150, 905 250, 1185 212 S 1505 262, 1680 232" stroke-width="6"/>
+      <path d="M545 305 C 765 272, 985 332, 1265 302 S 1565 332, 1680 322" stroke-width="6"/>
+      <path d="M522 120 C 722 92, 942 150, 1205 112 S 1525 152, 1680 122" stroke-width="5.5"/>
+      <path d="M545 485 C 765 520, 985 560, 1185 520 S 1485 470, 1680 520" stroke-width="5.5"/>
     </g>
-    <g stroke="#c39633" stroke-opacity="0.96">
-      <path d="M-30 300 C 240 248, 432 402, 690 338 S 1120 228, 1700 338" stroke-width="3.4"/>
-      <path d="M432 402 C 474 472, 562 504, 604 606" stroke-width="2"/>
-      <path d="M690 338 C 742 298, 772 360, 842 330" stroke-width="1.6"/>
-      <path d="M872 -30 C 932 208, 800 412, 962 690 S 1062 972, 1002 1070" stroke-width="3.4"/>
-      <path d="M962 690 C 1022 720, 1064 690, 1146 742" stroke-width="2"/>
-      <path d="M800 412 C 742 430, 700 392, 636 410" stroke-width="1.5"/>
-      <path d="M150 1045 C 342 800, 706 882, 985 600 S 1330 360, 1700 432" stroke-width="3"/>
-      <path d="M706 880 C 766 905, 806 962, 886 960" stroke-width="1.7"/>
-      <path d="M985 600 C 1010 540, 1080 520, 1110 452" stroke-width="1.6"/>
-      <path d="M-30 630 C 270 588, 480 705, 770 622 S 1190 532, 1700 642" stroke-width="2.6"/>
-      <path d="M480 705 C 520 760, 480 816, 530 882" stroke-width="1.5"/>
-      <path d="M1290 -30 C 1345 195, 1225 375, 1355 635" stroke-width="2.6"/>
-      <path d="M1355 635 C 1413 651, 1465 615, 1551 655" stroke-width="1.5"/>
-      <path d="M540 -30 C 600 210, 470 430, 560 720" stroke-width="2.2"/>
-      <path d="M560 720 C 600 760, 656 752, 700 800" stroke-width="1.4"/>
-      <path d="M240 980 C 300 900, 360 940, 420 880" stroke-width="1.5"/>
+    <!-- gold "pools" at the main junctions -->
+    <g fill="#c9a23a" fill-opacity="0.5">
+      <path d="M492 150 C 516 138, 540 160, 533 188 C 526 214, 498 218, 484 200 C 472 182, 476 160, 492 150 Z"/>
+      <path d="M528 300 C 552 290, 574 312, 566 338 C 558 362, 532 364, 520 346 C 510 330, 514 310, 528 300 Z"/>
     </g>
-    <g stroke="#f3da90" stroke-opacity="0.9">
-      <path d="M-30 300 C 240 248, 432 402, 690 338 S 1120 228, 1700 338" stroke-width="1.1"/>
-      <path d="M872 -30 C 932 208, 800 412, 962 690 S 1062 972, 1002 1070" stroke-width="1"/>
-      <path d="M150 1045 C 342 800, 706 882, 985 600 S 1330 360, 1700 432" stroke-width="1"/>
-      <path d="M-30 630 C 270 588, 480 705, 770 622 S 1190 532, 1700 642" stroke-width="0.9"/>
-      <path d="M1290 -30 C 1345 195, 1225 375, 1355 635" stroke-width="0.9"/>
-      <path d="M540 -30 C 600 210, 470 430, 560 720" stroke-width="0.8"/>
+    <!-- crisp gold veins -->
+    <g stroke="#c79a36" stroke-opacity="0.92">
+      <path d="M470 -40 C 522 130, 470 305, 545 485 S 605 705, 560 770" stroke-width="3.2"/>
+      <path d="M500 165 C 705 150, 905 250, 1185 212 S 1505 262, 1680 232" stroke-width="2.8"/>
+      <path d="M545 305 C 765 272, 985 332, 1265 302 S 1565 332, 1680 322" stroke-width="2.6"/>
+      <path d="M522 120 C 722 92, 942 150, 1205 112 S 1525 152, 1680 122" stroke-width="2.2"/>
+      <path d="M545 485 C 765 520, 985 560, 1185 520 S 1485 470, 1680 520" stroke-width="2.4"/>
+      <!-- offshoots -->
+      <path d="M905 250 C 952 202, 1004 222, 1044 172" stroke-width="1.5"/>
+      <path d="M1185 212 C 1232 250, 1284 230, 1324 272" stroke-width="1.5"/>
+      <path d="M985 332 C 1024 384, 1086 362, 1124 414" stroke-width="1.4"/>
+      <path d="M765 272 C 805 322, 765 364, 806 414" stroke-width="1.4"/>
+      <path d="M985 560 C 1026 612, 1088 600, 1126 652" stroke-width="1.4"/>
+      <path d="M545 485 C 505 540, 520 612, 470 660" stroke-width="1.5"/>
+      <path d="M1205 112 C 1252 86, 1300 104, 1352 80" stroke-width="1.3"/>
+    </g>
+    <!-- bright highlight along the mains -->
+    <g stroke="#f4dc94" stroke-opacity="0.85">
+      <path d="M470 -40 C 522 130, 470 305, 545 485 S 605 705, 560 770" stroke-width="0.9"/>
+      <path d="M500 165 C 705 150, 905 250, 1185 212 S 1505 262, 1680 232" stroke-width="0.8"/>
+      <path d="M545 305 C 765 272, 985 332, 1265 302 S 1565 332, 1680 322" stroke-width="0.8"/>
+      <path d="M545 485 C 765 520, 985 560, 1185 520 S 1485 470, 1680 520" stroke-width="0.8"/>
     </g>
   </g>
 </svg>
