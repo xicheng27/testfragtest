@@ -81,7 +81,7 @@
 .marble-bg {
   background-color: var(--marble);
   background-image:
-    radial-gradient(120% 95% at 50% -5%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 55%),
+    radial-gradient(150% 115% at 50% -15%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 42%),
     url('/images/marble-veins.svg');
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
