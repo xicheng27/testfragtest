@@ -91,6 +91,16 @@
   background-attachment: scroll, scroll;
 }
 
+/* Phones/tablets get the finer vein network (above); laptops and up get the
+   bolder, thicker veins so the larger canvas reads as rich marble. */
+@media (min-width: 1024px) {
+  .marble-bg {
+    background-image:
+      radial-gradient(150% 120% at 50% -15%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 34%),
+      url('/images/marble-veins-bold.svg');
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
