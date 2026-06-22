@@ -75,9 +75,9 @@
   --font-sans: var(--font-geist-sans);
 }
 
-/* Subtle white-marble surface with faint black & gold veining. Kept very
-   low-contrast so it reads as texture, never decoration that competes with
-   content. */
+/* White-marble surface with an extensive black & gold vein network. Bold
+   enough to read clearly as marble, while content sits on solid white cards
+   so text stays legible. */
 .marble-bg {
   background-color: var(--marble);
   background-image:
@@ -85,8 +85,10 @@
     url('/images/marble-veins.svg');
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
-  background-position: center top, center;
-  background-attachment: scroll, fixed;
+  background-position: center top, center top;
+  /* `scroll` (not `fixed`) so the marble paints the full page height and
+     renders reliably on iOS Safari, which mishandles fixed backgrounds. */
+  background-attachment: scroll, scroll;
 }
 
 body {
