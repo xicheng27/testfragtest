@@ -148,7 +148,7 @@ export default function ResultsPage({
 
   return (
     <>
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,#fce7f3_0,transparent_28%),radial-gradient(circle_at_top_right,#dbeafe_0,transparent_24%),#fafaf9]">
+      <div className="marble-bg min-h-screen">
         <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/85 px-4 py-3 backdrop-blur-xl sm:px-6">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
             <span className="font-black tracking-tight text-stone-950">ScentMatch</span>
@@ -227,7 +227,7 @@ export default function ResultsPage({
             <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-600">Your matches</p>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6a34]">Your matches</p>
                   <h2 className="mt-2 break-words text-[clamp(1.45rem,6vw,1.7rem)] font-black tracking-[-0.05em] text-stone-950">Recommendations that adapt.</h2>
                   <p className="mt-2 max-w-xl text-lg leading-relaxed text-stone-600">
                     Filter by mood or nudge the list if you want it cheaper, stronger, or less obvious.

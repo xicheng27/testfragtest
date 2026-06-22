@@ -15,7 +15,7 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
   const { user, isGuest } = useAuth();
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="marble-bg min-h-screen">
       <header className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-50/90 px-4 py-4 backdrop-blur sm:px-6">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
           <button

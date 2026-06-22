@@ -58,8 +58,15 @@
 }
 
 :root {
-  --background: #fafaf9;
-  --foreground: #1c1917;
+  --background: #f7f6f3;       /* warm marble white */
+  --foreground: #1c1917;       /* near-black ink */
+  --marble: #f7f6f3;
+  --line: #e7e2d7;             /* warm hairline */
+  --gold: #b08d57;             /* decorative antique gold (lines, dots, accents) */
+  --gold-ink: #8a6a34;         /* darker gold for text accents (better contrast) */
+  --gold-soft: #f3ead8;        /* faint gold wash for backgrounds */
+  /* Magnolia preferred where available, with an elegant serif fallback chain. */
+  --font-heading: 'Magnolia', var(--font-display), 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
 }
 
 @theme inline {
@@ -68,12 +75,38 @@
   --font-sans: var(--font-geist-sans);
 }
 
+/* Subtle white-marble surface with faint black & gold veining. Kept very
+   low-contrast so it reads as texture, never decoration that competes with
+   content. */
+.marble-bg {
+  background-color: var(--marble);
+  background-image:
+    radial-gradient(120% 95% at 50% -5%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 55%),
+    url('/images/marble-veins.svg');
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
+  background-position: center top, center;
+  background-attachment: scroll, fixed;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Headings use the elegant display serif for an editorial, high-end feel.
+   Body copy stays in the sans face for readability. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
 }
 
 html {

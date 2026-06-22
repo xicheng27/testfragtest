@@ -10,7 +10,7 @@ const points = [
 
 export default function DisclaimerPage() {
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="marble-bg min-h-screen">
       <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/90 px-4 py-4 backdrop-blur sm:px-6">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
           <Link href="/" className="text-sm font-semibold tracking-tight text-stone-950">

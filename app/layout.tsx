@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Cormorant_Garamond } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
@@ -9,6 +9,15 @@ import { QuizProgressProvider } from "@/lib/quiz-progress-context";
 const geist = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+// Elegant high-contrast serif used as the display/heading face (and as the
+// fallback for "Magnolia" until that licensed font is supplied).
+const cormorant = Cormorant_Garamond({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -32,8 +41,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-stone-50">
+    <html lang="en" className={`${geist.variable} ${cormorant.variable} h-full antialiased`}>
+      <body className="marble-bg min-h-full flex flex-col">
         <AuthProvider>
           <ShelfProvider>
             <QuizProgressProvider>
