@@ -30,7 +30,7 @@ function useGridColumns(count: number): number {
     };
   }, []);
 
-  if (count <= 3) return Math.max(1, count); // 3-option questions sit in one row
+  if (count <= 3) return bp === 'base' ? 1 : Math.max(1, count);
   if (count === 4) return 2; // 2×2 at every size
   if (count >= 7) return bp === 'lg' ? 4 : bp === 'base' ? 2 : 3;
   return bp === 'base' ? 2 : 3; // 6 and everything else
@@ -126,7 +126,7 @@ const SECTION_LABELS: Record<string, string> = {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="mb-2.5 shrink-0 sm:mb-4">
+      <div className="mb-2 shrink-0 sm:mb-3">
         <span className={clsx(
           'inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]',
           question.category === 'fun'
@@ -135,10 +135,10 @@ const SECTION_LABELS: Record<string, string> = {
         )}>
           {SECTION_LABELS[question.id] ?? (question.category === 'fun' ? 'Just for fun' : 'Scent match')}
         </span>
-        <h2 id={headingId} className="mt-2 text-xl font-semibold leading-tight tracking-[-0.02em] text-stone-950 sm:text-2xl">
+        <h2 id={headingId} className="mt-1.5 text-lg font-semibold leading-tight tracking-[-0.02em] text-stone-950 sm:mt-2 sm:text-2xl">
           {question.question}
         </h2>
-        <div className="mt-1 flex items-center gap-2">
+        <div className="mt-1 flex flex-wrap items-center gap-1.5 sm:gap-2">
           {question.subtitle && (
             <p className="text-xs text-stone-500 sm:text-sm">{question.subtitle}</p>
           )}
@@ -152,7 +152,7 @@ const SECTION_LABELS: Record<string, string> = {
 
       {isImageCards ? (
         <div
-          className="grid min-h-0 flex-1 gap-2 sm:gap-3"
+          className="grid min-h-0 flex-1 gap-1.5 sm:gap-2.5"
           style={{
             gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
             gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,

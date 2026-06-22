@@ -21,6 +21,7 @@ const recommendationCopy: Record<ScoredFragrance['recommendationType'], string> 
   affordable: 'Similar vibe, lower price',
   similar: 'A related scent direction',
   everyday: 'Easy to wear more often',
+  dateNight: 'Warm, memorable, and after-dark friendly',
   unique: 'A less expected niche direction',
 };
 

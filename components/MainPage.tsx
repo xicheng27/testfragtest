@@ -74,24 +74,24 @@ export default function MainPage({
             </div>
 
             <h1 className="text-4xl font-semibold tracking-[-0.06em] text-stone-950 sm:text-5xl">
-              Choose your scent era
+              Find your next fragrance
             </h1>
             <p className="mx-auto mb-8 mt-3 max-w-md text-sm leading-relaxed text-stone-600">
-              Take the practical quiz and we turn your vibe into five useful fragrance directions.
+              Answer quick visual questions about scent, vibe, budget, occasion, and style. We will turn that into useful fragrance picks.
             </p>
 
-            <div className="mx-auto max-w-xl text-left">
+            <div className="mx-auto grid max-w-3xl gap-4 text-left">
               <section className="group flex flex-col rounded-[1.75rem] border border-white/80 bg-white/90 p-5 shadow-[0_22px_70px_rgba(28,25,23,0.08)] transition duration-300 hover:-translate-y-1 sm:p-6">
-                <p className="text-xs font-semibold text-[#8a6a34]">For actually buying something</p>
+                <p className="text-xs font-semibold text-[#8a6a34]">Fast, visual, fragrance-first</p>
                 <h2 className="mt-2 text-xl font-semibold tracking-tight text-stone-950">Recommendation Quiz</h2>
                 <p className="mt-2 text-sm leading-relaxed text-stone-500">
-                  Taste, budget, occasion, intensity. We turn your vibe into five useful fragrance directions.
+                  Get a Best Match, Everyday Scent, Date Night Pick, Budget Alternative, and Wildcard Pick.
                 </p>
                 <div className="my-6 space-y-3">
                   {[
                     { n: '01', text: 'Answer visual questions about your style' },
                     { n: '02', text: `We score ${fragrances.length} fragrances against your answers` },
-                    { n: '03', text: 'Get best match, everyday, date night, budget, and wildcard picks' },
+                    { n: '03', text: 'Save favourites to your Shelf and retake anytime' },
                   ].map(item => (
                     <div key={item.n} className="flex items-center gap-3">
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-100 text-[11px] font-semibold text-stone-500">

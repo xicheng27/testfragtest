@@ -32,20 +32,20 @@ const heroBottles = [
 ] as const;
 
 const previewChips = [
-  'scent personality',
-  'best match',
-  'date-night pick',
-  'budget alternative',
-  'everyday scent',
+  'Best Match',
+  'Everyday Scent',
+  'Date Night Pick',
+  'Budget Alternative',
+  'Wildcard Pick',
 ] as const;
 
-const popularPersonalities = [
-  'Clean Girl With a Secret',
-  'Rainy Library Romantic',
-  'Vanilla Soft Launch',
-  'Expensive Hotel Lobby',
-  'Cool Girl Smoky',
-  'Fresh Out The Shower',
+const trendingPicks = [
+  { label: 'Fresh/Clean Pick', note: 'shower-clean, easy daily reach' },
+  { label: 'Sweet/Cozy Pick', note: 'soft vanilla and warm skin' },
+  { label: 'Date Night Pick', note: 'close, warm, memorable' },
+  { label: 'Budget Alternative', note: 'similar vibe without the full splurge' },
+  { label: 'Wildcard Pick', note: 'less obvious, more signature' },
+  { label: 'Everyday Scent', note: 'low-effort, high-compliment' },
 ] as const;
 
 const resultPreviews = [
@@ -131,7 +131,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                   Your scent era starts here.
                 </h1>
                 <p className="mt-5 max-w-xl text-base leading-relaxed text-stone-700 sm:text-lg">
-                  Take the quiz, get your scent personality, and find fragrances that match your vibe, budget, and plans.
+                  Take the quiz and get fragrance matches for your vibe, budget, occasion, and style.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-2">
@@ -194,9 +194,9 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                       ))}
                     </div>
                     <div className="mt-7 rounded-2xl bg-white p-4 text-stone-950">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8a6a34]">Scent personality</p>
-                      <h2 className="mt-1 text-2xl font-black tracking-[-0.04em]">Clean Girl With a Secret</h2>
-                      <p className="mt-2 text-sm leading-relaxed text-stone-600">Fresh at first. Then weirdly addictive.</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8a6a34]">Best Match</p>
+                      <h2 className="mt-1 text-2xl font-black tracking-[-0.04em]">Fresh, clean, actually wearable.</h2>
+                      <p className="mt-2 text-sm leading-relaxed text-stone-600">A useful pick based on the scent families, budget, and occasions you chose.</p>
                     </div>
                   </div>
                 </div>
@@ -209,7 +209,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
               <div className="grid gap-3 md:grid-cols-3">
                 {[
                   ['01', 'Tap through visual questions', 'Vibe, budget, occasion, red flags. Fast.'],
-                  ['02', 'Get a scent personality', 'The part you screenshot for the group chat.'],
+                  ['02', 'Get fragrance categories', 'Best Match, Everyday, Date Night, Budget, and Wildcard.'],
                   ['03', 'Save your Shelf', 'Keep the ones you actually want to try.'],
                 ].map(([number, title, description]) => (
                   <article key={number} className="rounded-[1.5rem] border border-stone-200 bg-white/80 p-5 shadow-sm transition-transform hover:-translate-y-1">
@@ -227,16 +227,16 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6a34]">Trending with ScentMatch users</p>
-                  <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Popular scent personalities</h2>
+                  <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Popular recommendation styles</h2>
                 </div>
                 <p className="max-w-sm text-sm leading-relaxed text-stone-600">Placeholder community stats for now. Designed so real data can plug in later.</p>
               </div>
               <div className="mt-8 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none]">
-                {popularPersonalities.map((label, index) => (
-                  <article key={label} className="min-w-[13rem] rounded-[1.4rem] border border-stone-200 bg-stone-50 p-4">
+                {trendingPicks.map((item, index) => (
+                  <article key={item.label} className="min-w-[13rem] rounded-[1.4rem] border border-stone-200 bg-stone-50 p-4">
                     <p className="text-xs font-bold text-stone-400">0{index + 1}</p>
-                    <h3 className="mt-8 text-lg font-black leading-tight tracking-[-0.03em] text-stone-950">{label}</h3>
-                    <p className="mt-2 text-xs text-stone-500">{index % 2 === 0 ? 'most shared' : 'most saved'} this week</p>
+                    <h3 className="mt-8 text-lg font-black leading-tight tracking-[-0.03em] text-stone-950">{item.label}</h3>
+                    <p className="mt-2 text-xs text-stone-500">{item.note}</p>
                   </article>
                 ))}
               </div>
