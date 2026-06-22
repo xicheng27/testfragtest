@@ -92,7 +92,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   };
 
   return (
-    <div className="fixed inset-0 z-40 grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden bg-[radial-gradient(circle_at_top_left,#fce7f3_0,transparent_28%),radial-gradient(circle_at_bottom_right,#fef3c7_0,transparent_24%),#fafaf9]">
+    <div className="marble-bg fixed inset-0 z-40 grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden">
       <header className="flex items-center justify-between border-b border-white/70 bg-white/60 px-3 py-2.5 backdrop-blur-xl sm:px-6 sm:py-4">
         <button
           type="button"

@@ -31,7 +31,7 @@ export default function BrandPage({ params }: { params: Promise<{ brand: string 
 
   if (brandFragrances.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-stone-50 px-4 text-center">
+      <div className="marble-bg flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
         <p className="text-lg font-semibold text-stone-800">Brand not found</p>
         <Link href="/fragrances" className="text-sm text-stone-500 underline underline-offset-4 hover:text-stone-800">
           Back to all fragrances
@@ -45,7 +45,7 @@ export default function BrandPage({ params }: { params: Promise<{ brand: string 
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="min-h-screen bg-stone-50"
+      className="marble-bg min-h-screen"
     >
       <header className="border-b border-stone-200/70 px-4 py-4 sm:px-6">
         <div className="mx-auto flex max-w-6xl items-center justify-between">

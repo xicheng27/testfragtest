@@ -32,7 +32,7 @@ export default function FragrancesPage() {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="min-h-screen bg-stone-50"
+      className="marble-bg min-h-screen"
     >
       <header className="border-b border-stone-200/70 px-4 py-4 sm:px-6">
         <div className="mx-auto flex max-w-6xl items-center justify-between">

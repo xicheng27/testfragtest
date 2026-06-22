@@ -90,7 +90,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
 
   return (
     <>
-      <div className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_left,#fce7f3_0,transparent_25%),radial-gradient(circle_at_top_right,#dbeafe_0,transparent_24%),radial-gradient(circle_at_bottom_left,#fef3c7_0,transparent_28%),#fafaf9]">
+      <div className="marble-bg min-h-screen overflow-x-hidden">
         <header className="sticky top-0 z-30 border-b border-white/60 bg-stone-50/75 px-4 py-3 backdrop-blur-xl sm:px-6">
           <div className="mx-auto flex max-w-6xl items-center justify-between">
             <span className="text-base font-black tracking-[-0.03em] text-stone-950">ScentMatch</span>
@@ -124,7 +124,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
             <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-stone-700 shadow-sm">
-                  <span className="h-2 w-2 rounded-full bg-fuchsia-500" aria-hidden="true" />
+                  <span className="h-2 w-2 rounded-full bg-[#b08d57]" aria-hidden="true" />
                   No account needed. No fragrance knowledge needed.
                 </div>
                 <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[0.9] tracking-[-0.07em] text-stone-950 sm:text-7xl lg:text-8xl">
@@ -162,7 +162,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
               </div>
 
               <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-                <div className="absolute -left-5 top-8 z-10 rotate-[-8deg] rounded-2xl border border-stone-950 bg-fuchsia-100 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-stone-950 shadow-[4px_4px_0_#1c1917]">
+                <div className="absolute -left-5 top-8 z-10 rotate-[-8deg] rounded-2xl border border-stone-950 bg-[#f3ead8] px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-stone-950 shadow-[4px_4px_0_#1c1917]">
                   screenshot-worthy
                 </div>
                 <div className="rounded-[2rem] border border-stone-200 bg-white/70 p-3 shadow-[0_24px_70px_rgba(28,25,23,0.12)] backdrop-blur">
@@ -194,7 +194,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                       ))}
                     </div>
                     <div className="mt-7 rounded-2xl bg-white p-4 text-stone-950">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-fuchsia-600">Best Match</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8a6a34]">Best Match</p>
                       <h2 className="mt-1 text-2xl font-black tracking-[-0.04em]">Fresh, clean, actually wearable.</h2>
                       <p className="mt-2 text-sm leading-relaxed text-stone-600">A useful pick based on the scent families, budget, and occasions you chose.</p>
                     </div>
@@ -226,7 +226,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
             <div className="mx-auto max-w-6xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-fuchsia-600">Trending with ScentMatch users</p>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6a34]">Trending with ScentMatch users</p>
                   <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Popular recommendation styles</h2>
                 </div>
                 <p className="max-w-sm text-sm leading-relaxed text-stone-600">Placeholder community stats for now. Designed so real data can plug in later.</p>
@@ -246,7 +246,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
           <section id="results-preview" className="scroll-mt-24 px-4 py-12 sm:px-6 sm:py-20">
             <div className="mx-auto max-w-6xl">
               <div className="max-w-xl">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-600">What you get</p>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6a34]">What you get</p>
                 <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Not just one random bottle.</h2>
                 <p className="mt-3 text-sm leading-relaxed text-stone-600">Best match, everyday scent, date night, cheaper option, and wildcard pick.</p>
               </div>
@@ -262,7 +262,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                       />
                     </div>
                     <div className="p-4">
-                      <p className="text-[10px] font-black uppercase tracking-[0.16em] text-fuchsia-600">{item.category}</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#8a6a34]">{item.category}</p>
                       <h3 className="mt-2 text-sm font-bold leading-tight text-stone-950 sm:text-base">{item.name}</h3>
                       <p className="mt-1 text-xs text-stone-500">{item.brand}</p>
                     </div>

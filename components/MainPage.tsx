@@ -24,7 +24,7 @@ export default function MainPage({
 
   return (
     <>
-      <div className="flex min-h-screen flex-col overflow-hidden bg-[radial-gradient(circle_at_top_left,_#fce7f3_0,_transparent_28%),radial-gradient(circle_at_top_right,_#fef3c7_0,_transparent_24%),#fafaf9]">
+      <div className="marble-bg flex min-h-screen flex-col overflow-hidden">
         <header className="border-b border-white/70 bg-white/55 px-4 py-4 backdrop-blur sm:px-6">
           <div className="mx-auto flex max-w-6xl items-center justify-between">
             <span className="font-semibold tracking-tight text-stone-950">ScentMatch</span>
@@ -82,7 +82,7 @@ export default function MainPage({
 
             <div className="mx-auto grid max-w-3xl gap-4 text-left">
               <section className="group flex flex-col rounded-[1.75rem] border border-white/80 bg-white/90 p-5 shadow-[0_22px_70px_rgba(28,25,23,0.08)] transition duration-300 hover:-translate-y-1 sm:p-6">
-                <p className="text-xs font-semibold text-fuchsia-700">Fast, visual, fragrance-first</p>
+                <p className="text-xs font-semibold text-[#8a6a34]">Fast, visual, fragrance-first</p>
                 <h2 className="mt-2 text-xl font-semibold tracking-tight text-stone-950">Recommendation Quiz</h2>
                 <p className="mt-2 text-sm leading-relaxed text-stone-500">
                   Get a Best Match, Everyday Scent, Date Night Pick, Budget Alternative, and Wildcard Pick.

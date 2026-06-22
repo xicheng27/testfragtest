@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1600" viewBox="0 0 1600 1600" preserveAspectRatio="xMidYMid slice">
+  <rect width="1600" height="1600" fill="#f7f6f3"/>
+  <rect width="1600" height="1600" fill="url(#glow)"/>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-80 360 C 320 430, 520 200, 860 380 S 1380 520, 1700 470" stroke="#1c1917" stroke-opacity="0.05" stroke-width="2.5"/>
+    <path d="M-80 392 C 340 470, 560 250, 900 430" stroke="#b08d57" stroke-opacity="0.07" stroke-width="1.2"/>
+    <path d="M120 1700 C 320 1320, 720 1420, 980 1020 S 1320 760, 1700 800" stroke="#1c1917" stroke-opacity="0.045" stroke-width="2.5"/>
+    <path d="M170 1700 C 360 1360, 740 1450, 1010 1050" stroke="#b08d57" stroke-opacity="0.06" stroke-width="1.2"/>
+    <path d="M860 -80 C 940 320, 740 560, 900 940 S 1040 1360, 960 1720" stroke="#1c1917" stroke-opacity="0.04" stroke-width="1.8"/>
+    <path d="M-80 980 C 260 1020, 460 880, 760 980" stroke="#b08d57" stroke-opacity="0.05" stroke-width="1"/>
+  </g>
+</svg>
