@@ -4,20 +4,23 @@ interface ProgressBarProps {
   current: number;
   total: number;
   tone?: 'light' | 'dark';
+  compact?: boolean;
 }
 
-export default function ProgressBar({ current, total, tone = 'light' }: ProgressBarProps) {
+export default function ProgressBar({ current, total, tone = 'light', compact = false }: ProgressBarProps) {
   const percent = Math.round((current / total) * 100);
   const dark = tone === 'dark';
 
   return (
     <div className="w-full">
-      <div className={`mb-2 flex justify-between text-xs font-light uppercase tracking-widest ${dark ? 'text-stone-500' : 'text-stone-400'}`}>
-        <span>Question {current} of {total}</span>
-        <span>{percent}%</span>
-      </div>
+      {!compact && (
+        <div className={`mb-2 flex justify-between text-xs font-light uppercase tracking-widest ${dark ? 'text-stone-500' : 'text-stone-400'}`}>
+          <span>Question {current} of {total}</span>
+          <span>{percent}%</span>
+        </div>
+      )}
       <div
-        className={`relative h-1 w-full overflow-hidden rounded-full ${dark ? 'bg-white/15' : 'bg-stone-200'}`}
+        className={`relative w-full overflow-hidden rounded-full ${compact ? 'h-1.5' : 'h-1'} ${dark ? 'bg-white/15' : 'bg-stone-200'}`}
         role="progressbar"
         aria-label={`Quiz progress: question ${current} of ${total}`}
         aria-valuemin={1}

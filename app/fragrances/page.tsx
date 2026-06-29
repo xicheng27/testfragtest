@@ -40,7 +40,7 @@ export default function FragrancesPage() {
             ScentMatch
           </Link>
           <div className="flex items-center gap-3 sm:gap-5">
-            <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">About</Link>
+            <Link href="/about" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">About</Link>
             <span className="text-sm font-medium text-stone-950">Fragrances</span>
           </div>
         </div>

@@ -39,12 +39,6 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   const hasAnswer = currentAnswers.length > 0;
   const isLast = step === questions.length - 1;
   const isVisualQuestion = question.type === 'image-cards';
-  const isSingleChoice = question.type === 'single' || (question.maxSelections ?? 99) === 1;
-  const sectionCopy = question.category === 'fun'
-    ? 'Pick a vibe, then tap Next.'
-    : isSingleChoice
-      ? 'Choose one, then tap Next.'
-      : 'Choose your picks, then tap Next.';
   const contentWidthClass = !isVisualQuestion
     ? 'mx-auto max-w-lg'
     : question.options.length <= 4
@@ -93,11 +87,11 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
 
   return (
     <div className="marble-bg fixed inset-0 z-40 grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden">
-      <header className="flex items-center justify-between border-b border-white/70 bg-white/60 px-3 py-2.5 backdrop-blur-xl sm:px-6 sm:py-4">
+      <header className="flex items-center justify-between border-b border-white/70 bg-white/70 px-3 py-2 backdrop-blur-xl sm:px-6 sm:py-3.5">
         <button
           type="button"
           onClick={goPrev}
-          className="flex min-h-10 w-20 items-center gap-1.5 rounded-full px-2 text-sm font-medium text-stone-600 transition-colors hover:bg-white hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+          className="flex min-h-9 w-20 items-center gap-1.5 rounded-full px-2 text-sm font-medium text-stone-600 transition-colors hover:bg-white hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -105,18 +99,21 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
           Back
         </button>
         <span className="text-sm font-semibold tracking-tight text-stone-900">ScentMatch</span>
-        <div className="w-20" aria-hidden="true" />
+        <div className="flex w-20 justify-end">
+          <span className="rounded-full border border-stone-200 bg-white/80 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-stone-600">
+            {step + 1}/{questions.length}
+          </span>
+        </div>
       </header>
 
-      <div className="px-3 pb-0 pt-2.5 sm:px-6 sm:pt-4">
+      <div className="px-4 pb-0 pt-2 sm:px-6 sm:pt-3">
         <div className="mx-auto max-w-5xl">
-          <ProgressBar current={step + 1} total={questions.length} />
-          <p className="mt-2 text-center text-[11px] font-medium text-stone-500 sm:text-xs">{sectionCopy}</p>
+          <ProgressBar current={step + 1} total={questions.length} compact />
         </div>
       </div>
 
       <main
-        className="min-h-0 overflow-hidden px-2.5 py-2 sm:px-6 sm:py-3"
+        className="min-h-0 overflow-hidden px-3 py-3 sm:px-6 sm:py-4"
         aria-live="polite"
       >
         <div className={`${contentWidthClass} h-full min-h-0`}>

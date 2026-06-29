@@ -75,13 +75,13 @@ export default function AuthModal({
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/45 p-4 backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="auth-title"
-    >
-      <div className="relative w-full max-w-md rounded-2xl border border-stone-200 bg-white p-6 shadow-[0_24px_80px_rgba(28,25,23,0.18)] sm:p-8">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-stone-950/45 p-4 py-6 backdrop-blur-sm sm:items-center">
+      <div
+        className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl border border-stone-200 bg-white p-6 shadow-[0_24px_80px_rgba(28,25,23,0.18)] sm:p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-title"
+      >
         <button
           type="button"
           onClick={onClose}

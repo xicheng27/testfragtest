@@ -30,7 +30,7 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
           </button>
           <span className="text-sm font-semibold tracking-tight text-stone-950">ScentMatch</span>
           <div className="flex min-w-16 items-center justify-end gap-3 text-right">
-            <Link href="/about" className="text-xs text-stone-400 transition-colors hover:text-stone-950">About</Link>
+            <Link href="/about" className="hidden text-xs text-stone-400 transition-colors hover:text-stone-950 sm:inline">About</Link>
             <span className="text-xs text-stone-400">
               {shelfFragrances.length} {shelfFragrances.length === 1 ? 'scent' : 'scents'}
             </span>

@@ -152,7 +152,7 @@ export default function ResultsPage({
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
             <span className="font-black tracking-tight text-stone-950">ScentMatch</span>
             <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
+              <Link href="/about" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">
                 About
               </Link>
               <button

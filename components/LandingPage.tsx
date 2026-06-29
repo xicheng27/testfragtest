@@ -111,7 +111,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
               <button
                 type="button"
                 onClick={() => setAuthMode('signup')}
-                className="min-h-10 rounded-full border border-stone-950 bg-white px-4 text-sm font-semibold text-stone-950 shadow-[3px_3px_0_#1c1917] transition-transform hover:-translate-y-0.5 active:translate-y-0"
+                className="hidden min-h-10 rounded-full border border-stone-950 bg-white px-4 text-sm font-semibold text-stone-950 shadow-[3px_3px_0_#1c1917] transition-transform hover:-translate-y-0.5 active:translate-y-0 sm:inline-flex sm:items-center"
               >
                 Sign up
               </button>
@@ -120,21 +120,21 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
         </header>
 
         <main>
-          <section className="px-4 pb-12 pt-8 sm:px-6 sm:pb-20 sm:pt-16">
-            <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
+          <section className="px-4 pb-10 pt-7 sm:px-6 sm:pb-20 sm:pt-16">
+            <div className="mx-auto grid max-w-6xl gap-7 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-stone-700 shadow-sm">
                   <span className="h-2 w-2 rounded-full bg-[#b08d57]" aria-hidden="true" />
                   No account needed. No fragrance knowledge needed.
                 </div>
-                <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[0.9] tracking-[-0.07em] text-stone-950 sm:text-7xl lg:text-8xl">
+                <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.92] tracking-[-0.065em] text-stone-950 sm:text-7xl lg:text-8xl">
                   Your scent era starts here.
                 </h1>
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-stone-700 sm:text-lg">
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-stone-700 sm:text-lg">
                   Take the quiz and get fragrance matches for your vibe, budget, occasion, and style.
                 </p>
 
-                <div className="mt-6 flex flex-wrap gap-2">
+                <div className="mt-5 flex flex-wrap gap-2">
                   {previewChips.map(chip => (
                     <span key={chip} className="rounded-full border border-stone-200 bg-white/75 px-3 py-1.5 text-xs font-medium text-stone-700">
                       {chip}
@@ -142,7 +142,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                   ))}
                 </div>
 
-                <div className="mt-8 grid gap-3 sm:max-w-md sm:grid-cols-[1fr_auto]">
+                <div className="mt-7 grid gap-2 sm:max-w-md sm:grid-cols-[1fr_auto] sm:gap-3">
                   <button
                     type="button"
                     onClick={onStartQuiz}
@@ -153,7 +153,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                   <button
                     type="button"
                     onClick={continueAsGuest}
-                    className="min-h-14 rounded-2xl border border-stone-300 bg-white/80 px-5 text-sm font-semibold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950"
+                    className="min-h-11 rounded-2xl border border-transparent px-5 text-sm font-semibold text-stone-500 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950 sm:min-h-14 sm:border-stone-300 sm:bg-white/80 sm:text-stone-700 sm:no-underline sm:hover:border-stone-950"
                   >
                     Continue as guest
                   </button>

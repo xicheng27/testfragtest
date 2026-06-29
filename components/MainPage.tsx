@@ -25,27 +25,27 @@ export default function MainPage({
   return (
     <>
       <div className="marble-bg flex min-h-screen flex-col overflow-hidden">
-        <header className="border-b border-white/70 bg-white/55 px-4 py-4 backdrop-blur sm:px-6">
-          <div className="mx-auto flex max-w-6xl items-center justify-between">
-            <span className="font-semibold tracking-tight text-stone-950">ScentMatch</span>
-            <div className="flex items-center gap-3 sm:gap-5">
-              <Link href="/fragrances" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
+        <header className="border-b border-white/70 bg-white/65 px-4 py-3 backdrop-blur-xl sm:px-6 sm:py-4">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+            <span className="shrink-0 font-semibold tracking-tight text-stone-950">ScentMatch</span>
+            <div className="flex min-w-0 items-center justify-end gap-2 sm:gap-5">
+              <Link href="/fragrances" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">
                 Fragrances
               </Link>
-              <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">
+              <Link href="/about" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">
                 About
               </Link>
               <button
                 type="button"
                 onClick={onViewShelf}
-                className="text-sm text-stone-500 transition-colors hover:text-stone-800"
+                className="min-h-9 rounded-full border border-stone-200 bg-white/80 px-3 text-sm font-medium text-stone-600 shadow-sm transition-colors hover:border-stone-400 hover:text-stone-950"
               >
                 Shelf
               </button>
               {user ? (
-                <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                   <span className="hidden text-sm text-stone-600 sm:inline">Hi, {user.name.split(' ')[0]}</span>
-                  <button type="button" onClick={signOut} className="text-xs text-stone-400 transition-colors hover:text-stone-700">
+                  <button type="button" onClick={signOut} className="whitespace-nowrap text-xs text-stone-400 transition-colors hover:text-stone-700">
                     Sign out
                   </button>
                 </div>
@@ -53,9 +53,9 @@ export default function MainPage({
                 <button
                   type="button"
                   onClick={() => setShowSignIn(true)}
-                  className="text-xs text-stone-500 transition-colors hover:text-stone-800 sm:text-sm"
+                  className="min-h-9 whitespace-nowrap rounded-full bg-stone-950 px-3 text-xs font-semibold text-white transition-colors hover:bg-stone-800 sm:bg-transparent sm:px-0 sm:text-sm sm:text-stone-500 sm:hover:bg-transparent sm:hover:text-stone-800"
                 >
-                  Create account
+                  Sign up
                 </button>
               ) : null}
             </div>

@@ -12,8 +12,8 @@ interface QuestionCardProps {
 }
 
 // Resolve how many columns the image grid should use at the current breakpoint.
-// Driving columns from JS lets us also compute the row count, so the grid can
-// fill the available height exactly — the options always fit without scrolling.
+// Driving columns from JS lets compact questions fit the viewport, while larger
+// mobile image sets can scroll inside the options area without shrinking cards.
 function useGridColumns(count: number): number {
   const [bp, setBp] = useState<'base' | 'md' | 'lg'>('base');
 
@@ -94,6 +94,7 @@ const SECTION_LABELS: Record<string, string> = {
 
   const columns = useGridColumns(optionCount);
   const rows = Math.ceil(optionCount / columns);
+  const scrollImageGrid = columns === 2 && optionCount >= 5;
   // A lone trailing card on a 2-column mobile layout spans the full width so
   // there's no awkward empty cell.
   const lastSpansFull = columns === 2 && optionCount % 2 === 1;
@@ -126,21 +127,21 @@ const SECTION_LABELS: Record<string, string> = {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="mb-2 shrink-0 sm:mb-3">
+      <div className="mb-3 shrink-0 sm:mb-4">
         <span className={clsx(
-          'inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]',
+          'hidden rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] sm:inline-flex',
           question.category === 'fun'
             ? 'border-[#e4d8c0] bg-[#faf6ee] text-[#8a6a34]'
             : 'border-stone-200 bg-white text-stone-500',
         )}>
           {SECTION_LABELS[question.id] ?? (question.category === 'fun' ? 'Just for fun' : 'Scent match')}
         </span>
-        <h2 id={headingId} className="mt-1.5 text-lg font-semibold leading-tight tracking-[-0.02em] text-stone-950 sm:mt-2 sm:text-2xl">
+        <h2 id={headingId} className="text-[1.35rem] font-semibold leading-[1.08] tracking-[-0.035em] text-stone-950 sm:mt-2 sm:text-2xl">
           {question.question}
         </h2>
-        <div className="mt-1 flex flex-wrap items-center gap-1.5 sm:gap-2">
+        <div className="mt-1.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
           {question.subtitle && (
-            <p className="text-xs text-stone-500 sm:text-sm">{question.subtitle}</p>
+            <p className="text-[13px] leading-snug text-stone-500 sm:text-sm">{question.subtitle}</p>
           )}
           {isMultiSelect && (
             <span className="rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-medium text-stone-500">
@@ -152,10 +153,15 @@ const SECTION_LABELS: Record<string, string> = {
 
       {isImageCards ? (
         <div
-          className="grid min-h-0 flex-1 gap-1.5 sm:gap-2.5"
+          className={clsx(
+            'grid min-h-0 flex-1 gap-2 sm:gap-2.5',
+            scrollImageGrid && 'content-start overflow-y-auto overscroll-contain pr-0.5',
+          )}
           style={{
             gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-            gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
+            ...(scrollImageGrid
+              ? { gridAutoRows: 'minmax(156px, 172px)' }
+              : { gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }),
           }}
           ref={optionsRef}
           role="group"

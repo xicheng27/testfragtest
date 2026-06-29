@@ -53,8 +53,8 @@ export default function BrandPage({ params }: { params: Promise<{ brand: string 
             ScentMatch
           </Link>
           <div className="flex items-center gap-3 sm:gap-5">
-            <Link href="/fragrances" className="text-sm text-stone-500 transition-colors hover:text-stone-800">Fragrances</Link>
-            <Link href="/about" className="text-sm text-stone-500 transition-colors hover:text-stone-800">About</Link>
+            <Link href="/fragrances" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">Fragrances</Link>
+            <Link href="/about" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">About</Link>
           </div>
         </div>
       </header>
