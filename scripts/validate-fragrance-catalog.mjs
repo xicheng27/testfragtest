@@ -10,6 +10,7 @@ const sourceFiles = [
   path.join(workspace, 'lib', 'fragrances.ts'),
   path.join(workspace, 'lib', 'fragrance-expansion.ts'),
   path.join(workspace, 'lib', 'brand-expansion.ts'),
+  path.join(workspace, 'lib', 'catalog-completion.ts'),
 ];
 
 const ids = [];
@@ -19,6 +20,11 @@ for (const file of sourceFiles) {
   ids.push(...[...source.matchAll(
     /^\s+\[\r?\n\s+'([^']+)',\r?\n\s+(?:'[^']+'|"[^"]+"),\r?\n\s+'[^']+',/gm,
   )].map(match => match[1]));
+  if (file.endsWith('catalog-completion.ts')) {
+    ids.push(...[...source.matchAll(
+      /^\s+\['(?:Zoologist|Maison Margiela|Maison Francis Kurkdjian|Tom Ford|Initio Parfums Privés|Louis Vuitton|Goldfield & Banks|Parfums de Marly|Yves Saint Laurent|Dior|Xerjoff|Chanel|Diptyque)',\s+'([^']+)',/gm,
+    )].map(match => match[1]));
+  }
 }
 
 const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);

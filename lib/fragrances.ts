@@ -1,5 +1,6 @@
 import { catalogExpansion } from './fragrance-expansion';
 import { brandExpansion } from './brand-expansion';
+import { catalogCompletion } from './catalog-completion';
 
 export type ScentFamily = 'fresh' | 'woody' | 'floral' | 'sweet' | 'spicy' | 'clean' | 'gourmand' | 'oriental' | 'citrus' | 'aquatic';
 export type Occasion = 'daily' | 'work' | 'date' | 'night' | 'special' | 'casual';
@@ -829,4 +830,5 @@ export const fragrances: Fragrance[] = [
   ...expandedFragrances,
   ...catalogExpansion,
   ...brandExpansion,
+  ...catalogCompletion,
 ].map(normalizeFragrance);
