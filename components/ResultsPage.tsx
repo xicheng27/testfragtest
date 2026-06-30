@@ -148,26 +148,26 @@ export default function ResultsPage({
   return (
     <>
       <div className="marble-bg min-h-screen">
-        <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/85 px-4 py-3 backdrop-blur-xl sm:px-6">
+        <header data-ui="site-header" className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/85 px-4 py-3 backdrop-blur-xl sm:px-6">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
             <span className="font-black tracking-tight text-stone-950">ScentMatch</span>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/about" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">
+            <div className="flex items-center gap-1 sm:gap-3">
+              <Link href="/about" className="hidden min-h-11 items-center px-2 text-sm text-stone-600 transition-colors hover:text-stone-950 sm:inline-flex">
                 About
               </Link>
               <button
                 onClick={onViewShelf}
-                className="rounded-full border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950"
+                className="inline-flex min-h-11 items-center rounded-full border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950"
               >
                 Shelf{shelfIds.length > 0 ? ` (${shelfIds.length})` : ''}
               </button>
               {user ? (
                 <>
-                  <span className="hidden text-sm text-stone-500 sm:inline">{user.name.split(' ')[0]}</span>
-                  <button onClick={signOut} className="text-xs text-stone-400 transition-colors hover:text-stone-700">Sign out</button>
+                  <span className="hidden text-sm text-stone-600 sm:inline">{user.name.split(' ')[0]}</span>
+                  <button onClick={signOut} className="inline-flex min-h-11 items-center px-2 text-xs text-stone-500 transition-colors hover:text-stone-800">Sign out</button>
                 </>
               ) : (
-                <button onClick={() => setShowSignIn(true)} className="text-sm text-stone-500 transition-colors hover:text-stone-800">
+                <button onClick={() => setShowSignIn(true)} className="inline-flex min-h-11 items-center px-2 text-sm text-stone-600 transition-colors hover:text-stone-950">
                   Log in
                 </button>
               )}
@@ -226,7 +226,7 @@ export default function ResultsPage({
             <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6a34]">Your matches</p>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Your matches</p>
                   <h2 className="mt-2 break-words text-[clamp(1.45rem,6vw,1.7rem)] font-black tracking-[-0.05em] text-stone-950">Recommendations that adapt.</h2>
                   <p className="mt-2 max-w-xl text-lg leading-relaxed text-stone-600">
                     Filter by mood or nudge the list if you want it cheaper, stronger, or less obvious.

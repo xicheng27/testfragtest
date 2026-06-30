@@ -29,7 +29,7 @@ export default function ProgressBar({ current, total, tone = 'light', compact = 
         aria-valuetext={`${percent}% complete`}
       >
         <div
-          className={`absolute left-0 top-0 h-full transition-all duration-500 ease-out ${dark ? 'bg-white' : 'bg-gradient-to-r from-[#1c1917] via-[#8a6a34] to-[#b08d57]'}`}
+          className={`absolute left-0 top-0 h-full transition-all duration-500 ease-out ${dark ? 'bg-white' : 'bg-gradient-to-r from-[#1c1917] via-[#8a6417] to-[#b08d57]'}`}
           style={{ width: `${percent}%` }}
         />
       </div>

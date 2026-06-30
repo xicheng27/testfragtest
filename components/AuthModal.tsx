@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { useDialog } from '@/lib/use-dialog';
 import clsx from 'clsx';
 
 type AuthMode = 'signup' | 'login';
@@ -18,6 +19,7 @@ export default function AuthModal({
   allowGuest = false,
 }: AuthModalProps) {
   const { signUp, logIn, continueAsGuest } = useAuth();
+  const dialogRef = useDialog<HTMLDivElement>(true, onClose);
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -77,7 +79,9 @@ export default function AuthModal({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-stone-950/45 p-4 py-6 backdrop-blur-sm sm:items-center">
       <div
-        className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl border border-stone-200 bg-white p-6 shadow-[0_24px_80px_rgba(28,25,23,0.18)] sm:p-8"
+        ref={dialogRef}
+        tabIndex={-1}
+        className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl border border-stone-200 bg-white p-6 shadow-[0_24px_80px_rgba(28,25,23,0.18)] outline-none sm:p-8"
         role="dialog"
         aria-modal="true"
         aria-labelledby="auth-title"

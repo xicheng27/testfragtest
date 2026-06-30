@@ -16,22 +16,22 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
 
   return (
     <div className="marble-bg min-h-screen">
-      <header className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-50/90 px-4 py-4 backdrop-blur sm:px-6">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
+      <header data-ui="site-header" className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-50/90 px-4 py-3 backdrop-blur sm:px-6">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-2">
           <button
             type="button"
             onClick={onBack}
-            className="flex items-center gap-1.5 text-sm text-stone-500 transition-colors hover:text-stone-950"
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full pr-2 text-sm text-stone-600 transition-colors hover:text-stone-950"
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back
           </button>
           <span className="text-sm font-semibold tracking-tight text-stone-950">ScentMatch</span>
           <div className="flex min-w-16 items-center justify-end gap-3 text-right">
-            <Link href="/about" className="hidden text-xs text-stone-400 transition-colors hover:text-stone-950 sm:inline">About</Link>
-            <span className="text-xs text-stone-400">
+            <Link href="/about" className="hidden min-h-11 items-center text-xs text-stone-500 transition-colors hover:text-stone-950 sm:inline-flex">About</Link>
+            <span className="text-xs text-stone-500">
               {shelfFragrances.length} {shelfFragrances.length === 1 ? 'scent' : 'scents'}
             </span>
           </div>

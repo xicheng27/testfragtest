@@ -63,8 +63,10 @@
   --marble: #f7f6f3;
   --line: #e7e2d7;             /* warm hairline */
   --gold: #b08d57;             /* decorative antique gold (lines, dots, accents) */
-  --gold-ink: #8a6a34;         /* darker gold for text accents (better contrast) */
+  --gold-ui: #b08d57;          /* gold for fills / accent backgrounds (alias of --gold) */
+  --gold-ink: #8a6417;         /* darker gold for readable text accents (WCAG AA on white) */
   --gold-soft: #f3ead8;        /* faint gold wash for backgrounds */
+  --text-muted: #57534e;       /* readable muted body copy (stone-600), darker than pale grays */
   /* Magnolia preferred where available, with an elegant serif fallback chain. */
   --font-heading: 'Magnolia', var(--font-display), 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
 }
