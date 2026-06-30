@@ -30,10 +30,11 @@ function useGridColumns(count: number): number {
     };
   }, []);
 
-  if (count <= 3) return bp === 'base' ? 1 : Math.max(1, count);
+  if (bp === 'base') return 1;
+  if (count <= 3) return Math.max(1, count);
   if (count === 4) return 2; // 2×2 at every size
-  if (count >= 7) return bp === 'lg' ? 4 : bp === 'base' ? 2 : 3;
-  return bp === 'base' ? 2 : 3; // 6 and everything else
+  if (count >= 7) return bp === 'lg' ? 4 : 2;
+  return bp === 'lg' ? 3 : 2;
 }
 
 export default function QuestionCard({ question, selected, onChange, optionsRef }: QuestionCardProps) {
@@ -45,6 +46,7 @@ export default function QuestionCard({ question, selected, onChange, optionsRef 
 const EXCLUSIVE_OPTION = 'none';
 
 const SECTION_LABELS: Record<string, string> = {
+  'who-for': 'Start here',
   'scent-family': 'Your scent energy',
   occasion: 'Your plans',
   projection: 'Main character level',
@@ -61,6 +63,8 @@ const SECTION_LABELS: Record<string, string> = {
   memory: 'Memory lane',
   'desired-feel': 'The final energy',
   'compliment-style': 'Compliment bait',
+  weather: 'Climate check',
+  experience: 'Fragrance level',
 };
 
   const toggle = (optionId: string) => {
@@ -94,7 +98,7 @@ const SECTION_LABELS: Record<string, string> = {
 
   const columns = useGridColumns(optionCount);
   const rows = Math.ceil(optionCount / columns);
-  const scrollImageGrid = columns === 2 && optionCount >= 5;
+  const scrollImageGrid = columns <= 2 && optionCount >= 5;
   // A lone trailing card on a 2-column mobile layout spans the full width so
   // there's no awkward empty cell.
   const lastSpansFull = columns === 2 && optionCount % 2 === 1;
@@ -160,7 +164,7 @@ const SECTION_LABELS: Record<string, string> = {
           style={{
             gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
             ...(scrollImageGrid
-              ? { gridAutoRows: 'minmax(156px, 172px)' }
+              ? { gridAutoRows: columns === 1 ? 'minmax(126px, 144px)' : 'minmax(148px, 168px)' }
               : { gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }),
           }}
           ref={optionsRef}
@@ -188,7 +192,7 @@ const SECTION_LABELS: Record<string, string> = {
           role="group"
           aria-labelledby={headingId}
           onKeyDown={handleOptionKeyDown}
-          className="grid min-h-0 flex-1 grid-cols-2 content-start gap-2 overflow-y-auto overscroll-contain sm:grid-cols-3 sm:gap-3"
+          className="grid min-h-0 flex-1 grid-cols-1 content-start gap-2 overflow-y-auto overscroll-contain sm:grid-cols-2 sm:gap-3 lg:grid-cols-3"
         >
           {question.options.map(option => (
             <button

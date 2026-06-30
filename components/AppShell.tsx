@@ -80,7 +80,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
   const handleQuizComplete = (answers: QuizAnswers) => {
     setQuizAnswers(answers);
     saveProgress(answers, isExtended);
-    const recs = getRecommendations(answers, 5);
+    const recs = getRecommendations(answers, 7);
     setResults(recs);
     setView('results');
   };
@@ -120,7 +120,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
   const handleViewPreviousResults = () => {
     setQuizAnswers(storedAnswers);
     setIsExtended(storedIsExtended);
-    setResults(getRecommendations(storedAnswers, 5));
+    setResults(getRecommendations(storedAnswers, 7));
     setView('results');
   };
 

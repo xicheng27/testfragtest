@@ -1,8 +1,25 @@
-import { fragrances, Fragrance, ScentFamily, Occasion, GenderStyle, Projection, PriceRange, Tier, Aesthetic, Vibe } from './fragrances';
+import {
+  fragrances,
+  Fragrance,
+  Occasion,
+  PriceRange,
+  Projection,
+  ScentFamily,
+} from './fragrances';
 
 export interface QuizAnswers {
   [questionId: string]: string | string[];
 }
+
+export type RecommendationType =
+  | 'best'
+  | 'safe'
+  | 'unique'
+  | 'weather'
+  | 'budget'
+  | 'dateNight'
+  | 'workSchool'
+  | 'similar';
 
 export interface ScoredFragrance {
   fragrance: Fragrance;
@@ -14,324 +31,253 @@ export interface ScoredFragrance {
   recommendationLabel: string;
 }
 
-export type RecommendationType = 'best' | 'affordable' | 'similar' | 'everyday' | 'dateNight' | 'unique';
-
-// ──────────────────────────────────────────────────────────────────────────────
-// SCORING SYSTEM
-// Each matching criterion adds a weighted score. The fragrance with the highest
-// total score wins. Weights are tunable below — edit freely.
-// ──────────────────────────────────────────────────────────────────────────────
-
-const WEIGHTS = {
-  scentFamily: 30,     // scent family match (per family matched)
-  occasion: 20,        // occasion match
-  projection: 15,      // projection match
-  genderStyle: 8,      // marketed gender is a light preference, never a filter
-  priceRange: 25,      // price range — hard filter softened to score penalty
-  tier: 10,            // designer vs niche preference
-  vibe: 20,            // vibe / setting match
-  aesthetic: 20,       // aesthetic match
-  season: 10,          // season match
-  mood: 15,            // mood match
-  longevity: 10,       // inferred from projection
-  personalSignal: 7,   // premium lifestyle and memory questions
-  dislikedNote: -40,   // penalty if fragrance contains a disliked note
+const RECOMMENDATION_LABELS: Record<RecommendationType, string> = {
+  best: 'Best Match',
+  safe: 'Safest Pick',
+  unique: 'More Unique Pick',
+  weather: 'Best for Your Weather',
+  budget: 'Best for Your Budget',
+  dateNight: 'Date / Night Pick',
+  workSchool: 'School / Work Pick',
+  similar: 'You May Also Like',
 };
 
-const PERSONALISATION_SIGNALS: Record<string, Record<string, string[]>> = {
-  // Visual choices translate scenes into editable scent-language signals here.
-  season: {
-    spring: ['floral', 'fruity', 'musk', 'fresh', 'soft', 'romantic'],
-    summer: ['fresh', 'citrus', 'aquatic', 'coconut', 'marine', 'beach'],
-    autumn: ['woody', 'spicy', 'amber', 'smoky', 'tea', 'dark-academia'],
-    winter: ['vanilla', 'amber', 'oud', 'tobacco', 'warm spicy', 'night'],
-  },
-  aesthetic: {
-    clean: ['clean', 'fresh', 'musk', 'subtle', 'morning-light'],
-    'old-money': ['old-money', 'woody', 'elegant', 'quiet-luxury', 'tailored'],
-    'dark-academia': ['dark-academia', 'woody', 'spicy', 'tea', 'smoky'],
-    beach: ['beach', 'citrus', 'aquatic', 'coconut', 'summer'],
-    'quiet-luxury': ['quiet-luxury', 'expensive', 'elegant', 'moderate'],
-    streetwear: ['late-night-city', 'bold', 'spicy', 'confident'],
-    romantic: ['romantic', 'floral', 'fruity', 'musk', 'soft'],
-  },
-  vibe: {
-    'rainy-castle': ['woody', 'amber', 'smoky', 'tea', 'mysterious'],
-    'sunny-beach': ['fresh', 'citrus', 'aquatic', 'coconut', 'marine'],
-    'late-night-city': ['amber', 'vanilla', 'spicy', 'bold', 'night'],
-    'hotel-room': ['clean', 'musk', 'subtle', 'quiet-luxury'],
-    'forest-rain': ['green', 'woody', 'aquatic', 'tea', 'fresh'],
-    'luxury-mall': ['expensive', 'amber', 'floral', 'elegant'],
-  },
-  occasion: {
-    daily: ['daily', 'clean', 'fresh', 'moderate', 'versatile'],
-    work: ['work', 'clean', 'subtle', 'woody', 'tailored'],
-    date: ['date', 'romantic', 'intimate', 'floral', 'vanilla'],
-    night: ['night', 'bold', 'amber', 'spicy', 'strong'],
-    special: ['special', 'elegant', 'expensive', 'floral', 'oud'],
-    casual: ['casual', 'fresh', 'citrus', 'aquatic', 'soft'],
-  },
-  'time-of-day': {
-    'early-morning': ['morning-light', 'clean', 'fresh', 'subtle', 'daily'],
-    'golden-hour': ['golden-hour', 'warm', 'romantic', 'elegant', 'date'],
-    'blue-hour': ['quiet-luxury', 'intimate', 'floral', 'moderate'],
-    midnight: ['midnight', 'night', 'strong', 'addictive', 'mysterious'],
-  },
-  'outfit-style': {
-    tailored: ['tailored', 'old-money', 'quiet-luxury', 'elegant', 'work'],
-    relaxed: ['clean', 'casual', 'soft', 'daily', 'versatile'],
-    streetwear: ['streetwear', 'bold', 'late-night-city', 'confident'],
-    evening: ['romantic', 'night', 'date', 'elegant', 'intimate'],
-  },
-  memory: {
-    'clean-laundry': ['clean-laundry', 'clean', 'musk', 'soft', 'morning-light'],
-    'seaside-holiday': ['seaside', 'sunny-beach', 'citrus', 'aquatic', 'summer'],
-    'rain-on-stone': ['rain', 'mineral', 'forest-rain', 'woody', 'fresh'],
-    'warm-embrace': ['embrace', 'comforting', 'vanilla', 'woody', 'winter'],
-  },
-  'desired-feel': {
-    clean: ['clean', 'fresh', 'musk', 'subtle'],
-    addictive: ['addictive', 'sweet', 'gourmand', 'strong'],
-    mysterious: ['mysterious', 'oriental', 'spicy', 'night'],
-    expensive: ['expensive', 'quiet-luxury', 'old-money', 'elegant'],
-    comforting: ['comforting', 'soft', 'vanilla', 'woody'],
-    bold: ['bold', 'strong', 'confident', 'spicy'],
-    intimate: ['intimate', 'subtle', 'soft', 'date'],
-  },
-  'compliment-style': {
-    'you-smell-clean': ['clean', 'fresh', 'musk', 'daily'],
-    'what-is-that': ['addictive', 'strong', 'unique', 'mysterious'],
-    'smells-expensive': ['expensive', 'quiet-luxury', 'elegant', 'niche'],
-    'only-you': ['unique', 'niche', 'intimate', 'mysterious'],
-  },
+const FEEL_SIGNALS: Record<string, string[]> = {
+  clean: ['clean', 'fresh', 'musk', 'citrus', 'linen', 'subtle', 'daily'],
+  comforting: ['comforting', 'cozy', 'soft', 'woody', 'vanilla', 'amber', 'winter'],
+  mysterious: ['mysterious', 'addictive', 'amber', 'spicy', 'night', 'oriental'],
+  expensive: ['expensive', 'elegant', 'quiet-luxury', 'old-money', 'woody', 'niche'],
+  playful: ['sweet', 'fruity', 'gourmand', 'vanilla', 'playful', 'compliment'],
+  sporty: ['fresh', 'clean', 'aquatic', 'citrus', 'green', 'casual', 'subtle'],
+  bold: ['bold', 'strong', 'night', 'smoky', 'leather', 'spicy', 'amber'],
+  intimate: ['intimate', 'soft', 'musk', 'skin', 'subtle', 'date'],
 };
+
+const SCENT_WORLD_SIGNALS: Record<string, string[]> = {
+  clean: ['clean', 'musk', 'linen', 'fresh-laundry', 'skin', 'subtle'],
+  aquatic: ['aquatic', 'citrus', 'marine', 'fresh', 'summer'],
+  gourmand: ['gourmand', 'sweet', 'vanilla', 'caramel', 'praline'],
+  floral: ['floral', 'rose', 'white floral', 'romantic', 'soft'],
+  woody: ['woody', 'sandalwood', 'cedar', 'vetiver', 'elegant'],
+  oriental: ['smoky', 'leather', 'tobacco', 'incense', 'dark', 'night'],
+  fresh: ['tea', 'matcha', 'green', 'fresh', 'clean', 'calm'],
+  spicy: ['spicy', 'amber', 'warm', 'oriental', 'addictive'],
+};
+
+const STATEMENT_SIGNALS: Record<string, string[]> = {
+  'you-smell-clean': ['clean', 'fresh', 'musk', 'daily', 'subtle'],
+  'what-is-that': ['addictive', 'compliment', 'strong', 'unique', 'night'],
+  'soft-comfort': ['comforting', 'soft', 'musk', 'vanilla', 'intimate'],
+  'rich-mysterious': ['mysterious', 'amber', 'spicy', 'oud', 'night'],
+  'only-you': ['unique', 'niche', 'unusual', 'mysterious', 'intimate'],
+};
+
+const DISLIKE_SIGNALS: Record<string, string[]> = {
+  'too-sweet': ['sweet', 'gourmand', 'sugar', 'caramel', 'praline', 'honey', 'candy'],
+  oud: ['oud', 'agarwood'],
+  smoke: ['smoke', 'smoky', 'tobacco', 'incense', 'burnt'],
+  powdery: ['powdery', 'iris', 'violet', 'aldehydic', 'makeup'],
+  vanilla: ['vanilla', 'tonka', 'caramel', 'praline', 'benzoin'],
+  rose: ['rose'],
+  leather: ['leather', 'suede', 'animalic'],
+  mature: ['mature', 'vintage', 'aldehydic', 'powdery', 'classic'],
+};
+
+const HOT_HUMID_GOOD = ['fresh', 'clean', 'citrus', 'aquatic', 'green', 'tea', 'musk', 'marine', 'linen'];
+const HOT_HUMID_BAD = ['oud', 'tobacco', 'smoky', 'leather', 'heavy', 'dense', 'amber', 'vanilla', 'gourmand'];
 
 function getAnswer(answers: QuizAnswers, id: string): string {
-  const val = answers[id];
-  if (!val) return '';
-  return Array.isArray(val) ? val[0] : val;
+  const value = answers[id];
+  if (!value) return '';
+  return Array.isArray(value) ? value[0] : value;
 }
 
 function getAnswers(answers: QuizAnswers, id: string): string[] {
-  const val = answers[id];
-  if (!val) return [];
-  return Array.isArray(val) ? val : [val];
+  const value = answers[id];
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
 }
 
-export function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
-  let score = 0;
-
-  // ── Scent family ──────────────────────────────────────────────────────────
-  const likedFamilies = getAnswers(answers, 'scent-family') as ScentFamily[];
-  const familyMatches = likedFamilies.filter(f => fragrance.scentFamilies.includes(f)).length;
-  score += familyMatches * WEIGHTS.scentFamily;
-
-  // ── Occasion ──────────────────────────────────────────────────────────────
-  // Multi-select: award the occasion weight if any chosen occasion fits.
-  const occasions = getAnswers(answers, 'occasion') as Occasion[];
-  if (occasions.some(o => fragrance.occasions.includes(o))) {
-    score += WEIGHTS.occasion;
-  }
-
-  // ── Projection ────────────────────────────────────────────────────────────
-  const projection = getAnswer(answers, 'projection') as Projection;
-  if (projection && fragrance.projection === projection) {
-    score += WEIGHTS.projection;
-  }
-
-  // ── Gender style ──────────────────────────────────────────────────────────
-  const genderStyle = getAnswer(answers, 'gender-style') as GenderStyle | 'any';
-  if (genderStyle && genderStyle !== 'any') {
-    if (fragrance.genderStyle === genderStyle) {
-      score += WEIGHTS.genderStyle;
-    } else if (fragrance.genderStyle === 'unisex') {
-      score += WEIGHTS.genderStyle * 0.6;
-    } else if (genderStyle === 'unisex') {
-      score += WEIGHTS.genderStyle * 0.25;
-    }
-  }
-
-  // ── Price range ───────────────────────────────────────────────────────────
-  // Price range is treated as an inclusive range:
-  // budget covers budget, mid covers budget+mid, designer covers all except niche, niche covers all
-  const priceAnswer = getAnswer(answers, 'price-range') as PriceRange;
-  const priceOrder: PriceRange[] = ['budget', 'mid', 'designer', 'niche'];
-  if (priceAnswer) {
-    const userIdx = priceOrder.indexOf(priceAnswer);
-    const fragIdx = priceOrder.indexOf(fragrance.priceRange);
-    if (fragIdx <= userIdx) {
-      score += WEIGHTS.priceRange; // within budget
-    } else {
-      score -= WEIGHTS.priceRange * 0.5; // slightly over budget
-    }
-  }
-
-  // ── Tier preference ───────────────────────────────────────────────────────
-  const tierAnswer = getAnswer(answers, 'tier') as Tier | 'any';
-  if (tierAnswer && tierAnswer !== 'any' && fragrance.tier === tierAnswer) {
-    score += WEIGHTS.tier;
-  } else if (tierAnswer === 'any') {
-    score += WEIGHTS.tier * 0.5;
-  }
-
-  // ── Vibe ──────────────────────────────────────────────────────────────────
-  const vibe = getAnswer(answers, 'vibe') as Vibe;
-  if (vibe && fragrance.vibes.includes(vibe)) {
-    score += WEIGHTS.vibe;
-  }
-
-  // ── Aesthetic ─────────────────────────────────────────────────────────────
-  const aesthetic = getAnswer(answers, 'aesthetic') as Aesthetic;
-  if (aesthetic && fragrance.aesthetics.includes(aesthetic)) {
-    score += WEIGHTS.aesthetic;
-  }
-
-  // ── Season ────────────────────────────────────────────────────────────────
-  const season = getAnswer(answers, 'season');
-  if (season && fragrance.seasons.includes(season)) {
-    score += WEIGHTS.season;
-  }
-
-  // ── Mood ──────────────────────────────────────────────────────────────────
-  const mood = getAnswer(answers, 'mood');
-  if (mood && fragrance.moods.includes(mood)) {
-    score += WEIGHTS.mood;
-  }
-
-  // Extended answers refine the ranking without overriding the core preferences.
-  const longevity = getAnswer(answers, 'longevity');
-  const longevityProjection: Record<string, Projection> = {
-    short: 'subtle',
-    medium: 'moderate',
-    long: 'strong',
-  };
-  if (longevity && fragrance.projection === longevityProjection[longevity]) {
-    score += WEIGHTS.longevity;
-  }
-
-  const searchableTags = new Set([
-    ...fragrance.vibeTags,
-    ...fragrance.accords,
-    ...fragrance.notes,
+function allSignals(fragrance: Fragrance) {
+  return [
     ...fragrance.scentFamilies,
-    ...fragrance.vibes,
-    ...fragrance.aesthetics,
+    ...fragrance.notes,
+    ...fragrance.accords,
+    ...fragrance.vibeTags,
     ...fragrance.occasions,
     ...fragrance.seasons,
+    ...fragrance.aesthetics,
+    ...fragrance.vibes,
     ...fragrance.moods,
     fragrance.projection,
     fragrance.longevity,
     fragrance.tier,
-  ].map(tag => tag.toLowerCase()));
-
-  for (const [questionId, optionSignals] of Object.entries(PERSONALISATION_SIGNALS)) {
-    for (const answer of getAnswers(answers, questionId)) {
-      const signals = optionSignals[answer] ?? [];
-      const matches = signals.filter(signal => (
-        searchableTags.has(signal)
-        || fragrance.notes.some(note => note.toLowerCase().includes(signal))
-        || fragrance.accords.some(accord => accord.toLowerCase().includes(signal))
-      )).length;
-      score += Math.min(matches, 2) * WEIGHTS.personalSignal;
-    }
-  }
-
-  // ── Disliked notes penalty ────────────────────────────────────────────────
-  const dislikedNotes = getAnswers(answers, 'disliked-notes');
-  if (!dislikedNotes.includes('none')) {
-    for (const disliked of dislikedNotes) {
-      const noteMatches = fragrance.notes.some(note =>
-        note.toLowerCase().includes(disliked.toLowerCase()) ||
-        // map category labels to note keywords
-        (disliked === 'vanilla' && (note.toLowerCase().includes('vanilla') || note.toLowerCase().includes('tonka') || note.toLowerCase().includes('praline') || note.toLowerCase().includes('caramel'))) ||
-        (disliked === 'rose' && note.toLowerCase().includes('rose')) ||
-        (disliked === 'citrus' && (note.toLowerCase().includes('citrus') || note.toLowerCase().includes('bergamot') || note.toLowerCase().includes('lemon') || note.toLowerCase().includes('grapefruit'))) ||
-        (disliked === 'tobacco' && (note.toLowerCase().includes('tobacco') || note.toLowerCase().includes('smoke')))
-      );
-      if (noteMatches) {
-        score += WEIGHTS.dislikedNote; // negative weight
-      }
-    }
-  }
-
-  return score;
+    fragrance.priceRange,
+  ].map(signal => signal.toLowerCase());
 }
 
-const OCCASION_LABELS: Record<Occasion, string> = {
-  daily: 'everyday wear',
-  work: 'school or work',
-  date: 'date nights',
-  night: 'nights out',
-  special: 'special occasions',
-  casual: 'relaxed weekends',
-};
+function hasAny(fragrance: Fragrance, terms: string[]) {
+  const signals = allSignals(fragrance);
+  return terms.some(term => signals.some(signal => signal.includes(term)));
+}
 
-const AESTHETIC_LABELS: Record<Aesthetic, string> = {
-  'old-money': 'timeless, polished style',
-  clean: 'clean, minimal style',
-  'dark-academia': 'dark academia style',
-  beach: 'easy beach-holiday mood',
-  'quiet-luxury': 'quiet luxury taste',
-  streetwear: 'bold city style',
-  romantic: 'soft romantic style',
-};
-
-const VIBE_LABELS: Record<Vibe, string> = {
-  'rainy-castle': 'cosy, mysterious mood',
-  'sunny-beach': 'bright beach energy',
-  'late-night-city': 'confident after-dark mood',
-  'hotel-room': 'crisp, calm hotel-room mood',
-  'forest-rain': 'fresh forest-after-rain feeling',
-  'luxury-mall': 'polished, expensive-feeling mood',
-};
+function signalMatches(fragrance: Fragrance, terms: string[]) {
+  const signals = allSignals(fragrance);
+  return terms.filter(term => signals.some(signal => signal.includes(term))).length;
+}
 
 function joinFriendly(values: string[]) {
   if (values.length <= 1) return values[0] ?? '';
   return `${values.slice(0, -1).join(', ')} and ${values.at(-1)}`;
 }
 
+function priceScore(fragrance: Fragrance, answer: string) {
+  if (!answer || answer === 'any') return 10;
+  const order: PriceRange[] = ['budget', 'mid', 'designer', 'niche'];
+  const userIndex = order.indexOf(answer as PriceRange);
+  const fragranceIndex = order.indexOf(fragrance.priceRange);
+  if (fragranceIndex <= userIndex) return 34;
+  return -28 * (fragranceIndex - userIndex);
+}
+
+function projectionScore(fragrance: Fragrance, answer: string) {
+  if (!answer) return 0;
+  const target = answer === 'beast' ? 'strong' : answer as Projection;
+  if (fragrance.projection === target) return answer === 'beast' ? 34 : 24;
+  if (answer === 'subtle' && fragrance.projection === 'strong') return -90;
+  if (answer === 'moderate' && fragrance.projection === 'strong') return -42;
+  if ((answer === 'strong' || answer === 'beast') && fragrance.projection === 'subtle') return -12;
+  return -4;
+}
+
+export function scoreFragrance(fragrance: Fragrance, answers: QuizAnswers): number {
+  let score = 50;
+
+  const feelAnswers = getAnswers(answers, 'desired-feel');
+  for (const answer of feelAnswers) {
+    score += Math.min(signalMatches(fragrance, FEEL_SIGNALS[answer] ?? []), 3) * 14;
+  }
+
+  const scentWorlds = getAnswers(answers, 'scent-family') as ScentFamily[];
+  for (const world of scentWorlds) {
+    if (fragrance.scentFamilies.includes(world)) score += 34;
+    score += Math.min(signalMatches(fragrance, SCENT_WORLD_SIGNALS[world] ?? []), 2) * 12;
+  }
+
+  const occasions = getAnswers(answers, 'occasion') as Array<Occasion | 'everything'>;
+  if (occasions.includes('everything')) {
+    if (fragrance.occasions.includes('daily') || fragrance.occasions.includes('work')) score += 28;
+    if (fragrance.projection !== 'strong') score += 12;
+  }
+  if (occasions.some(occasion => occasion !== 'everything' && fragrance.occasions.includes(occasion as Occasion))) {
+    score += 32;
+  }
+  if (occasions.includes('daily') || occasions.includes('work')) {
+    if (hasAny(fragrance, ['office-safe', 'school-friendly', 'clean', 'fresh', 'musk'])) score += 18;
+    if (fragrance.projection === 'strong') score -= 36;
+  }
+  if (occasions.includes('date')) {
+    score += signalMatches(fragrance, ['musky', 'musk', 'vanilla', 'amber', 'soft', 'intimate', 'romantic']) * 8;
+    if (fragrance.projection === 'strong') score -= 12;
+  }
+  if (occasions.includes('night')) {
+    score += signalMatches(fragrance, ['bold', 'amber', 'spicy', 'sweet', 'night', 'addictive']) * 10;
+    if (fragrance.projection === 'strong') score += 16;
+  }
+
+  score += projectionScore(fragrance, getAnswer(answers, 'projection'));
+  score += priceScore(fragrance, getAnswer(answers, 'price-range'));
+
+  const whoFor = getAnswer(answers, 'who-for');
+  if (whoFor === 'gift' || whoFor === 'not-sure') {
+    if (fragrance.occasions.includes('daily') || fragrance.occasions.includes('work')) score += 18;
+    if (fragrance.projection !== 'strong') score += 18;
+    if (fragrance.tier === 'designer' || fragrance.priceRange === 'mid') score += 10;
+    if (hasAny(fragrance, ['oud', 'smoky', 'leather', 'animalic'])) score -= 45;
+  }
+
+  const weather = getAnswer(answers, 'weather');
+  if (weather === 'hot-humid') {
+    score += Math.min(signalMatches(fragrance, HOT_HUMID_GOOD), 3) * 18;
+    score -= Math.min(signalMatches(fragrance, HOT_HUMID_BAD), 3) * 24;
+    if (fragrance.projection === 'strong' && !occasions.includes('night')) score -= 45;
+    if (fragrance.seasons.includes('summer') || fragrance.seasons.includes('spring')) score += 15;
+  } else if (weather === 'cool') {
+    score += signalMatches(fragrance, ['vanilla', 'amber', 'woody', 'spicy', 'cozy', 'winter']) * 10;
+  } else if (weather === 'indoor') {
+    if (fragrance.projection !== 'strong') score += 22;
+    if (fragrance.occasions.includes('work')) score += 12;
+  } else if (weather === 'all-year') {
+    if (fragrance.occasions.includes('daily') && fragrance.projection === 'moderate') score += 22;
+  }
+
+  const experience = getAnswer(answers, 'experience');
+  if (experience === 'beginner') {
+    if (fragrance.occasions.includes('daily') || fragrance.occasions.includes('work')) score += 20;
+    if (fragrance.tier === 'designer' || fragrance.priceRange === 'mid') score += 12;
+    if (fragrance.projection === 'strong') score -= 28;
+    if (hasAny(fragrance, ['oud', 'smoky', 'animalic', 'leather', 'experimental'])) score -= 42;
+  } else if (experience === 'unique') {
+    if (fragrance.tier === 'niche') score += 34;
+    score += signalMatches(fragrance, ['unique', 'unusual', 'artistic', 'experimental', 'mysterious']) * 12;
+  }
+
+  const statement = getAnswer(answers, 'compliment-style');
+  score += Math.min(signalMatches(fragrance, STATEMENT_SIGNALS[statement] ?? []), 3) * 14;
+
+  const disliked = getAnswers(answers, 'disliked-notes');
+  if (!disliked.includes('none')) {
+    for (const dislike of disliked) {
+      if (dislike === 'too-strong' && fragrance.projection === 'strong') score -= 110;
+      const terms = DISLIKE_SIGNALS[dislike] ?? [];
+      if (terms.length && hasAny(fragrance, terms)) score -= 95;
+    }
+  }
+
+  return score;
+}
+
 function buildMatchReasons(fragrance: Fragrance, answers: QuizAnswers): string[] {
   const reasons: string[] = [];
-  const likedFamilies = getAnswers(answers, 'scent-family') as ScentFamily[];
-  const matchedFamilies = likedFamilies.filter(family => fragrance.scentFamilies.includes(family));
-  if (matchedFamilies.length > 0) {
-    reasons.push(`You preferred ${joinFriendly(matchedFamilies)} scents, and this sits in that profile.`);
+  const feel = getAnswers(answers, 'desired-feel');
+  const matchedFeels = feel.filter(answer => signalMatches(fragrance, FEEL_SIGNALS[answer] ?? []) > 0);
+  if (matchedFeels.length) {
+    reasons.push(`It matches your ${joinFriendly(matchedFeels.map(label => label.replaceAll('-', ' ')))} scent energy.`);
   }
 
-  const matchedOccasion = (getAnswers(answers, 'occasion') as Occasion[]).find(o => fragrance.occasions.includes(o));
+  const scentWorlds = getAnswers(answers, 'scent-family');
+  const matchedWorlds = scentWorlds.filter(world => (
+    fragrance.scentFamilies.includes(world as ScentFamily)
+    || signalMatches(fragrance, SCENT_WORLD_SIGNALS[world] ?? []) > 0
+  ));
+  if (matchedWorlds.length) {
+    reasons.push(`The notes sit close to the ${joinFriendly(matchedWorlds.map(label => label.replaceAll('-', ' ')))} world you picked.`);
+  }
+
+  const occasions = getAnswers(answers, 'occasion');
+  const matchedOccasion = occasions.find(occasion => (
+    occasion === 'everything'
+      ? fragrance.occasions.includes('daily') || fragrance.occasions.includes('work')
+      : fragrance.occasions.includes(occasion as Occasion)
+  ));
   if (matchedOccasion) {
-    reasons.push(`You wanted something for ${OCCASION_LABELS[matchedOccasion]}, which is one of its strongest uses.`);
+    reasons.push(
+      matchedOccasion === 'everything'
+        ? 'It is versatile enough to work as an everyday signature.'
+        : `It makes sense for ${matchedOccasion.replaceAll('-', ' ')} without feeling random.`,
+    );
   }
 
-  const priceAnswer = getAnswer(answers, 'price-range') as PriceRange;
-  const priceOrder: PriceRange[] = ['budget', 'mid', 'designer', 'niche'];
-  if (priceAnswer && priceOrder.indexOf(fragrance.priceRange) <= priceOrder.indexOf(priceAnswer)) {
-    reasons.push('It fits within the price range you selected.');
+  const weather = getAnswer(answers, 'weather');
+  if (weather === 'hot-humid' && hasAny(fragrance, HOT_HUMID_GOOD)) {
+    reasons.push('It leans fresh enough for hot or humid weather.');
+  } else if (weather === 'cool' && hasAny(fragrance, ['vanilla', 'amber', 'woody', 'spicy'])) {
+    reasons.push('It has the warmer texture you wanted for cooler weather.');
   }
 
-  const season = getAnswer(answers, 'season');
-  if (season && fragrance.seasons.includes(season)) {
-    reasons.push(`Its character works especially well in ${season}.`);
-  }
-
-  const projection = getAnswer(answers, 'projection') as Projection;
-  if (projection && fragrance.projection === projection) {
-    const projectionCopy: Record<Projection, string> = {
-      subtle: 'stays close and understated',
-      moderate: 'has a noticeable but balanced presence',
-      strong: 'has the stronger presence you asked for',
-    };
-    reasons.push(`It ${projectionCopy[projection]}.`);
-  }
-
-  const aesthetic = getAnswer(answers, 'aesthetic') as Aesthetic;
-  if (aesthetic && fragrance.aesthetics.includes(aesthetic)) {
-    reasons.push(`It matches your ${AESTHETIC_LABELS[aesthetic]}.`);
-  }
-
-  const vibe = getAnswer(answers, 'vibe') as Vibe;
-  if (vibe && fragrance.vibes.includes(vibe)) {
-    reasons.push(`It carries the ${VIBE_LABELS[vibe]} you chose.`);
+  const projection = getAnswer(answers, 'projection');
+  if (projection && (projection === fragrance.projection || (projection === 'beast' && fragrance.projection === 'strong'))) {
+    reasons.push(`The strength lines up with your ${projection === 'beast' ? 'high-presence' : projection} preference.`);
   }
 
   if (reasons.length === 0) {
@@ -341,88 +287,129 @@ function buildMatchReasons(fragrance: Fragrance, answers: QuizAnswers): string[]
   return reasons.slice(0, 3);
 }
 
-const RECOMMENDATION_LABELS: Record<RecommendationType, string> = {
-  best: 'Best Match',
-  affordable: 'Budget Alternative',
-  similar: 'Similar Vibe',
-  everyday: 'Everyday Scent',
-  dateNight: 'Date Night Pick',
-  unique: 'Wildcard Pick',
-};
+function normaliseScore(score: number, maxScore: number) {
+  if (maxScore <= 0) return 60;
+  const ratio = Math.max(0, score) / maxScore;
+  return Math.max(55, Math.min(98, Math.round(58 + ratio * 40)));
+}
 
-export function getRecommendations(answers: QuizAnswers, topN = 5): ScoredFragrance[] {
-  const scored = fragrances.map(f => {
-    const score = scoreFragrance(f, answers);
-    return { fragrance: f, score };
-  });
+export function buildScentProfile(answers: QuizAnswers) {
+  const feels = getAnswers(answers, 'desired-feel');
+  const occasion = getAnswers(answers, 'occasion');
+  const weather = getAnswer(answers, 'weather');
+  const experience = getAnswer(answers, 'experience');
+  const statement = getAnswer(answers, 'compliment-style');
 
-  // Sort descending by score
-  scored.sort((a, b) => b.score - a.score);
+  if (weather === 'hot-humid' || feels.includes('sporty')) {
+    return {
+      title: 'Fresh Everyday',
+      description: 'Clean, easy, and built for real life. Think fresh air, light texture, and scents that do not overwhelm.',
+    };
+  }
+  if (feels.includes('expensive')) {
+    return {
+      title: 'Quiet Luxury',
+      description: 'Polished, smooth, and expensive-feeling without trying too hard.',
+    };
+  }
+  if (occasion.includes('night') || feels.includes('bold') || statement === 'rich-mysterious') {
+    return {
+      title: 'Mysterious Night Out',
+      description: 'Darker, warmer, and more memorable, with enough presence to feel intentional.',
+    };
+  }
+  if (occasion.includes('date') || feels.includes('intimate')) {
+    return {
+      title: 'Warm Romantic',
+      description: 'Soft, close, and attractive without shouting across the room.',
+    };
+  }
+  if (feels.includes('playful')) {
+    return {
+      title: 'Sweet Main Character',
+      description: 'Fun, warm, and compliment-friendly, with sweetness kept useful instead of random.',
+    };
+  }
+  if (experience === 'unique' || statement === 'only-you') {
+    return {
+      title: 'Unique Niche Explorer',
+      description: 'A little less obvious, a little more signature-worthy, and still wearable.',
+    };
+  }
+  if (feels.includes('comforting')) {
+    return {
+      title: 'Cozy Softie',
+      description: 'Comforting, warm, and easy to live in, like a scent version of soft lighting.',
+    };
+  }
+  return {
+    title: 'Clean Minimalist',
+    description: 'Fresh, simple, and put-together. Nothing fussy, just a scent that feels like you.',
+  };
+}
 
-  // Normalise scores to percentages relative to the top scorer
+export function getRecommendations(answers: QuizAnswers, topN = 7): ScoredFragrance[] {
+  const scored = fragrances
+    .map(fragrance => ({ fragrance, score: scoreFragrance(fragrance, answers) }))
+    .sort((a, b) => b.score - a.score);
+
   const maxScore = scored[0]?.score ?? 1;
-  // Map scores to 60–98% range so it looks meaningful
-  const normalise = (s: number) => {
-    if (maxScore <= 0) return 60;
-    const ratio = s / maxScore;
-    return Math.round(60 + ratio * 38);
-  };
-
   const selected = new Set<string>();
-  const pick = (predicate: (item: typeof scored[number]) => boolean) => {
+  const pick = (type: RecommendationType, predicate: (item: typeof scored[number]) => boolean) => {
     const item = scored.find(candidate => !selected.has(candidate.fragrance.id) && predicate(candidate));
-    if (item) selected.add(item.fragrance.id);
-    return item;
+    if (!item) return undefined;
+    selected.add(item.fragrance.id);
+    return [type, item] as const;
   };
 
-  const best = pick(item => !item.fragrance.isDupe) ?? pick(() => true);
-  const affordable = pick(item => (
-    item.fragrance.isDupe
-    && (!best || item.fragrance.dupeOf === best.fragrance.name || item.score >= best.score * 0.65)
-  )) ?? pick(item => item.fragrance.priceRange === 'budget');
-  const everyday = pick(item => (
-    item.fragrance.occasions.includes('daily')
-    && item.fragrance.projection !== 'strong'
-  ));
-  const dateNight = pick(item => (
-    item.fragrance.occasions.includes('date')
-    || item.fragrance.occasions.includes('night')
-  ));
-  const similar = pick(item => (
-    !best
-    || item.fragrance.scentFamilies.some(family => best.fragrance.scentFamilies.includes(family))
-  ));
-  const unique = pick(item => item.fragrance.tier === 'niche' && !item.fragrance.isDupe);
+  const weather = getAnswer(answers, 'weather');
+  const priceAnswer = getAnswer(answers, 'price-range');
+  const occasions = getAnswers(answers, 'occasion');
 
-  const roleItems: Array<[RecommendationType, typeof scored[number] | undefined]> = [
-    ['best', best],
-    ['everyday', everyday],
-    ['dateNight', dateNight],
-    ['affordable', affordable],
-    ['unique', unique],
-    ['similar', similar],
-  ];
+  const picks = [
+    pick('best', item => !item.fragrance.isDupe),
+    pick('safe', item => (
+      item.fragrance.projection !== 'strong'
+      && (item.fragrance.occasions.includes('daily') || item.fragrance.occasions.includes('work'))
+      && !hasAny(item.fragrance, ['oud', 'smoky', 'leather', 'animalic'])
+    )),
+    pick('unique', item => item.fragrance.tier === 'niche' && !item.fragrance.isDupe),
+    pick('weather', item => (
+      weather === 'hot-humid'
+        ? hasAny(item.fragrance, HOT_HUMID_GOOD) && item.fragrance.projection !== 'strong'
+        : weather === 'cool'
+          ? hasAny(item.fragrance, ['vanilla', 'amber', 'woody', 'spicy'])
+          : item.fragrance.occasions.includes('daily')
+    )),
+    pick('budget', item => (
+      priceAnswer === 'any'
+        ? item.score > 0
+        : item.fragrance.isDupe || item.fragrance.priceRange === priceAnswer || item.fragrance.priceRange === 'budget'
+    )),
+    pick(
+      occasions.includes('date') || occasions.includes('night') ? 'dateNight' : 'workSchool',
+      item => occasions.includes('date') || occasions.includes('night')
+        ? item.fragrance.occasions.includes('date') || item.fragrance.occasions.includes('night')
+        : item.fragrance.occasions.includes('daily') || item.fragrance.occasions.includes('work'),
+    ),
+  ].filter((item): item is readonly [RecommendationType, typeof scored[number]] => Boolean(item));
 
   for (const item of scored) {
-    if (roleItems.filter(([, value]) => value).length >= topN) break;
-    if (!selected.has(item.fragrance.id)) {
-      selected.add(item.fragrance.id);
-      roleItems.push(['similar', item]);
-    }
+    if (picks.length >= topN) break;
+    if (selected.has(item.fragrance.id)) continue;
+    selected.add(item.fragrance.id);
+    picks.push(['similar', item]);
   }
 
-  return roleItems
-    .filter((entry): entry is [RecommendationType, typeof scored[number]] => Boolean(entry[1]))
-    .slice(0, topN)
-    .map(([recommendationType, item]) => {
-      const matchReasons = buildMatchReasons(item.fragrance, answers);
-      return {
-        ...item,
-        recommendationType,
-        recommendationLabel: RECOMMENDATION_LABELS[recommendationType],
-        matchPercent: normalise(item.score),
-        matchReason: matchReasons.join(' '),
-        matchReasons,
-      };
-    });
+  return picks.slice(0, topN).map(([recommendationType, item]) => {
+    const matchReasons = buildMatchReasons(item.fragrance, answers);
+    return {
+      ...item,
+      recommendationType,
+      recommendationLabel: RECOMMENDATION_LABELS[recommendationType],
+      matchPercent: normaliseScore(item.score, maxScore),
+      matchReason: matchReasons.join(' '),
+      matchReasons,
+    };
+  });
 }

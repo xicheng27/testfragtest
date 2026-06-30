@@ -26,11 +26,13 @@ interface FragranceCardProps {
 
 const recommendationCopy: Record<ScoredFragrance['recommendationType'], string> = {
   best: 'Your strongest overall fit',
-  affordable: 'Similar vibe, lower price',
+  safe: 'The easiest one to wear',
+  unique: 'A less obvious signature direction',
+  weather: 'Chosen for your climate',
+  budget: 'Useful for your budget',
+  workSchool: 'Easy for daily spaces',
   similar: 'A related scent direction',
-  everyday: 'Easy to wear more often',
   dateNight: 'Warm, memorable, and after-dark friendly',
-  unique: 'A less expected niche direction',
 };
 
 function friendly(value: string) {

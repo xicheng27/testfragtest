@@ -3,10 +3,11 @@
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { ScoredFragrance, QuizAnswers, getRecommendations, scoreFragrance } from '@/lib/scoring';
+import { ScoredFragrance, QuizAnswers, buildScentProfile, getRecommendations, scoreFragrance } from '@/lib/scoring';
 import { Fragrance } from '@/lib/fragrances';
 import AuthModal from './AuthModal';
 import ProductImage from './ProductImage';
+import FragranceCard from './FragranceCard';
 import { useAuth } from '@/lib/auth-context';
 import { useShelf } from '@/lib/shelf-context';
 import { CURRENCIES, PRICED_AS_OF, formatPrice, getSignaturePrice, useCurrency } from '@/lib/pricing';
@@ -105,9 +106,7 @@ export default function ResultsPage({
   results,
   answers = {},
   onRestart,
-  onExtendedQuiz,
   onViewShelf,
-  isExtended,
 }: ResultsPageProps) {
   const { user, signOut } = useAuth();
   const { shelfIds } = useShelf();
@@ -115,6 +114,7 @@ export default function ResultsPage({
   const [currency, setCurrency] = useCurrency();
   const [activeMood, setActiveMood] = useState<MoodFilter>('all');
   const [adjustMode, setAdjustMode] = useState<AdjustMode>('default');
+  const scentProfile = useMemo(() => buildScentProfile(answers), [answers]);
 
   const personalisedPool = useMemo(() => {
     if (activeMood === 'all' && adjustMode === 'default') return results;
@@ -176,6 +176,26 @@ export default function ResultsPage({
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
+          <section className="mb-6 rounded-[2rem] border border-stone-200 bg-white/88 p-5 shadow-sm backdrop-blur sm:mb-8 sm:p-8">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Your scent profile</p>
+            <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div className="min-w-0">
+                <h1 className="text-[clamp(2.1rem,10vw,4.7rem)] font-black leading-[0.9] tracking-[-0.075em] text-stone-950">
+                  {scentProfile.title}
+                </h1>
+                <p className="mt-4 max-w-2xl text-base leading-relaxed text-stone-600 sm:text-lg">
+                  {scentProfile.description}
+                </p>
+              </div>
+              <button
+                onClick={onRestart}
+                className="min-h-11 shrink-0 rounded-full border border-stone-300 bg-white px-5 text-base font-bold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+              >
+                Retake quiz
+              </button>
+            </div>
+          </section>
+
           <section aria-label="Your top 3 fragrance matches">
             <h2 className="mb-3 text-lg font-black tracking-[-0.02em] text-stone-950">Your top 3</h2>
             <ul className="space-y-3">
@@ -316,20 +336,35 @@ export default function ResultsPage({
             </section>
           </section>
 
-          {!isExtended && (
-            <div className="mt-8 rounded-[1.5rem] border border-stone-200 bg-white/85 p-6 text-center shadow-sm sm:p-8">
-              <h3 className="mb-1 text-xl font-black tracking-[-0.03em] text-stone-950">Want an even more accurate match?</h3>
-              <p className="mb-4 text-sm text-stone-500">
-                Answer a few extra style questions and we will fine-tune your fragrance recommendations.
-              </p>
-              <button
-                onClick={onExtendedQuiz}
-                className="min-h-12 rounded-2xl bg-stone-950 px-6 py-2.5 text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
-              >
-                Take the extended quiz
-              </button>
+          <section className="mt-8" aria-label="Detailed fragrance recommendations">
+            <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Why these made the list</p>
+                <h2 className="mt-1 text-2xl font-black tracking-[-0.04em] text-stone-950">Your recommendations</h2>
+              </div>
+              <p className="text-sm text-stone-500">Save anything you want to revisit.</p>
             </div>
-          )}
+
+            {personalisedPool.length > 0 ? (
+              <div className="flex flex-col gap-5">
+                {personalisedPool.map((result, index) => (
+                  <FragranceCard
+                    key={`${result.fragrance.id}-card-${activeMood}-${adjustMode}`}
+                    result={result}
+                    rank={index + 1}
+                    currency={currency}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-[1.5rem] border border-stone-200 bg-white/85 p-6 text-center shadow-sm sm:p-8">
+                <h3 className="text-xl font-black tracking-[-0.03em] text-stone-950">Your filters got very specific.</h3>
+                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-stone-500">
+                  Only a few scents passed. Try allowing moderate strength or widening your budget, then retake the quiz.
+                </p>
+              </div>
+            )}
+          </section>
 
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <button

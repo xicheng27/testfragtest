@@ -14,9 +14,18 @@ interface QuizProps {
   onBack: () => void;
 }
 
+const loadingMessages = [
+  'Matching your vibe...',
+  'Checking notes you hate...',
+  'Finding your best scent energy...',
+];
+
 export default function Quiz({ questions, initialAnswers = {}, onComplete, onBack }: QuizProps) {
+  const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
+  const [isCompleting, setIsCompleting] = useState(false);
+  const [loadingIndex, setLoadingIndex] = useState(0);
   const optionsRef = useRef<HTMLDivElement>(null);
   const preloadedRef = useRef<Set<string>>(new Set());
 
@@ -33,6 +42,14 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
       }
     }
   }, [step, questions]);
+
+  useEffect(() => {
+    if (!isCompleting) return;
+    const interval = window.setInterval(() => {
+      setLoadingIndex(index => Math.min(index + 1, loadingMessages.length - 1));
+    }, 520);
+    return () => window.clearInterval(interval);
+  }, [isCompleting]);
 
   const question = questions[step];
   const currentAnswers = (answers[question.id] as string[] | undefined) ?? [];
@@ -58,7 +75,8 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   const goNext = () => {
     if (!hasAnswer) return;
     if (isLast) {
-      onComplete(answers);
+      setIsCompleting(true);
+      window.setTimeout(() => onComplete(answers), 1450);
       return;
     }
     moveToStep(step + 1);
@@ -85,6 +103,63 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
     moveToStep(step + 1);
   };
 
+  if (!started) {
+    return (
+      <div className="marble-bg fixed inset-0 z-40 flex h-dvh min-h-0 flex-col overflow-hidden">
+        <header className="flex items-center justify-between border-b border-white/70 bg-white/70 px-4 py-3 backdrop-blur-xl sm:px-6">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex min-h-11 items-center rounded-full px-2 text-sm font-medium text-stone-600 transition-colors hover:bg-white hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+          >
+            Back
+          </button>
+          <span className="text-sm font-semibold tracking-tight text-stone-900">ScentMatch</span>
+          <span className="w-12" aria-hidden="true" />
+        </header>
+
+        <main className="flex min-h-0 flex-1 items-center px-4 py-6 sm:px-6">
+          <section className="mx-auto w-full max-w-xl rounded-[2rem] border border-stone-200 bg-white/88 p-6 text-center shadow-[0_24px_70px_rgba(28,25,23,0.12)] backdrop-blur sm:p-9">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#8a6417]">Scent quiz</p>
+            <h1 className="mt-3 text-[clamp(2rem,10vw,3.5rem)] font-black leading-[0.95] tracking-[-0.07em] text-stone-950">
+              Let&apos;s find a scent that actually feels like you.
+            </h1>
+            <p className="mx-auto mt-4 max-w-sm text-base leading-relaxed text-stone-600">
+              Ten quick choices. No fragrance knowledge needed. We will use your vibe, budget, weather, and red flags to narrow the list.
+            </p>
+            <button
+              type="button"
+              onClick={() => setStarted(true)}
+              className="mt-6 min-h-12 w-full rounded-2xl bg-stone-950 px-5 text-base font-bold text-white shadow-[0_16px_36px_rgba(28,25,23,0.18)] transition-all hover:-translate-y-0.5 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+            >
+              Start the scent quiz
+            </button>
+            <p className="mt-3 text-sm text-stone-500">Fast, visual, and you can retake it anytime.</p>
+          </section>
+        </main>
+      </div>
+    );
+  }
+
+  if (isCompleting) {
+    return (
+      <div className="marble-bg fixed inset-0 z-40 flex h-dvh min-h-0 items-center justify-center overflow-hidden px-4">
+        <section className="w-full max-w-md rounded-[2rem] border border-stone-200 bg-white/90 p-7 text-center shadow-[0_24px_70px_rgba(28,25,23,0.12)] backdrop-blur">
+          <div className="mx-auto h-2 w-28 overflow-hidden rounded-full bg-stone-100" aria-hidden="true">
+            <div className="h-full w-1/2 animate-pulse rounded-full bg-stone-950" />
+          </div>
+          <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-[#8a6417]">Almost there</p>
+          <h1 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950" aria-live="polite">
+            {loadingMessages[loadingIndex]}
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-stone-500">
+            Pulling together your notes, budget, weather, and fragrance red flags.
+          </p>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="marble-bg fixed inset-0 z-40 grid h-dvh min-h-0 grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden">
       <header className="flex items-center justify-between border-b border-white/70 bg-white/70 px-3 py-2 backdrop-blur-xl sm:px-6 sm:py-3.5">
@@ -101,7 +176,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
         <span className="text-sm font-semibold tracking-tight text-stone-900">ScentMatch</span>
         <div className="flex w-20 justify-end">
           <span className="rounded-full border border-stone-200 bg-white/80 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-stone-600">
-            {step + 1}/{questions.length}
+            {step + 1} of {questions.length}
           </span>
         </div>
       </header>
