@@ -1,11 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import clsx from 'clsx';
 import { Fragrance } from '@/lib/fragrances';
 import { ScoredFragrance } from '@/lib/scoring';
 import { useShelf } from '@/lib/shelf-context';
 import { Currency, PRICED_AS_OF, formatPrice, getSignaturePrice } from '@/lib/pricing';
+import {
+  availabilityLabel,
+  coverageLabel,
+  fragranceWarnings,
+  sourceConfidenceLabel,
+  sourceConfidenceTone,
+} from '@/lib/fragrance-trust';
 import ProductImage from './ProductImage';
 
 interface FragranceCardProps {
@@ -27,6 +35,10 @@ const recommendationCopy: Record<ScoredFragrance['recommendationType'], string> 
 
 function friendly(value: string) {
   return value.replaceAll('-', ' ');
+}
+
+function brandSlug(brand: string) {
+  return brand.toLowerCase().replace(/\s+/g, '-');
 }
 
 export default function FragranceCard({
@@ -58,6 +70,7 @@ export default function FragranceCard({
     : result?.matchReason
       ? [result.matchReason]
       : [];
+  const warnings = fragranceWarnings(fragrance);
 
   const handleShelf = () => {
     if (saved) {
@@ -148,6 +161,22 @@ export default function FragranceCard({
                 View official product&nbsp;<span aria-hidden="true">&rarr;</span>
               </a>
             )}
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              <span
+                className={clsx(
+                  'rounded-full border px-2.5 py-1 text-[11px] font-medium',
+                  sourceConfidenceTone(fragrance),
+                )}
+              >
+                {sourceConfidenceLabel(fragrance)}
+              </span>
+              <span className="rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-medium text-stone-500">
+                {availabilityLabel(fragrance)}
+              </span>
+              <span className="rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-medium text-stone-500">
+                Checked {fragrance.lastChecked}
+              </span>
+            </div>
           </div>
 
           <div className="mt-5 flex flex-wrap gap-1.5">
@@ -159,6 +188,11 @@ export default function FragranceCard({
             <span className="rounded-full bg-stone-100 px-2.5 py-1 text-xs capitalize text-stone-600">
               {fragrance.tier}
             </span>
+            {warnings.map(warning => (
+              <span key={warning} className="rounded-full bg-amber-50 px-2.5 py-1 text-xs text-amber-800">
+                {warning}
+              </span>
+            ))}
           </div>
 
           <dl className="mt-6 grid grid-cols-2 gap-x-5 gap-y-4 border-y border-stone-100 py-5 sm:grid-cols-3">
@@ -249,8 +283,41 @@ export default function FragranceCard({
                   </div>
                 )}
 
+                <div className="mt-4 border-t border-stone-200 pt-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Data confidence</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-stone-700">
+                    {coverageLabel(fragrance)} · {sourceConfidenceLabel(fragrance)} · {availabilityLabel(fragrance)}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-600">
+                    {fragrance.provenanceSummary}
+                  </p>
+                  {fragrance.sources.length > 0 && (
+                    <ul className="mt-3 space-y-2">
+                      {fragrance.sources.slice(0, 3).map(source => (
+                        <li key={`${source.sourceType}-${source.sourceUrl}`} className="text-sm leading-relaxed text-stone-600">
+                          <a
+                            href={source.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-stone-800 underline decoration-stone-300 underline-offset-4 hover:decoration-stone-800"
+                          >
+                            {source.sourceName}
+                          </a>
+                          <span className="text-stone-400"> · {source.trustLevel} · checked {source.lastChecked}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
                 {(fragrance.productUrl || fragrance.sourceUrl) && (
                   <div className="mt-4 flex flex-wrap gap-4 border-t border-stone-200 pt-4">
+                    <Link
+                      href={`/fragrances/${brandSlug(fragrance.brand)}/${fragrance.id}`}
+                      className="text-sm font-medium text-stone-800 underline decoration-stone-300 underline-offset-4 hover:decoration-stone-800"
+                    >
+                      Open detail page &rarr;
+                    </Link>
                     {fragrance.productUrl && (
                       <a
                         href={fragrance.productUrl}

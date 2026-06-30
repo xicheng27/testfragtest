@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "validate:catalog": "node scripts/validate-fragrance-catalog.mjs"
+    "validate:catalog": "node scripts/validate-fragrance-catalog.mjs",
+    "validate:fragrances": "node scripts/validate-fragrance-metadata.mjs",
+    "audit:fragrances": "node scripts/audit-fragrances.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

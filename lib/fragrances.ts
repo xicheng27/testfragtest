@@ -11,15 +11,43 @@ export type Tier = 'designer' | 'niche';
 export type Longevity = 'light' | 'moderate' | 'long';
 export type Aesthetic = 'old-money' | 'clean' | 'dark-academia' | 'beach' | 'quiet-luxury' | 'streetwear' | 'romantic';
 export type Vibe = 'rainy-castle' | 'sunny-beach' | 'late-night-city' | 'hotel-room' | 'forest-rain' | 'luxury-mall';
+export type CoverageStatus = 'partial' | 'expanded' | 'officially_verified' | 'needs_review';
+export type SourceQuality = 'official' | 'retailer' | 'community' | 'unknown';
+export type AvailabilityStatus = 'active' | 'discontinued' | 'regional' | 'limited' | 'private_line' | 'unknown';
+export type FragranceSourceType =
+  | 'official_collection'
+  | 'official_product'
+  | 'official_press'
+  | 'authorized_retailer'
+  | 'community_database'
+  | 'unknown';
+export type MarketedCategory = 'men' | 'women' | 'unisex' | 'unknown';
+
+export interface FragranceSource {
+  sourceType: FragranceSourceType;
+  sourceName: string;
+  sourceUrl: string;
+  fieldsSupplied: string[];
+  lastChecked: string;
+  trustLevel: SourceQuality;
+}
 
 export interface Fragrance {
   id: string;
   name: string;
   brand: string;
+  canonicalBrand: string;
+  canonicalName: string;
+  line?: string;
+  concentration?: string;
+  marketedCategory: MarketedCategory;
   priceRange: PriceRange;
   priceDisplay: string;
   scentFamilies: ScentFamily[];
   notes: string[];
+  topNotes: string[];
+  middleNotes: string[];
+  baseNotes: string[];
   vibes: Vibe[];
   aesthetics: Aesthetic[];
   occasions: Occasion[];
@@ -37,6 +65,18 @@ export interface Fragrance {
   productUrl: string;
   sourceUrl: string;
   isDupe: boolean;
+  seasonTags: string[];
+  occasionTags: string[];
+  priceTier: PriceRange;
+  longevityEstimate: Longevity;
+  projectionEstimate: Projection;
+  officialProductUrl: string;
+  availabilityStatus: AvailabilityStatus;
+  coverageStatus: CoverageStatus;
+  sourceQuality: SourceQuality;
+  lastChecked: string;
+  provenanceSummary: string;
+  sources: FragranceSource[];
   inspiredBy?: string;
   dupeOf?: string;
   similarityNotes?: string;
@@ -44,10 +84,58 @@ export interface Fragrance {
 
 export type FragranceSeed = Omit<
   Fragrance,
-  'accords' | 'vibeTags' | 'longevity' | 'genderMarketing' | 'imageUrl' | 'productUrl' | 'sourceUrl' | 'isDupe'
+  | 'accords'
+  | 'availabilityStatus'
+  | 'baseNotes'
+  | 'canonicalBrand'
+  | 'canonicalName'
+  | 'concentration'
+  | 'coverageStatus'
+  | 'genderMarketing'
+  | 'imageUrl'
+  | 'isDupe'
+  | 'lastChecked'
+  | 'line'
+  | 'longevity'
+  | 'longevityEstimate'
+  | 'marketedCategory'
+  | 'middleNotes'
+  | 'occasionTags'
+  | 'officialProductUrl'
+  | 'priceTier'
+  | 'productUrl'
+  | 'projectionEstimate'
+  | 'provenanceSummary'
+  | 'seasonTags'
+  | 'sourceQuality'
+  | 'sources'
+  | 'sourceUrl'
+  | 'topNotes'
+  | 'vibeTags'
 > & Partial<Pick<
   Fragrance,
-  'accords' | 'vibeTags' | 'longevity' | 'genderMarketing' | 'imageUrl' | 'productUrl' | 'sourceUrl' | 'isDupe'
+  | 'accords'
+  | 'availabilityStatus'
+  | 'baseNotes'
+  | 'canonicalBrand'
+  | 'canonicalName'
+  | 'concentration'
+  | 'coverageStatus'
+  | 'genderMarketing'
+  | 'imageUrl'
+  | 'isDupe'
+  | 'lastChecked'
+  | 'line'
+  | 'longevity'
+  | 'marketedCategory'
+  | 'middleNotes'
+  | 'productUrl'
+  | 'provenanceSummary'
+  | 'sourceQuality'
+  | 'sources'
+  | 'sourceUrl'
+  | 'topNotes'
+  | 'vibeTags'
 >>;
 
 const coreFragrances: FragranceSeed[] = [
@@ -782,6 +870,111 @@ type ProductSource = {
   file: string;
 };
 
+const AUDIT_LAST_CHECKED = '2026-06-30';
+const officialHostFragments = [
+  'chanel.com',
+  'dior.com',
+  'yslbeauty',
+  'tomfordbeauty',
+  'maisonmargiela-fragrances',
+  'franciskurkdjian',
+  'zoologistperfumes',
+  'initio-parfums',
+  'louisvuitton.com',
+  'goldfieldandbanks',
+  'parfums-de-marly',
+  'xerjoff.com',
+  'diptyqueparis',
+  'giorgioarmanibeauty',
+  'armanibeauty',
+  'lelabofragrances',
+  'byredo.com',
+  'creedfragrances',
+  'jomalone',
+  'prada-beauty',
+  'valentino-beauty',
+  'burberry.com',
+];
+
+function canonical(value: string) {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function marketCategoryFromGender(gender: GenderStyle): MarketedCategory {
+  if (gender === 'masculine') return 'men';
+  if (gender === 'feminine') return 'women';
+  return 'unisex';
+}
+
+function inferConcentration(name: string) {
+  if (/\bextrait\b/i.test(name)) return 'Extrait';
+  if (/\belixir\b/i.test(name)) return 'Elixir';
+  if (/\bparfum\b/i.test(name)) return 'Parfum';
+  if (/\beau de parfum\b|\bedp\b/i.test(name)) return 'Eau de Parfum';
+  if (/\beau de toilette\b|\bedt\b/i.test(name)) return 'Eau de Toilette';
+  if (/\bcologne\b/i.test(name)) return 'Cologne';
+  return undefined;
+}
+
+function inferLine(brand: string, name: string) {
+  if (brand === 'Maison Margiela' && /^REPLICA\b/.test(name)) return 'REPLICA';
+  if (brand === 'Chanel' && /^Chance\b/i.test(name)) return 'Chance';
+  if (brand === 'Dior' && /^Sauvage\b/i.test(name)) return 'Sauvage';
+  if (brand === 'Yves Saint Laurent' && /^Libre\b/i.test(name)) return 'Libre';
+  if (brand === 'Parfums de Marly' && /^Delina\b/i.test(name)) return 'Delina';
+  return undefined;
+}
+
+function splitNotePyramid(notes: string[]) {
+  if (notes.length <= 2) {
+    return { topNotes: notes.slice(0, 1), middleNotes: notes.slice(1), baseNotes: [] };
+  }
+  const topCount = Math.max(1, Math.ceil(notes.length / 3));
+  const middleCount = Math.max(1, Math.ceil((notes.length - topCount) / 2));
+  return {
+    topNotes: notes.slice(0, topCount),
+    middleNotes: notes.slice(topCount, topCount + middleCount),
+    baseNotes: notes.slice(topCount + middleCount),
+  };
+}
+
+function sourceQualityFromUrl(url: string | undefined): SourceQuality {
+  if (!url) return 'unknown';
+  const normalizedUrl = url.toLowerCase();
+  if (officialHostFragments.some(fragment => normalizedUrl.includes(fragment))) return 'official';
+  if (
+    normalizedUrl.includes('sephora')
+    || normalizedUrl.includes('nordstrom')
+    || normalizedUrl.includes('harrods')
+    || normalizedUrl.includes('selfridges')
+    || normalizedUrl.includes('neimanmarcus')
+    || normalizedUrl.includes('saksfifthavenue')
+    || normalizedUrl.includes('ulta.com')
+  ) return 'retailer';
+  if (normalizedUrl.includes('fragrantica') || normalizedUrl.includes('basenotes')) return 'community';
+  return 'unknown';
+}
+
+function sourceTypeFromQuality(quality: SourceQuality): FragranceSourceType {
+  if (quality === 'official') return 'official_product';
+  if (quality === 'retailer') return 'authorized_retailer';
+  if (quality === 'community') return 'community_database';
+  return 'unknown';
+}
+
+function sourceNameFromQuality(quality: SourceQuality) {
+  if (quality === 'official') return 'Official brand source';
+  if (quality === 'retailer') return 'Authorized retailer source';
+  if (quality === 'community') return 'Community database source';
+  return 'Needs source review';
+}
+
 // Generated by scripts/fetch-product-images.ps1. Product images stay local and
 // scene artwork remains isolated under public/images/quiz.
 import productSources from '../public/images/products/sources.json';
@@ -808,20 +1001,59 @@ function normalizeFragrance(seed: FragranceSeed): Fragrance {
   const localImageUrl = productSource?.status === 'OK' && productSource.file
     ? `/images/products/${productSource.file}`
     : '/images/products/fallback.svg';
+  const officialProductUrl = seed.productUrl ?? productSource?.pageUrl ?? '';
+  const sourceUrl = seed.sourceUrl
+    ?? productSource?.pageUrl
+    ?? seed.productUrl
+    ?? '';
+  const sourceQuality = seed.sourceQuality ?? sourceQualityFromUrl(sourceUrl || officialProductUrl);
+  const sourceType = sourceTypeFromQuality(sourceQuality);
+  const lastChecked = seed.lastChecked ?? AUDIT_LAST_CHECKED;
+  const notePyramid = splitNotePyramid(seed.notes);
+  const sources = seed.sources ?? (sourceUrl || officialProductUrl ? [{
+    sourceType,
+    sourceName: sourceNameFromQuality(sourceQuality),
+    sourceUrl: sourceUrl || officialProductUrl,
+    fieldsSupplied: ['name', 'brand', 'image', 'productUrl'],
+    lastChecked,
+    trustLevel: sourceQuality,
+  }] : []);
 
   return {
     ...seed,
+    canonicalBrand: seed.canonicalBrand ?? canonical(seed.brand),
+    canonicalName: seed.canonicalName ?? canonical(seed.name),
+    line: seed.line ?? inferLine(seed.brand, seed.name),
+    concentration: seed.concentration ?? inferConcentration(seed.name),
+    marketedCategory: seed.marketedCategory ?? marketCategoryFromGender(seed.genderStyle),
     accords: seed.accords ?? seed.scentFamilies,
+    topNotes: seed.topNotes ?? notePyramid.topNotes,
+    middleNotes: seed.middleNotes ?? notePyramid.middleNotes,
+    baseNotes: seed.baseNotes ?? notePyramid.baseNotes,
     vibeTags: [...new Set([...(seed.vibeTags ?? []), ...derivedTags])],
     longevity,
     genderMarketing: seed.genderMarketing ?? seed.genderStyle,
     imageUrl: seed.imageUrl ?? localImageUrl,
-    productUrl: seed.productUrl ?? productSource?.pageUrl ?? '',
-    sourceUrl: seed.sourceUrl
-      ?? productSource?.pageUrl
-      ?? seed.productUrl
-      ?? '',
+    productUrl: officialProductUrl,
+    sourceUrl,
     isDupe: seed.isDupe ?? false,
+    seasonTags: seed.seasons,
+    occasionTags: seed.occasions,
+    priceTier: seed.priceRange,
+    longevityEstimate: longevity,
+    projectionEstimate: seed.projection,
+    officialProductUrl,
+    availabilityStatus: seed.availabilityStatus ?? 'unknown',
+    coverageStatus: seed.coverageStatus ?? (sourceQuality === 'official' ? 'expanded' : 'needs_review'),
+    sourceQuality,
+    lastChecked,
+    provenanceSummary: seed.provenanceSummary
+      ?? (sourceQuality === 'official'
+        ? 'Backed by an official brand source or official collection-level source; not claimed as globally complete.'
+        : sourceQuality === 'retailer'
+          ? 'Backed by retailer data and needs official brand confirmation.'
+          : 'Needs official source review before being marked verified.'),
+    sources,
   };
 }
 

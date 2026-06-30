@@ -1,11 +1,19 @@
 'use client';
 
 import { Fragrance } from '@/lib/fragrances';
+import {
+  availabilityLabel,
+  fragranceWarnings,
+  sourceConfidenceLabel,
+  sourceConfidenceTone,
+} from '@/lib/fragrance-trust';
 import { useShelf } from '@/lib/shelf-context';
 import ProductImage from './ProductImage';
+import clsx from 'clsx';
 
 export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
   const { removeFromShelf } = useShelf();
+  const warnings = fragranceWarnings(fragrance);
 
   return (
     <article className="overflow-hidden rounded-2xl border border-stone-200 bg-white md:grid md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
@@ -36,6 +44,19 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
               View official product&nbsp;<span aria-hidden="true">&rarr;</span>
             </a>
           )}
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            <span
+              className={clsx(
+                'rounded-full border px-2.5 py-1 text-[11px] font-medium',
+                sourceConfidenceTone(fragrance),
+              )}
+            >
+              {sourceConfidenceLabel(fragrance)}
+            </span>
+            <span className="rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-medium text-stone-500">
+              {availabilityLabel(fragrance)}
+            </span>
+          </div>
         </div>
 
         <div className="mt-5 min-w-0">
@@ -47,6 +68,11 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
           {fragrance.vibeTags.slice(0, 4).map(tag => (
             <span key={tag} className="max-w-full break-words rounded-full bg-stone-100 px-2.5 py-1 text-xs capitalize text-stone-600">
               {tag.replaceAll('-', ' ')}
+            </span>
+          ))}
+          {warnings.slice(0, 2).map(warning => (
+            <span key={warning} className="max-w-full break-words rounded-full bg-amber-50 px-2.5 py-1 text-xs text-amber-800">
+              {warning}
             </span>
           ))}
         </div>
