@@ -24,10 +24,10 @@ const terms = [
 export default function AboutPage() {
   return (
     <div className="marble-bg min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/90 px-4 py-4 backdrop-blur sm:px-6">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="text-sm font-semibold tracking-tight text-stone-950">ScentMatch</Link>
-          <Link href="/" className="rounded-lg px-2 py-2 text-sm text-stone-500 transition-colors hover:text-stone-950">
+      <header data-ui="site-header" className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/90 px-4 py-3 backdrop-blur sm:px-6">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
+          <Link href="/" className="inline-flex min-h-11 items-center text-sm font-semibold tracking-tight text-stone-950">ScentMatch</Link>
+          <Link href="/" className="inline-flex min-h-11 items-center rounded-full border border-stone-200 bg-white/70 px-4 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950">
             Back to quiz
           </Link>
         </div>
@@ -44,18 +44,28 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <section className="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-4">
-          {terms.map(([term, explanation], index) => (
-            <article key={term} className="rounded-2xl border border-stone-200 bg-white p-5 transition-colors hover:border-stone-300 sm:p-6">
-              <div className="flex items-start gap-4">
-                <span className="mt-0.5 text-xs font-medium tabular-nums text-stone-300">{String(index + 1).padStart(2, '0')}</span>
-                <div>
-                  <h2 className="font-semibold text-stone-950">{term}</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-stone-600">{explanation}</p>
-                </div>
-              </div>
-            </article>
-          ))}
+        <section className="mt-10 sm:mt-12" aria-label="Fragrance glossary">
+          <p className="mb-3 text-sm text-stone-500">Tap a term to expand its meaning.</p>
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+            {terms.map(([term, explanation], index) => (
+              <details
+                key={term}
+                className="group rounded-2xl border border-stone-200 bg-white transition-colors open:border-stone-300 [&>summary]:list-none [&>summary::-webkit-details-marker]:hidden"
+              >
+                <summary className="flex min-h-[44px] cursor-pointer items-center gap-3 px-5 py-3 text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 sm:px-6">
+                  <span className="text-xs font-medium tabular-nums text-stone-400">{String(index + 1).padStart(2, '0')}</span>
+                  <h2 className="font-semibold">{term}</h2>
+                  <svg
+                    className="ml-auto h-4 w-4 shrink-0 text-stone-400 transition-transform duration-200 group-open:rotate-180"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <p className="px-5 pb-5 text-sm leading-relaxed text-stone-600 sm:px-6">{explanation}</p>
+              </details>
+            ))}
+          </div>
         </section>
 
         <section className="mt-12 rounded-2xl bg-stone-950 px-6 py-8 text-white sm:px-10 sm:py-10">

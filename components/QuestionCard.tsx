@@ -131,7 +131,7 @@ const SECTION_LABELS: Record<string, string> = {
         <span className={clsx(
           'hidden rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] sm:inline-flex',
           question.category === 'fun'
-            ? 'border-[#e4d8c0] bg-[#faf6ee] text-[#8a6a34]'
+            ? 'border-[#e4d8c0] bg-[#faf6ee] text-[#8a6417]'
             : 'border-stone-200 bg-white text-stone-500',
         )}>
           {SECTION_LABELS[question.id] ?? (question.category === 'fun' ? 'Just for fun' : 'Scent match')}

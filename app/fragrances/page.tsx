@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 import { fragrances } from '@/lib/fragrances';
+import MobileNav from '@/components/MobileNav';
 
 const container: Variants = {
   hidden: {},
@@ -34,14 +35,24 @@ export default function FragrancesPage() {
       transition={{ duration: 0.3, ease: 'easeOut' }}
       className="marble-bg min-h-screen"
     >
-      <header className="border-b border-stone-200/70 px-4 py-4 sm:px-6">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/" className="font-semibold tracking-tight text-stone-950 transition-colors hover:text-stone-600">
+      <header data-ui="site-header" className="border-b border-stone-200/70 px-4 py-3 sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+          <Link href="/" className="inline-flex min-h-11 items-center font-semibold tracking-tight text-stone-950 transition-colors hover:text-stone-600">
             ScentMatch
           </Link>
           <div className="flex items-center gap-3 sm:gap-5">
-            <Link href="/about" className="hidden text-sm text-stone-500 transition-colors hover:text-stone-800 sm:inline">About</Link>
-            <span className="text-sm font-medium text-stone-950">Fragrances</span>
+            <Link href="/" className="hidden min-h-11 items-center text-sm text-stone-600 transition-colors hover:text-stone-950 sm:inline-flex">Home</Link>
+            <Link href="/about" className="hidden min-h-11 items-center text-sm text-stone-600 transition-colors hover:text-stone-950 sm:inline-flex">About</Link>
+            <span className="hidden text-sm font-medium text-stone-950 sm:inline">Fragrances</span>
+            <MobileNav
+              breakpoint="sm"
+              label="Open navigation menu"
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'About', href: '/about' },
+                { label: 'Disclaimer', href: '/disclaimer' },
+              ]}
+            />
           </div>
         </div>
       </header>
@@ -59,7 +70,7 @@ export default function FragrancesPage() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
         >
           {brands.map(({ brand, count, sample }) => {
             const slug = encodeURIComponent(brand.toLowerCase().replace(/\s+/g, '-'));

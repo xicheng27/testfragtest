@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import AuthModal from './AuthModal';
 import ProductImage from './ProductImage';
+import MobileNav from './MobileNav';
 import { useAuth } from '@/lib/auth-context';
 
 interface LandingPageProps {
@@ -91,46 +92,60 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
   return (
     <>
       <div className="marble-bg min-h-screen overflow-x-hidden">
-        <header className="sticky top-0 z-30 border-b border-white/60 bg-stone-50/75 px-4 py-3 backdrop-blur-xl sm:px-6">
-          <div className="mx-auto flex max-w-6xl items-center justify-between">
+        <header data-ui="site-header" className="sticky top-0 z-30 border-b border-white/60 bg-stone-50/75 px-4 py-3 backdrop-blur-xl sm:px-6">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
             <span className="text-base font-black tracking-[-0.03em] text-stone-950">ScentMatch</span>
-            <nav className="hidden items-center gap-6 text-sm text-stone-600 md:flex" aria-label="Primary navigation">
+            <nav className="hidden items-center gap-6 text-sm text-stone-700 md:flex" aria-label="Primary navigation">
               <a href="#how-it-works" className="transition-colors hover:text-stone-950">How it works</a>
               <a href="#trending" className="transition-colors hover:text-stone-950">Trending</a>
               <a href="#results-preview" className="transition-colors hover:text-stone-950">Results</a>
-              <Link href="/about" className="transition-colors hover:text-stone-950">Terms</Link>
+              <Link href="/about" className="transition-colors hover:text-stone-950">About</Link>
             </nav>
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden items-center gap-2 md:flex md:gap-3">
               <button
                 type="button"
                 onClick={() => setAuthMode('login')}
-                className="min-h-10 rounded-full px-3 text-sm font-medium text-stone-600 transition-colors hover:text-stone-950"
+                className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-stone-700 transition-colors hover:text-stone-950"
               >
                 Log in
               </button>
               <button
                 type="button"
                 onClick={() => setAuthMode('signup')}
-                className="hidden min-h-10 rounded-full border border-stone-950 bg-white px-4 text-sm font-semibold text-stone-950 shadow-[3px_3px_0_#1c1917] transition-transform hover:-translate-y-0.5 active:translate-y-0 sm:inline-flex sm:items-center"
+                className="inline-flex min-h-11 items-center rounded-full border border-stone-950 bg-white px-4 text-sm font-semibold text-stone-950 shadow-[3px_3px_0_#1c1917] transition-transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 Sign up
               </button>
             </div>
+            <MobileNav
+              breakpoint="md"
+              label="Open navigation menu"
+              cta={{ label: 'Find my scent', onClick: onStartQuiz }}
+              items={[
+                { label: 'How it works', href: '#how-it-works' },
+                { label: 'Trending', href: '#trending' },
+                { label: 'Results', href: '#results-preview' },
+                { label: 'About', href: '/about' },
+                { label: 'Disclaimer', href: '/disclaimer' },
+                { label: 'Log in', onClick: () => setAuthMode('login') },
+                { label: 'Sign up', onClick: () => setAuthMode('signup') },
+              ]}
+            />
           </div>
         </header>
 
         <main>
-          <section className="px-4 pb-10 pt-7 sm:px-6 sm:pb-20 sm:pt-16">
+          <section data-ui="hero" className="px-4 pb-10 pt-6 sm:px-6 sm:pb-20 sm:pt-16">
             <div className="mx-auto grid max-w-6xl gap-7 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-stone-700 shadow-sm">
                   <span className="h-2 w-2 rounded-full bg-[#b08d57]" aria-hidden="true" />
                   No account needed. No fragrance knowledge needed.
                 </div>
-                <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[0.92] tracking-[-0.065em] text-stone-950 sm:text-7xl lg:text-8xl">
+                <h1 className="mt-4 max-w-[12ch] text-[clamp(2.75rem,11vw,5.5rem)] font-black leading-[0.95] tracking-[-0.05em] text-stone-950 [text-wrap:balance] lg:max-w-3xl">
                   Your scent era starts here.
                 </h1>
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-stone-700 sm:text-lg">
+                <p className="mt-4 max-w-[34ch] text-[clamp(1rem,4.2vw,1.15rem)] leading-relaxed text-stone-700 [text-wrap:pretty] sm:max-w-xl">
                   Take the quiz and get fragrance matches for your vibe, budget, occasion, and style.
                 </p>
 
@@ -194,7 +209,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                       ))}
                     </div>
                     <div className="mt-7 rounded-2xl bg-white p-4 text-stone-950">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8a6a34]">Best Match</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8a6417]">Best Match</p>
                       <h2 className="mt-1 text-2xl font-black tracking-[-0.04em]">Fresh, clean, actually wearable.</h2>
                       <p className="mt-2 text-sm leading-relaxed text-stone-600">A useful pick based on the scent families, budget, and occasions you chose.</p>
                     </div>
@@ -226,7 +241,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
             <div className="mx-auto max-w-6xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6a34]">Trending with ScentMatch users</p>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Trending with ScentMatch users</p>
                   <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Popular recommendation styles</h2>
                 </div>
                 <p className="max-w-sm text-sm leading-relaxed text-stone-600">Placeholder community stats for now. Designed so real data can plug in later.</p>
@@ -246,7 +261,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
           <section id="results-preview" className="scroll-mt-24 px-4 py-12 sm:px-6 sm:py-20">
             <div className="mx-auto max-w-6xl">
               <div className="max-w-xl">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6a34]">What you get</p>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">What you get</p>
                 <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Not just one random bottle.</h2>
                 <p className="mt-3 text-sm leading-relaxed text-stone-600">Best match, everyday scent, date night, cheaper option, and wildcard pick.</p>
               </div>
@@ -262,7 +277,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                       />
                     </div>
                     <div className="p-4">
-                      <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#8a6a34]">{item.category}</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#8a6417]">{item.category}</p>
                       <h3 className="mt-2 text-sm font-bold leading-tight text-stone-950 sm:text-base">{item.name}</h3>
                       <p className="mt-1 text-xs text-stone-500">{item.brand}</p>
                     </div>
