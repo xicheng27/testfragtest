@@ -185,7 +185,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                   <div className="rounded-[1.55rem] bg-stone-950 p-4 text-white">
                     <div className="flex items-center justify-between">
                       <p className="text-xs font-semibold text-stone-400">Your vibe scan</p>
-                      <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-stone-950">98% loaded</span>
+                      <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-stone-950">Quiz preview</span>
                     </div>
                     <div className="mt-4 grid grid-cols-3 gap-2">
                       {heroBottles.map((item, index) => (
@@ -198,6 +198,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                             <ProductImage
                               src={item.imageUrl}
                               alt={`${item.brand} ${item.name} fragrance bottle`}
+                              eager
                               sizes="(max-width: 1023px) 30vw, 180px"
                               className="object-contain p-3"
                             />
@@ -273,6 +274,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                       <ProductImage
                         src={item.imageUrl}
                         alt={`${item.brand} ${item.name} fragrance bottle`}
+                        eager={item.category === 'Best Match'}
                         sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 260px"
                         className="object-contain p-4 sm:p-6"
                       />
@@ -311,8 +313,8 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
               <nav className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm sm:grid-cols-3" aria-label="Footer navigation">
                 <Link href="/about" className="text-stone-300 transition-colors hover:text-white">About</Link>
                 <Link href="/disclaimer" className="text-stone-300 transition-colors hover:text-white">Disclaimer</Link>
-                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="text-stone-300 transition-colors hover:text-white">Instagram</a>
-                <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" className="text-stone-300 transition-colors hover:text-white">TikTok</a>
+                <Link href="/fragrances" className="text-stone-300 transition-colors hover:text-white">Browse</Link>
+                <Link href="/quiz" className="text-stone-300 transition-colors hover:text-white">Start quiz</Link>
               </nav>
             </div>
             <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">

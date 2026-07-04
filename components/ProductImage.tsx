@@ -30,7 +30,8 @@ export default function ProductImage({
       fill
       sizes={sizes}
       className={className}
-      loading={eager ? 'eager' : 'lazy'}
+      priority={eager}
+      loading={eager ? undefined : 'lazy'}
       onError={() => {
         if (imageSrc !== FALLBACK_IMAGE) setFailedSrc(src);
       }}

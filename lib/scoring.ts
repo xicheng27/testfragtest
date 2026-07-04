@@ -364,10 +364,11 @@ export function buildScentProfile(answers: QuizAnswers) {
 
 export function getRecommendations(answers: QuizAnswers, topN = 7): ScoredFragrance[] {
   const strictPool = fragrances.filter(fragrance => !violatesAvoidRules(fragrance, answers));
-  const sourcePool = strictPool.length >= Math.min(topN, 5) ? strictPool : fragrances;
-  const scored = sourcePool
+  const scored = strictPool
     .map(fragrance => ({ fragrance, score: scoreFragrance(fragrance, answers) }))
     .sort((a, b) => b.score - a.score);
+
+  if (scored.length === 0) return [];
 
   const maxScore = scored[0]?.score ?? 1;
   const selected = new Set<string>();

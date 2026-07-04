@@ -72,7 +72,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
   }, [view]);
 
   if (!isReady || (autoStartQuiz && !hasEnteredApp)) {
-    return <div className="marble-bg min-h-screen" aria-label="Loading ScentMatch" />;
+    return <main className="marble-bg min-h-screen" aria-label="Loading ScentMatch" />;
   }
 
   const currentView: AppView = !hasEnteredApp ? 'landing' : view === 'landing' ? 'main' : view;

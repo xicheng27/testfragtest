@@ -21,7 +21,8 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "ScentMatch — Find a fragrance that actually feels like you",
+  metadataBase: new URL("https://testfragtest.vercel.app"),
+  title: "ScentMatch - Find a fragrance that actually feels like you",
   description: "Take a quick fragrance quiz and discover scents matched to your vibe, budget, weather, occasion, and notes to avoid.",
 };
 

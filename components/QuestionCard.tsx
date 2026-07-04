@@ -32,7 +32,7 @@ function useGridColumns(count: number): number {
 
   if (bp === 'base') return 1;
   if (count <= 3) return Math.max(1, count);
-  if (count === 4) return 2; // 2×2 at every size
+  if (count === 4) return 2; // 2 by 2 at every size
   if (count >= 7) return bp === 'lg' ? 4 : 2;
   return bp === 'lg' ? 3 : 2;
 }

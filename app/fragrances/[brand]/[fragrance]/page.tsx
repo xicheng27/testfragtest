@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ProductImage from '@/components/ProductImage';
 import { fragrances } from '@/lib/fragrances';
@@ -19,6 +20,31 @@ export function generateStaticParams() {
     brand: brandSlug(fragrance.brand),
     fragrance: fragrance.id,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ brand: string; fragrance: string }>;
+}): Promise<Metadata> {
+  const { brand, fragrance: fragranceId } = await params;
+  const fragrance = fragrances.find(item => brandSlug(item.brand) === decodeURIComponent(brand) && item.id === fragranceId);
+
+  if (!fragrance) {
+    return {
+      title: 'Fragrance Not Found - ScentMatch',
+    };
+  }
+
+  return {
+    title: `${fragrance.name} by ${fragrance.brand} - ScentMatch`,
+    description: `${fragrance.shortDescription} Notes include ${fragrance.notes.slice(0, 4).join(', ')}.`,
+    openGraph: {
+      title: `${fragrance.name} by ${fragrance.brand}`,
+      description: fragrance.shortDescription,
+      images: fragrance.imageUrl ? [{ url: fragrance.imageUrl, alt: `${fragrance.brand} ${fragrance.name} fragrance bottle` }] : undefined,
+    },
+  };
 }
 
 export default async function FragranceDetailPage({

@@ -189,13 +189,14 @@ export default function FragrancesPage() {
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite">
-          {filtered.slice(0, 96).map(fragrance => (
+          {filtered.slice(0, 96).map((fragrance, index) => (
             <article key={fragrance.id} className="overflow-hidden rounded-[1.5rem] border border-stone-200 bg-white shadow-sm">
               <Link href={`/fragrances/${slug(fragrance.brand)}/${fragrance.id}`} className="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950">
                 <div className="relative aspect-[4/3] border-b border-stone-100 bg-stone-50">
                   <ProductImage
                     src={fragrance.imageUrl}
                     alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
+                    eager={index < 3}
                     sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                     className="object-contain p-5 transition-transform duration-300 group-hover:scale-[1.03]"
                   />

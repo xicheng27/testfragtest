@@ -8,8 +8,8 @@ interface QuizChoiceImageProps {
   src: string;
   sizes: string;
   alt: string;
-  productImage?: boolean; // packshot on white — use object-contain
-  eager?: boolean; // current/visible question → load immediately, high priority
+  productImage?: boolean; // packshot on white, use object-contain
+  eager?: boolean; // current/visible question loads immediately
   className?: string;
 }
 
@@ -25,7 +25,7 @@ export default function QuizChoiceImage({
 
   return (
     <div className={clsx('absolute inset-0 overflow-hidden', productImage ? 'bg-white' : 'bg-stone-200', className)}>
-      {/* Skeleton shimmer while the image decodes — prevents a blank flash */}
+      {/* Skeleton shimmer while the image decodes, preventing a blank flash. */}
       <div
         className={clsx(
           'absolute inset-0 animate-pulse bg-gradient-to-br from-stone-100 via-stone-200 to-stone-100 transition-opacity duration-300',
@@ -38,10 +38,6 @@ export default function QuizChoiceImage({
         alt={alt}
         fill
         sizes={sizes}
-        // Raw file from /public (predictable URL) so it can be preloaded and
-        // served straight from browser cache on back/forward navigation.
-        unoptimized
-        // Visible cards never lazy-load; they fetch at high priority.
         priority={eager}
         loading={eager ? 'eager' : 'lazy'}
         fetchPriority={eager ? 'high' : 'auto'}

@@ -8,7 +8,7 @@ interface OptionCardProps {
   selected: boolean;
   onClick: () => void;
   variant?: 'default' | 'image';
-  priority?: boolean; // current question → load image immediately at high priority
+  priority?: boolean; // current question loads image immediately at high priority
   className?: string;
 }
 
@@ -70,7 +70,7 @@ export default function OptionCard({
       );
     }
 
-    // Scene photo → full-bleed with text overlaid on a gradient scrim.
+    // Scene photo: full-bleed with text overlaid on a gradient scrim.
     return (
       <button
         type="button"

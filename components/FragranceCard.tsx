@@ -12,7 +12,6 @@ import {
   coverageLabel,
   fragranceWarnings,
   sourceConfidenceLabel,
-  sourceConfidenceTone,
 } from '@/lib/fragrance-trust';
 import { trackEvent } from '@/lib/analytics';
 import ProductImage from './ProductImage';
@@ -133,7 +132,7 @@ export default function FragranceCard({
 
       <div className="md:grid md:grid-cols-[minmax(220px,0.82fr)_minmax(0,1.65fr)]">
         <div className="relative min-h-64 overflow-hidden border-b border-stone-100 bg-stone-50 md:min-h-full md:border-b-0 md:border-r">
-          <div className="relative aspect-[4/3] w-full md:sticky md:top-0 md:aspect-auto md:h-[31rem]">
+          <div className="relative aspect-[4/3] w-full md:aspect-auto md:h-[31rem]">
             <ProductImage
               src={fragrance.imageUrl}
               alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
@@ -172,22 +171,6 @@ export default function FragranceCard({
             <p className="mt-2 max-w-xl text-[11px] leading-relaxed text-stone-500">
               Product names and images are used for identification. Buy through official brand or retailer links when available.
             </p>
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              <span
-                className={clsx(
-                  'rounded-full border px-2.5 py-1 text-[11px] font-medium',
-                  sourceConfidenceTone(fragrance),
-                )}
-              >
-                {sourceConfidenceLabel(fragrance)}
-              </span>
-              <span className="rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-medium text-stone-500">
-                {availabilityLabel(fragrance)}
-              </span>
-              <span className="rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-medium text-stone-500">
-                Checked {fragrance.lastChecked}
-              </span>
-            </div>
           </div>
 
           <div className="mt-5 flex flex-wrap gap-1.5">
@@ -210,19 +193,19 @@ export default function FragranceCard({
             <div className="col-span-2 sm:col-span-3">
               <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Main notes</dt>
               <dd className="mt-1.5 text-base leading-relaxed text-stone-800">
-                {fragrance.notes.slice(0, 5).join(' · ')}
+                {fragrance.notes.slice(0, 5).join(' / ')}
               </dd>
             </div>
             <div>
               <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Best for</dt>
               <dd className="mt-1 text-base font-medium capitalize text-stone-800">
-                {fragrance.occasions.slice(0, 2).map(friendly).join(' · ')}
+                {fragrance.occasions.slice(0, 2).map(friendly).join(' / ')}
               </dd>
             </div>
             <div>
               <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Season</dt>
               <dd className="mt-1 text-base font-medium capitalize text-stone-800">
-                {fragrance.seasons.slice(0, 2).join(' · ')}
+                {fragrance.seasons.slice(0, 2).join(' / ')}
               </dd>
             </div>
             <div>
@@ -232,7 +215,7 @@ export default function FragranceCard({
                   const price = getSignaturePrice(fragrance, currency);
                   return (
                     <>
-                      {!price.exact && <span aria-label="approximately">≈ </span>}
+                      {!price.exact && <span aria-label="approximately">approx. </span>}
                       {formatPrice(price.amount, currency)}
                       <span className="mt-0.5 block text-[11px] font-normal text-stone-400">{price.size}</span>
                     </>
@@ -242,7 +225,7 @@ export default function FragranceCard({
             </div>
           </dl>
           <p className="mt-2.5 text-[11px] text-stone-400">
-            Indicative {currency} retail at signature size · as of {PRICED_AS_OF}
+            Indicative {currency} retail at signature size / as of {PRICED_AS_OF}
           </p>
 
           {reasonItems.length > 0 && (
@@ -279,13 +262,13 @@ export default function FragranceCard({
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Main accords</p>
                     <p className="mt-1.5 text-sm capitalize leading-relaxed text-stone-700">
-                      {fragrance.accords.slice(0, 5).join(' · ')}
+                      {fragrance.accords.slice(0, 5).join(' / ')}
                     </p>
                   </div>
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Performance</p>
                     <p className="mt-1.5 text-sm capitalize leading-relaxed text-stone-700">
-                      {fragrance.projection} projection · {fragrance.longevity} longevity
+                      {fragrance.projection} projection / {fragrance.longevity} longevity
                     </p>
                   </div>
                 </div>
@@ -302,7 +285,7 @@ export default function FragranceCard({
                 <div className="mt-4 border-t border-stone-200 pt-4">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Data confidence</p>
                   <p className="mt-1.5 text-sm leading-relaxed text-stone-700">
-                    {coverageLabel(fragrance)} · {sourceConfidenceLabel(fragrance)} · {availabilityLabel(fragrance)}
+                    {coverageLabel(fragrance)} / {sourceConfidenceLabel(fragrance)} / {availabilityLabel(fragrance)}
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-stone-600">
                     {fragrance.provenanceSummary}
@@ -319,7 +302,7 @@ export default function FragranceCard({
                           >
                             {source.sourceName}
                           </a>
-                          <span className="text-stone-400"> · {source.trustLevel} · checked {source.lastChecked}</span>
+                          <span className="text-stone-400"> / {source.trustLevel} / checked {source.lastChecked}</span>
                         </li>
                       ))}
                     </ul>
@@ -378,7 +361,7 @@ export default function FragranceCard({
                     <p className="text-sm font-medium text-stone-800">
                       {(() => {
                         const sp = getSignaturePrice(similarFragrance, currency);
-                        return `${sp.exact ? '' : '≈ '}${formatPrice(sp.amount, currency)}`;
+                        return `${sp.exact ? '' : 'approx. '}${formatPrice(sp.amount, currency)}`;
                       })()}
                     </p>
                   </div>
