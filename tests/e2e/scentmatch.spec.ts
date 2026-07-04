@@ -35,7 +35,7 @@ async function completeQuiz(page: Page) {
 test('landing page starts the quiz', async ({ page }) => {
   await startQuiz(page);
   await expect(page.getByText(/1 of 10/i)).toBeVisible();
-  await expect(page.getByRole('heading', { name: /Who are we finding this for/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Who is this scent mission for/i })).toBeVisible();
 });
 
 test('guest can complete quiz, view results, save to Shelf, give feedback, and open official link', async ({ page, context }) => {

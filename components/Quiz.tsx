@@ -31,16 +31,15 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   const preloadedRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    for (const lookahead of [step + 1, step + 2]) {
-      const upcoming = questions[lookahead];
-      if (!upcoming || upcoming.type !== 'image-cards') continue;
-      for (const option of upcoming.options) {
-        if (!option.imageUrl || preloadedRef.current.has(option.imageUrl)) continue;
-        preloadedRef.current.add(option.imageUrl);
-        const img = new window.Image();
-        img.decoding = 'async';
-        img.src = option.imageUrl;
-      }
+    const upcoming = questions[step + 1];
+    if (!upcoming || upcoming.type !== 'image-cards') return;
+
+    for (const option of upcoming.options) {
+      if (!option.imageUrl || preloadedRef.current.has(option.imageUrl)) continue;
+      preloadedRef.current.add(option.imageUrl);
+      const img = new window.Image();
+      img.decoding = 'async';
+      img.src = option.imageUrl;
     }
   }, [step, questions]);
 

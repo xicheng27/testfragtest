@@ -22,6 +22,7 @@ export default function QuizChoiceImage({
   className,
 }: QuizChoiceImageProps) {
   const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   return (
     <div className={clsx('absolute inset-0 overflow-hidden', productImage ? 'bg-white' : 'bg-stone-200', className)}>
@@ -33,22 +34,32 @@ export default function QuizChoiceImage({
         )}
         aria-hidden="true"
       />
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={sizes}
-        priority={eager}
-        loading={eager ? 'eager' : 'lazy'}
-        fetchPriority={eager ? 'high' : 'auto'}
-        className={clsx(
-          'transition-opacity duration-200',
-          loaded ? 'opacity-100' : 'opacity-0',
-          productImage ? 'object-contain p-3' : 'object-cover',
-        )}
-        onLoad={() => setLoaded(true)}
-        onError={() => setLoaded(true)}
-      />
+      {failed ? (
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_28%_24%,rgba(255,255,255,0.86),transparent_34%),linear-gradient(135deg,#f8f5ee,#e7dfd2_48%,#cfc3b3)]"
+          aria-hidden="true"
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          priority={eager}
+          loading={eager ? 'eager' : 'lazy'}
+          fetchPriority={eager ? 'high' : 'auto'}
+          className={clsx(
+            'transition-opacity duration-200',
+            loaded ? 'opacity-100' : 'opacity-0',
+            productImage ? 'object-contain p-3' : 'object-cover',
+          )}
+          onLoad={() => setLoaded(true)}
+          onError={() => {
+            setFailed(true);
+            setLoaded(true);
+          }}
+        />
+      )}
     </div>
   );
 }

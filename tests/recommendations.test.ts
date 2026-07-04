@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { getRecommendations, type QuizAnswers, violatesAvoidRules } from '@/lib/scoring';
+import { getMatchBreakdown, getRecommendations, type QuizAnswers, violatesAvoidRules } from '@/lib/scoring';
+import { fragrances } from '@/lib/fragrances';
 
 function answersWithAvoid(...avoid: string[]): QuizAnswers {
   return {
@@ -42,4 +43,43 @@ test('rose red flag excludes rose-heavy scents from recommendations', () => {
 
 test('too sweet red flag excludes heavy gourmand and sugar scents from recommendations', () => {
   assertNoViolations(answersWithAvoid('too-sweet'));
+});
+
+test('hard red flags are represented as strict safety checks in the breakdown', () => {
+  const answers = answersWithAvoid('oud', 'rose', 'too-strong');
+  const recommendations = getRecommendations(answers, 12);
+
+  assert.ok(recommendations.length > 0, 'expected recommendations after applying strict red flags');
+  for (const result of recommendations) {
+    assert.equal(result.matchBreakdown.redFlagSafety, 100);
+    assert.equal(result.matchBreakdown.hardFiltersPassed, result.matchBreakdown.hardFiltersTotal);
+    assert.equal(violatesAvoidRules(result.fragrance, answers), false);
+  }
+});
+
+test('match breakdown scores stay inside a 0 to 100 range', () => {
+  const answers = answersWithAvoid('too-sweet');
+  const numericKeys = [
+    'overall',
+    'scentProfileFit',
+    'occasionFit',
+    'budgetFit',
+    'climateFit',
+    'projectionFit',
+    'redFlagSafety',
+    'notesOverlap',
+    'uniquenessScore',
+    'wearabilityScore',
+    'confidenceScore',
+  ] as const;
+
+  for (const fragrance of fragrances.slice(0, 60)) {
+    const breakdown = getMatchBreakdown(fragrance, answers);
+    for (const key of numericKeys) {
+      assert.ok(
+        breakdown[key] >= 0 && breakdown[key] <= 100,
+        `${fragrance.brand} ${fragrance.name} ${key} should be 0-100, got ${breakdown[key]}`,
+      );
+    }
+  }
 });

@@ -228,6 +228,41 @@ export default function FragranceCard({
             Indicative {currency} retail at signature size / as of {PRICED_AS_OF}
           </p>
 
+          {result && (
+            <section className="mt-5 rounded-2xl border border-stone-200 bg-stone-50/70 p-4" aria-labelledby={`score-${fragrance.id}`}>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p id={`score-${fragrance.id}`} className="text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-400">Match evidence</p>
+                  <p className="mt-1 text-sm font-semibold text-stone-950">{result.matchBreakdown.matchType}</p>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-stone-600">
+                    Hard {result.matchBreakdown.hardFiltersPassed}/{result.matchBreakdown.hardFiltersTotal}
+                  </span>
+                  <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-stone-600">
+                    Soft {result.matchBreakdown.softPreferencesMatched}/{result.matchBreakdown.softPreferencesTotal}
+                  </span>
+                  <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-stone-600">
+                    Confidence {result.matchBreakdown.confidenceScore}%
+                  </span>
+                </div>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <MiniScore label="Scent" value={result.matchBreakdown.scentProfileFit} />
+                <MiniScore label="Occasion" value={result.matchBreakdown.occasionFit} />
+                <MiniScore label="Budget" value={result.matchBreakdown.budgetFit} />
+                <MiniScore label="Weather" value={result.matchBreakdown.climateFit} />
+                <MiniScore label="Projection" value={result.matchBreakdown.projectionFit} />
+                <MiniScore label="Red flags" value={result.matchBreakdown.redFlagSafety} />
+              </div>
+              {result.matchBreakdown.missingDataFields.length > 0 && (
+                <p className="mt-3 text-xs leading-relaxed text-amber-800">
+                  Missing data to check: {result.matchBreakdown.missingDataFields.slice(0, 3).join(', ')}.
+                </p>
+              )}
+            </section>
+          )}
+
           {reasonItems.length > 0 && (
             <section className="mt-6 rounded-2xl bg-stone-950 p-4.5 text-white sm:p-5" aria-labelledby={`why-${fragrance.id}`}>
               <h3 id={`why-${fragrance.id}`} className="text-xs font-semibold uppercase tracking-[0.16em]">
@@ -448,5 +483,19 @@ export default function FragranceCard({
         </div>
       </div>
     </article>
+  );
+}
+
+function MiniScore({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <span className="text-xs font-medium text-stone-500">{label}</span>
+        <span className="text-xs font-black text-stone-950">{value}%</span>
+      </div>
+      <div className="h-1.5 overflow-hidden rounded-full bg-white">
+        <div className="h-full rounded-full bg-stone-950" style={{ width: `${Math.max(4, Math.min(100, value))}%` }} />
+      </div>
+    </div>
   );
 }

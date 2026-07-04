@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:logic": "tsx --test tests/recommendations.test.ts",
+    "test:logic": "tsx --test tests/recommendations.test.ts tests/images.test.ts",
     "test:e2e": "playwright test",
     "validate:catalog": "node scripts/validate-fragrance-catalog.mjs",
     "validate:fragrances": "node scripts/validate-fragrance-metadata.mjs",

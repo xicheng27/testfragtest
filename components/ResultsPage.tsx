@@ -120,6 +120,30 @@ function brandSlug(brand: string) {
   return brand.toLowerCase().replace(/\s+/g, '-');
 }
 
+function valuesFor(answers: QuizAnswers, id: string) {
+  const value = answers[id];
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
+function pretty(value: string) {
+  return value.replaceAll('-', ' ');
+}
+
+function average(values: number[]) {
+  if (values.length === 0) return 0;
+  return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
+}
+
+const dashboardMetrics = [
+  ['Scent profile', 'scentProfileFit'],
+  ['Occasion', 'occasionFit'],
+  ['Budget', 'budgetFit'],
+  ['Climate', 'climateFit'],
+  ['Projection', 'projectionFit'],
+  ['Red flag safety', 'redFlagSafety'],
+] as const;
+
 export default function ResultsPage({
   results,
   answers = {},
@@ -177,6 +201,44 @@ export default function ResultsPage({
     ].filter((label): label is string => Boolean(label));
   }, [personalisedPool]);
 
+  const analysis = useMemo(() => {
+    const breakdowns = personalisedPool.map(result => result.matchBreakdown);
+    const topThree = personalisedPool.slice(0, 3);
+    const missingData = [...new Set(breakdowns.flatMap(item => item.missingDataFields))];
+    const exactMatches = breakdowns.filter(item => item.matchType === 'Exact match').length;
+    const strongMatches = breakdowns.filter(item => item.matchType === 'Strong match').length;
+    const partialMatches = breakdowns.filter(item => item.matchType === 'Partial match').length;
+    return {
+      overall: average(topThree.map(result => result.matchPercent)),
+      confidence: average(breakdowns.map(item => item.confidenceScore)),
+      hardPassed: average(breakdowns.map(item => item.hardFiltersPassed)),
+      hardTotal: breakdowns[0]?.hardFiltersTotal ?? 4,
+      softMatched: average(breakdowns.map(item => item.softPreferencesMatched)),
+      softTotal: breakdowns[0]?.softPreferencesTotal ?? 5,
+      missingData,
+      exactMatches,
+      strongMatches,
+      partialMatches,
+      metricAverages: dashboardMetrics.map(([label, key]) => ({
+        label,
+        value: average(breakdowns.map(item => item[key])),
+      })),
+      topThree,
+    };
+  }, [personalisedPool]);
+
+  const answerSummary = useMemo(() => {
+    const avoids = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
+    return [
+      { label: 'Vibe', value: valuesFor(answers, 'desired-feel').map(pretty).join(' / ') || 'Flexible' },
+      { label: 'Occasion', value: valuesFor(answers, 'occasion').map(pretty).join(' / ') || 'Any' },
+      { label: 'Weather', value: valuesFor(answers, 'weather').map(pretty).join(' / ') || 'Any climate' },
+      { label: 'Budget', value: valuesFor(answers, 'price-range').map(pretty).join(' / ') || 'Open' },
+      { label: 'Projection', value: valuesFor(answers, 'projection').map(pretty).join(' / ') || 'Not sure' },
+      { label: 'Avoids', value: avoids.length ? avoids.map(pretty).join(' / ') : 'No red flags selected' },
+    ];
+  }, [answers]);
+
   return (
     <>
       <div className="marble-bg min-h-screen">
@@ -231,6 +293,69 @@ export default function ResultsPage({
             </div>
           </section>
 
+          <section className="mb-7 rounded-[2rem] border border-stone-200 bg-stone-950 p-5 text-white shadow-[0_24px_70px_rgba(28,25,23,0.16)] sm:p-7" aria-labelledby="analysis-heading">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-stone-400">Recommendation analysis</p>
+                <h2 id="analysis-heading" className="mt-2 text-3xl font-black tracking-[-0.05em] sm:text-5xl">
+                  The data behind your matches.
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-stone-300 sm:text-base">
+                  We ranked fragrances by scent profile, occasion, climate, budget, projection, red-flag safety, and data confidence. Hard dislikes stay strict.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:min-w-[27rem]">
+                <MetricTile label="Overall" value={`${analysis.overall || 0}%`} tone="dark" />
+                <MetricTile label="Confidence" value={`${analysis.confidence || 0}%`} tone="dark" />
+                <MetricTile label="Hard checks" value={`${analysis.hardPassed}/${analysis.hardTotal}`} tone="dark" />
+                <MetricTile label="Soft matches" value={`${analysis.softMatched}/${analysis.softTotal}`} tone="dark" />
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
+              <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-4 sm:p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-stone-300">Score breakdown</h3>
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-stone-300">
+                    {analysis.exactMatches} exact / {analysis.strongMatches} strong / {analysis.partialMatches} partial
+                  </span>
+                </div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {analysis.metricAverages.map(metric => (
+                    <ScoreBar key={metric.label} label={metric.label} value={metric.value} inverted />
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-4 sm:p-5">
+                <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-stone-300">Fit radar</h3>
+                <RadarChart metrics={analysis.metricAverages.slice(0, 5)} />
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {answerSummary.map(item => (
+                <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">{item.label}</p>
+                  <p className="mt-1 text-sm capitalize text-stone-100">{item.value}</p>
+                </div>
+              ))}
+            </div>
+
+            {analysis.missingData.length > 0 && (
+              <p className="mt-4 rounded-2xl border border-amber-200/20 bg-amber-100/10 px-4 py-3 text-xs leading-relaxed text-amber-50">
+                Missing data warning: some matches still need stronger {analysis.missingData.slice(0, 4).join(', ')}. These are reflected in the confidence score.
+              </p>
+            )}
+
+            <details className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <summary className="cursor-pointer text-sm font-bold text-white">How we calculated this</summary>
+              <p className="mt-3 text-sm leading-relaxed text-stone-300">
+                Red flags are checked first. Scent family, vibe, occasion, climate, projection, and budget drive ranking. Source quality, availability, and note detail affect confidence. If exact matches are limited, ScentMatch shows fewer recommendations rather than breaking your dislikes.
+              </p>
+            </details>
+          </section>
+
           <section aria-label="Your top 3 fragrance matches">
             <h2 className="mb-3 text-lg font-black tracking-[-0.02em] text-stone-950">Your top 3</h2>
             <ul className="space-y-3">
@@ -276,6 +401,46 @@ export default function ResultsPage({
               })}
             </ul>
           </section>
+
+          {analysis.topThree.length > 0 && (
+            <section className="mt-7 rounded-[2rem] border border-stone-200 bg-white/90 p-5 shadow-sm sm:p-7" aria-labelledby="comparison-heading">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Top 3 comparison</p>
+                  <h2 id="comparison-heading" className="mt-1 text-2xl font-black tracking-[-0.04em] text-stone-950">Why these rose to the top</h2>
+                </div>
+                <p className="text-sm text-stone-500">Swipe on mobile to compare the scores.</p>
+              </div>
+              <div className="mt-5 overflow-x-auto">
+                <table className="w-full min-w-[740px] border-separate border-spacing-0 text-left text-sm">
+                  <thead>
+                    <tr className="text-[10px] uppercase tracking-[0.16em] text-stone-400">
+                      {['Fragrance', 'Scent', 'Occasion', 'Budget', 'Climate', 'Safety', 'Confidence', 'Final'].map(label => (
+                        <th key={label} className="border-b border-stone-200 px-3 py-2 font-bold">{label}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {analysis.topThree.map(result => (
+                      <tr key={result.fragrance.id} className="text-stone-700">
+                        <td className="border-b border-stone-100 px-3 py-3">
+                          <span className="block font-bold text-stone-950">{result.fragrance.name}</span>
+                          <span className="text-xs text-stone-500">{result.fragrance.brand} / {result.matchBreakdown.matchType}</span>
+                        </td>
+                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.scentProfileFit}%</td>
+                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.occasionFit}%</td>
+                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.budgetFit}%</td>
+                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.climateFit}%</td>
+                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.redFlagSafety}%</td>
+                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.confidenceScore}%</td>
+                        <td className="border-b border-stone-100 px-3 py-3 font-black text-stone-950">{result.matchPercent}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
 
           <section className="mt-7">
             <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
@@ -441,5 +606,85 @@ export default function ResultsPage({
 
       {showSignIn && <AuthModal onClose={() => setShowSignIn(false)} initialMode="login" />}
     </>
+  );
+}
+
+function MetricTile({ label, value, tone = 'light' }: { label: string; value: string; tone?: 'light' | 'dark' }) {
+  return (
+    <div className={clsx(
+      'rounded-2xl border p-3',
+      tone === 'dark' ? 'border-white/10 bg-white/[0.08]' : 'border-stone-200 bg-white',
+    )}>
+      <p className={clsx('text-[10px] font-bold uppercase tracking-[0.16em]', tone === 'dark' ? 'text-stone-400' : 'text-stone-500')}>{label}</p>
+      <p className={clsx('mt-1 text-2xl font-black tracking-[-0.04em]', tone === 'dark' ? 'text-white' : 'text-stone-950')}>{value}</p>
+    </div>
+  );
+}
+
+function ScoreBar({ label, value, inverted = false }: { label: string; value: number; inverted?: boolean }) {
+  return (
+    <div>
+      <div className="mb-1.5 flex items-center justify-between gap-3">
+        <span className={clsx('text-sm font-semibold', inverted ? 'text-stone-200' : 'text-stone-700')}>{label}</span>
+        <span className={clsx('text-sm font-black tabular-nums', inverted ? 'text-white' : 'text-stone-950')}>{value}%</span>
+      </div>
+      <div className={clsx('h-2 overflow-hidden rounded-full', inverted ? 'bg-white/10' : 'bg-stone-100')}>
+        <div
+          className={clsx('h-full rounded-full', inverted ? 'bg-white' : 'bg-stone-950')}
+          style={{ width: `${Math.max(4, Math.min(100, value))}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function RadarChart({ metrics }: { metrics: Array<{ label: string; value: number }> }) {
+  const center = 60;
+  const maxRadius = 48;
+  const points = metrics.map((metric, index) => {
+    const angle = (-90 + (360 / metrics.length) * index) * (Math.PI / 180);
+    const radius = (metric.value / 100) * maxRadius;
+    return `${center + Math.cos(angle) * radius},${center + Math.sin(angle) * radius}`;
+  }).join(' ');
+
+  return (
+    <div className="mt-4 grid gap-4 sm:grid-cols-[140px_minmax(0,1fr)] sm:items-center lg:grid-cols-1">
+      <svg viewBox="0 0 120 120" className="mx-auto h-36 w-36" role="img" aria-label="Radar chart of match scores">
+        {[0.33, 0.66, 1].map(scale => (
+          <polygon
+            key={scale}
+            points={metrics.map((_, index) => {
+              const angle = (-90 + (360 / metrics.length) * index) * (Math.PI / 180);
+              const radius = maxRadius * scale;
+              return `${center + Math.cos(angle) * radius},${center + Math.sin(angle) * radius}`;
+            }).join(' ')}
+            fill="none"
+            stroke="rgba(255,255,255,0.14)"
+          />
+        ))}
+        <polygon points={points} fill="rgba(255,255,255,0.26)" stroke="white" strokeWidth="2" />
+        {metrics.map((_, index) => {
+          const angle = (-90 + (360 / metrics.length) * index) * (Math.PI / 180);
+          return (
+            <line
+              key={index}
+              x1={center}
+              y1={center}
+              x2={center + Math.cos(angle) * maxRadius}
+              y2={center + Math.sin(angle) * maxRadius}
+              stroke="rgba(255,255,255,0.1)"
+            />
+          );
+        })}
+      </svg>
+      <div className="grid gap-2">
+        {metrics.map(metric => (
+          <div key={metric.label} className="flex items-center justify-between rounded-xl bg-white/[0.06] px-3 py-2 text-xs">
+            <span className="text-stone-300">{metric.label}</span>
+            <span className="font-black text-white">{metric.value}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
