@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Fragrance Guide - ScentMatch',
+  description: 'Learn fragrance terms like notes, projection, sillage, longevity, and scent families in simple language.',
+};
 
 const terms = [
   ['Top notes', 'The first scents you notice after spraying. They are often bright and light, and usually fade first.'],
@@ -19,6 +25,25 @@ const terms = [
   ['Floral', 'A broad family centered on flowers, from sheer peony to rich rose, jasmine, or tuberose.'],
   ['Citrus', 'Bright notes such as bergamot, lemon, orange, grapefruit, and mandarin.'],
   ['Spicy', 'Warm or cool spice notes including pepper, cardamom, cinnamon, clove, or saffron.'],
+] as const;
+
+const choosingTips = [
+  {
+    title: 'For school, work, or NS',
+    body: 'Go for clean, fresh, subtle, or moderate scents. Avoid very strong projection in close spaces.',
+  },
+  {
+    title: 'For dates',
+    body: 'Look for soft musk, warm amber, light vanilla, or smooth woods. You want memorable, not overwhelming.',
+  },
+  {
+    title: 'For Singapore weather',
+    body: 'Fresh, citrus, tea, aquatic, green, and clean musk scents usually work better in heat and humidity.',
+  },
+  {
+    title: 'For blind buying',
+    body: 'Sample first when possible. Notes, concentration, weather, and skin chemistry can change how a fragrance smells.',
+  },
 ] as const;
 
 export default function AboutPage() {
@@ -64,6 +89,21 @@ export default function AboutPage() {
                 </summary>
                 <p className="px-5 pb-5 text-sm leading-relaxed text-stone-600 sm:px-6">{explanation}</p>
               </details>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-12" aria-labelledby="choose-first-fragrance">
+          <p className="text-xs font-medium uppercase tracking-[0.24em] text-stone-400">How to choose</p>
+          <h2 id="choose-first-fragrance" className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-stone-950 sm:text-4xl">
+            How to choose your first fragrance
+          </h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {choosingTips.map(tip => (
+              <article key={tip.title} className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+                <h3 className="font-semibold text-stone-950">{tip.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-stone-600">{tip.body}</p>
+              </article>
             ))}
           </div>
         </section>

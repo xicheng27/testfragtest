@@ -22,7 +22,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "ScentMatch — Find a fragrance that actually feels like you",
-  description: "Take a personalised quiz and discover fragrances matched to your taste, lifestyle, and aesthetic.",
+  description: "Take a quick fragrance quiz and discover scents matched to your vibe, budget, weather, occasion, and notes to avoid.",
 };
 
 // Without an explicit viewport, mobile browsers fall back to a ~980px layout

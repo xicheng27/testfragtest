@@ -61,7 +61,7 @@ export default function ShelfCard({ fragrance }: { fragrance: Fragrance }) {
 
         <div className="mt-5 min-w-0">
           <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-stone-400">Notes</p>
-          <p className="mt-1.5 break-words text-sm leading-relaxed text-stone-700">{fragrance.notes.join(' · ')}</p>
+          <p className="mt-1.5 break-words text-sm leading-relaxed text-stone-700">{fragrance.notes.join(' / ')}</p>
         </div>
 
         <div className="mt-5 flex min-w-0 flex-wrap gap-1.5">

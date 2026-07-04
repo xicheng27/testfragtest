@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { QuizQuestion } from '@/lib/quiz';
 import { QuizAnswers } from '@/lib/scoring';
 import { useQuizViewport } from '@/lib/use-quiz-viewport';
+import { trackEvent } from '@/lib/analytics';
 import QuestionCard from './QuestionCard';
 import ProgressBar from './ProgressBar';
 
@@ -51,6 +52,15 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
     return () => window.clearInterval(interval);
   }, [isCompleting]);
 
+  useEffect(() => {
+    if (!started || isCompleting) return;
+    const question = questions[step];
+    trackEvent('quiz_question_view', { step: step + 1, questionId: question.id });
+    window.setTimeout(() => {
+      document.getElementById(`quiz-question-${question.id}`)?.focus({ preventScroll: true });
+    }, 40);
+  }, [isCompleting, questions, started, step]);
+
   const question = questions[step];
   const currentAnswers = (answers[question.id] as string[] | undefined) ?? [];
   const hasAnswer = currentAnswers.length > 0;
@@ -70,12 +80,14 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
 
   const handleChange = (values: string[]) => {
     setAnswers(previous => ({ ...previous, [question.id]: values }));
+    trackEvent('quiz_answer_select', { questionId: question.id, values });
   };
 
   const goNext = () => {
     if (!hasAnswer) return;
     if (isLast) {
       setIsCompleting(true);
+      trackEvent('quiz_complete', { answeredQuestions: Object.keys(answers).length });
       window.setTimeout(() => onComplete(answers), 1450);
       return;
     }
@@ -83,6 +95,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   };
 
   const goPrev = () => {
+    trackEvent('quiz_back', { fromStep: step + 1 });
     if (step === 0) {
       onBack();
       return;
@@ -92,6 +105,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
 
   const skipQuestion = () => {
     if (!question.allowSkip) return;
+    trackEvent('quiz_skip', { questionId: question.id });
     const nextAnswers = { ...answers };
     delete nextAnswers[question.id];
     setAnswers(nextAnswers);
@@ -122,14 +136,25 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
           <section className="mx-auto w-full max-w-xl rounded-[2rem] border border-stone-200 bg-white/88 p-6 text-center shadow-[0_24px_70px_rgba(28,25,23,0.12)] backdrop-blur sm:p-9">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#8a6417]">Scent quiz</p>
             <h1 className="mt-3 text-[clamp(2rem,10vw,3.5rem)] font-black leading-[0.95] tracking-[-0.07em] text-stone-950">
-              Let&apos;s find a scent that actually feels like you.
+              Let&apos;s find a scent that actually fits your life.
             </h1>
             <p className="mx-auto mt-4 max-w-sm text-base leading-relaxed text-stone-600">
-              Ten quick choices. No fragrance knowledge needed. We will use your vibe, budget, weather, and red flags to narrow the list.
+              Pick what you like, what you hate, where you&apos;ll wear it, and how loud you want it to be. We&apos;ll use that to recommend fragrances that make sense.
             </p>
+            <ul className="mx-auto mt-5 grid max-w-sm gap-2 text-left text-sm text-stone-700 sm:grid-cols-2">
+              {['10 quick questions', 'Visual choices', 'Avoids notes you dislike', 'Shows why each scent matched'].map(item => (
+                <li key={item} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-stone-950" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
             <button
               type="button"
-              onClick={() => setStarted(true)}
+              onClick={() => {
+                trackEvent('quiz_start', { source: 'intro' });
+                setStarted(true);
+              }}
               className="mt-6 min-h-12 w-full rounded-2xl bg-stone-950 px-5 text-base font-bold text-white shadow-[0_16px_36px_rgba(28,25,23,0.18)] transition-all hover:-translate-y-0.5 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
             >
               Start the scent quiz

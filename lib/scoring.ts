@@ -121,6 +121,20 @@ function hasAny(fragrance: Fragrance, terms: string[]) {
   return terms.some(term => signals.some(signal => signal.includes(term)));
 }
 
+export function violatesAvoidRules(fragrance: Fragrance, answers: QuizAnswers) {
+  const disliked = getAnswers(answers, 'disliked-notes');
+  if (disliked.length === 0 || disliked.includes('none')) return false;
+
+  return disliked.some(dislike => {
+    if (dislike === 'too-strong') return fragrance.projection === 'strong';
+    return hasAny(fragrance, DISLIKE_SIGNALS[dislike] ?? []);
+  });
+}
+
+export function getStrictMatchCount(answers: QuizAnswers) {
+  return fragrances.filter(fragrance => !violatesAvoidRules(fragrance, answers)).length;
+}
+
 function signalMatches(fragrance: Fragrance, terms: string[]) {
   const signals = allSignals(fragrance);
   return terms.filter(term => signals.some(signal => signal.includes(term))).length;
@@ -349,7 +363,9 @@ export function buildScentProfile(answers: QuizAnswers) {
 }
 
 export function getRecommendations(answers: QuizAnswers, topN = 7): ScoredFragrance[] {
-  const scored = fragrances
+  const strictPool = fragrances.filter(fragrance => !violatesAvoidRules(fragrance, answers));
+  const sourcePool = strictPool.length >= Math.min(topN, 5) ? strictPool : fragrances;
+  const scored = sourcePool
     .map(fragrance => ({ fragrance, score: scoreFragrance(fragrance, answers) }))
     .sort((a, b) => b.score - a.score);
 

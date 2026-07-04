@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Disclaimer - ScentMatch',
+  description: 'ScentMatch is an independent fragrance recommendation tool. Product names and images are used for identification and informational purposes.',
+};
 
 const points = [
   'ScentMatch is independent and is not affiliated with, sponsored by, or endorsed by any fragrance brand.',

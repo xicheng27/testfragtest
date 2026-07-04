@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { useShelf } from '@/lib/shelf-context';
 import { useAuth } from '@/lib/auth-context';
+import { trackEvent } from '@/lib/analytics';
 import ShelfCard from './ShelfCard';
 
 interface ShelfPageProps {
@@ -13,6 +15,10 @@ interface ShelfPageProps {
 export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
   const { shelfFragrances } = useShelf();
   const { user, isGuest } = useAuth();
+
+  useEffect(() => {
+    trackEvent('shelf_view', { itemCount: shelfFragrances.length, isGuest });
+  }, [isGuest, shelfFragrances.length]);
 
   return (
     <div className="marble-bg min-h-screen">

@@ -14,6 +14,7 @@ import {
   sourceConfidenceLabel,
   sourceConfidenceTone,
 } from '@/lib/fragrance-trust';
+import { trackEvent } from '@/lib/analytics';
 import ProductImage from './ProductImage';
 
 interface FragranceCardProps {
@@ -22,6 +23,7 @@ interface FragranceCardProps {
   rank?: number;
   similarFragrance?: Fragrance;
   currency?: Currency;
+  onNotMyVibe?: (fragranceId: string, reason: string) => void;
 }
 
 const recommendationCopy: Record<ScoredFragrance['recommendationType'], string> = {
@@ -49,10 +51,12 @@ export default function FragranceCard({
   rank,
   similarFragrance,
   currency = 'USD',
+  onNotMyVibe,
 }: FragranceCardProps) {
   const { isOnShelf, addToShelf, removeFromShelf } = useShelf();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [similarOpen, setSimilarOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [shelfMessage, setShelfMessage] = useState('');
   const fragrance = result?.fragrance ?? fragranceProp;
 
@@ -81,6 +85,7 @@ export default function FragranceCard({
       return;
     }
     addToShelf(fragrance.id);
+    trackEvent('result_save_to_shelf', { fragranceId: fragrance.id });
     setShelfMessage(`${fragrance.name} saved to your Shelf.`);
   };
 
@@ -158,11 +163,15 @@ export default function FragranceCard({
                 href={fragrance.productUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent('result_view_official_product', { fragranceId: fragrance.id, url: fragrance.productUrl })}
                 className="mt-3 inline-flex text-sm font-medium text-stone-700 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950 hover:decoration-stone-700"
               >
                 View official product&nbsp;<span aria-hidden="true">&rarr;</span>
               </a>
             )}
+            <p className="mt-2 max-w-xl text-[11px] leading-relaxed text-stone-500">
+              Product names and images are used for identification. Buy through official brand or retailer links when available.
+            </p>
             <div className="mt-3 flex flex-wrap gap-1.5">
               <span
                 className={clsx(
@@ -239,18 +248,23 @@ export default function FragranceCard({
           {reasonItems.length > 0 && (
             <section className="mt-6 rounded-2xl bg-stone-950 p-4.5 text-white sm:p-5" aria-labelledby={`why-${fragrance.id}`}>
               <h3 id={`why-${fragrance.id}`} className="text-xs font-semibold uppercase tracking-[0.16em]">
-                Why we picked this
+                Matched because
               </h3>
-              <ul className="mt-3 space-y-2.5">
+              <ul className="mt-3 flex flex-wrap gap-2">
                 {reasonItems.map(reason => (
-                  <li key={reason} className="flex gap-2.5 text-base leading-relaxed text-stone-300">
-                    <svg className="mt-1 h-3.5 w-3.5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <li key={reason} className="flex max-w-full items-start gap-2 rounded-2xl bg-white/10 px-3 py-2 text-sm leading-snug text-stone-100">
+                    <svg className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>{reason}</span>
                   </li>
                 ))}
               </ul>
+              {warnings[0] && (
+                <p className="mt-3 rounded-2xl border border-amber-200/30 bg-amber-200/10 px-3 py-2 text-sm text-amber-50">
+                  Watch out: {warnings[0]}.
+                </p>
+              )}
             </section>
           )}
 
@@ -325,6 +339,7 @@ export default function FragranceCard({
                         href={fragrance.productUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => trackEvent('result_view_official_product', { fragranceId: fragrance.id, url: fragrance.productUrl })}
                         className="text-sm font-medium text-stone-800 underline decoration-stone-300 underline-offset-4 hover:decoration-stone-800"
                       >
                         View official product &rarr;
@@ -373,6 +388,24 @@ export default function FragranceCard({
             </div>
           )}
 
+          {feedbackOpen && onNotMyVibe && (
+            <div className="mt-5 rounded-2xl border border-stone-200 bg-stone-50 p-4">
+              <p className="text-sm font-semibold text-stone-950">What felt off?</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {['Too sweet', 'Too strong', 'Too expensive', 'Too basic', 'Too niche', 'Too mature', 'Not my style'].map(reason => (
+                  <button
+                    key={reason}
+                    type="button"
+                    onClick={() => onNotMyVibe(fragrance.id, reason)}
+                    className="min-h-10 rounded-full border border-stone-200 bg-white px-3 text-sm font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+                  >
+                    {reason}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="mt-6 grid gap-2 sm:grid-cols-3">
             <button
               type="button"
@@ -412,6 +445,16 @@ export default function FragranceCard({
                 aria-label={`Find a similar fragrance: ${similarFragrance.name}`}
               >
                 {similarOpen ? 'Hide similar' : 'Find similar'}
+              </button>
+            )}
+            {onNotMyVibe && (
+              <button
+                type="button"
+                onClick={() => setFeedbackOpen(open => !open)}
+                aria-expanded={feedbackOpen}
+                className="min-h-12 rounded-xl border border-stone-300 px-4 text-base font-medium text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+              >
+                Not my vibe
               </button>
             )}
           </div>

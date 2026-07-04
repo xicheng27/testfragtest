@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { ScoredFragrance, QuizAnswers, buildScentProfile, getRecommendations, scoreFragrance } from '@/lib/scoring';
+import { ScoredFragrance, QuizAnswers, buildScentProfile, getRecommendations, getStrictMatchCount, scoreFragrance } from '@/lib/scoring';
 import { Fragrance } from '@/lib/fragrances';
 import AuthModal from './AuthModal';
 import ProductImage from './ProductImage';
@@ -11,6 +11,7 @@ import FragranceCard from './FragranceCard';
 import { useAuth } from '@/lib/auth-context';
 import { useShelf } from '@/lib/shelf-context';
 import { CURRENCIES, PRICED_AS_OF, formatPrice, getSignaturePrice, useCurrency } from '@/lib/pricing';
+import { trackEvent } from '@/lib/analytics';
 
 interface ResultsPageProps {
   results: ScoredFragrance[];
@@ -22,7 +23,7 @@ interface ResultsPageProps {
 }
 
 type MoodFilter = 'all' | 'clean' | 'sweet' | 'dark' | 'fresh' | 'expensive' | 'cozy' | 'date-night';
-type AdjustMode = 'default' | 'cheaper' | 'stronger' | 'unique';
+type AdjustMode = 'default' | 'cheaper' | 'stronger' | 'unique' | 'fresh' | 'daily';
 
 const moodFilters: Array<{ id: MoodFilter; label: string; signals: string[] }> = [
   { id: 'all', label: 'For you', signals: [] },
@@ -37,9 +38,11 @@ const moodFilters: Array<{ id: MoodFilter; label: string; signals: string[] }> =
 
 const adjustModes: Array<{ id: AdjustMode; label: string; description: string }> = [
   { id: 'default', label: 'Best vibe', description: 'Original match order' },
-  { id: 'cheaper', label: 'I want cheaper', description: 'Prioritise budget picks' },
-  { id: 'stronger', label: 'Make it stronger', description: 'More projection' },
+  { id: 'cheaper', label: 'Cheaper', description: 'Prioritise budget picks' },
+  { id: 'stronger', label: 'Stronger', description: 'More projection' },
   { id: 'unique', label: 'More unique', description: 'Niche and wildcard picks' },
+  { id: 'fresh', label: 'Cleaner/fresher', description: 'Clean, citrus, aquatic' },
+  { id: 'daily', label: 'Safe daily', description: 'School/work friendly' },
 ];
 
 function signalsFor(fragrance: Fragrance) {
@@ -95,6 +98,21 @@ function adjustScore(result: ScoredFragrance, mode: AdjustMode) {
       + (result.fragrance.projection === 'subtle' ? 8 : 0);
   }
 
+  if (mode === 'fresh') {
+    const signals = signalsFor(result.fragrance);
+    const freshBonus = ['fresh', 'clean', 'citrus', 'aquatic', 'green', 'musk'].filter(signal => (
+      signals.some(value => value.includes(signal))
+    )).length * 18;
+    return result.score + freshBonus - (result.fragrance.projection === 'strong' ? 18 : 0);
+  }
+
+  if (mode === 'daily') {
+    return result.score
+      + (result.fragrance.occasions.includes('daily') ? 28 : 0)
+      + (result.fragrance.occasions.includes('work') ? 24 : 0)
+      + (result.fragrance.projection === 'strong' ? -32 : 12);
+  }
+
   return result.score;
 }
 
@@ -114,22 +132,36 @@ export default function ResultsPage({
   const [currency, setCurrency] = useCurrency();
   const [activeMood, setActiveMood] = useState<MoodFilter>('all');
   const [adjustMode, setAdjustMode] = useState<AdjustMode>('default');
+  const [hiddenIds, setHiddenIds] = useState<string[]>([]);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
   const scentProfile = useMemo(() => buildScentProfile(answers), [answers]);
+  const strictMatchCount = useMemo(() => getStrictMatchCount(answers), [answers]);
+
+  useEffect(() => {
+    trackEvent('results_view', { resultCount: results.length, profile: scentProfile.title });
+  }, [results.length, scentProfile.title]);
 
   const personalisedPool = useMemo(() => {
-    if (activeMood === 'all' && adjustMode === 'default') return results;
+    if (activeMood === 'all' && adjustMode === 'default' && hiddenIds.length === 0) return results;
 
-    const source = getRecommendations(answers, 18);
+    const source = getRecommendations(answers, 24);
     const enhanced = source
       .map(result => ({
         ...result,
         score: scoreFragrance(result.fragrance, answers),
       }))
+      .filter(result => !hiddenIds.includes(result.fragrance.id))
       .filter(result => moodMatches(result.fragrance, activeMood))
       .sort((a, b) => adjustScore(b, adjustMode) - adjustScore(a, adjustMode));
 
-    return enhanced.length ? enhanced.slice(0, 5) : results;
-  }, [activeMood, adjustMode, answers, results]);
+    return enhanced.length ? enhanced.slice(0, 7) : results.filter(result => !hiddenIds.includes(result.fragrance.id));
+  }, [activeMood, adjustMode, answers, hiddenIds, results]);
+
+  const handleFeedback = (fragranceId: string, reason: string) => {
+    setHiddenIds(current => current.includes(fragranceId) ? current : [...current, fragranceId]);
+    setFeedbackMessage(`Got it - hiding that pick because it felt ${reason.toLowerCase()}.`);
+    trackEvent('result_feedback_not_my_vibe', { fragranceId, reason });
+  };
 
   const resultMix = useMemo(() => {
     const tiers = new Set(personalisedPool.map(result => result.fragrance.tier));
@@ -188,7 +220,10 @@ export default function ResultsPage({
                 </p>
               </div>
               <button
-                onClick={onRestart}
+                onClick={() => {
+                  trackEvent('quiz_retake', { source: 'results_profile' });
+                  onRestart();
+                }}
                 className="min-h-11 shrink-0 rounded-full border border-stone-300 bg-white px-5 text-base font-bold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
               >
                 Retake quiz
@@ -246,8 +281,8 @@ export default function ResultsPage({
             <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Your matches</p>
-                  <h2 className="mt-2 break-words text-[clamp(1.45rem,6vw,1.7rem)] font-black tracking-[-0.05em] text-stone-950">Recommendations that adapt.</h2>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Refine results</p>
+                  <h2 className="mt-2 break-words text-[clamp(1.45rem,6vw,1.7rem)] font-black tracking-[-0.05em] text-stone-950">Want different results?</h2>
                   <p className="mt-2 max-w-xl text-lg leading-relaxed text-stone-600">
                     Filter by mood or nudge the list if you want it cheaper, stronger, or less obvious.
                   </p>
@@ -285,7 +320,10 @@ export default function ResultsPage({
                     <button
                       key={filter.id}
                       type="button"
-                      onClick={() => setActiveMood(filter.id)}
+                      onClick={() => {
+                        setActiveMood(filter.id);
+                        trackEvent('results_filter_change', { filter: filter.id });
+                      }}
                       className={clsx(
                         'min-h-11 shrink-0 rounded-full border px-4 text-base font-bold transition-all',
                         activeMood === filter.id
@@ -299,12 +337,15 @@ export default function ResultsPage({
                 </div>
               </div>
 
-              <div className="mt-5 grid gap-2 sm:grid-cols-4">
+              <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {adjustModes.map(mode => (
                   <button
                     key={mode.id}
                     type="button"
-                    onClick={() => setAdjustMode(mode.id)}
+                    onClick={() => {
+                      setAdjustMode(mode.id);
+                      trackEvent('results_filter_change', { mode: mode.id });
+                    }}
                     className={clsx(
                       'rounded-2xl border p-3 text-left transition-all active:scale-[0.99]',
                       adjustMode === mode.id
@@ -333,6 +374,17 @@ export default function ResultsPage({
               <p className="mt-4 text-[11px] text-stone-400">
                 Indicative retail prices at each fragrance&apos;s signature size - as of {PRICED_AS_OF}
               </p>
+              <p className="mt-2 text-[11px] leading-relaxed text-stone-500">
+                Fragrance is personal. These matches are based on your quiz answers, scent families, notes, budget, and performance preferences. Always sample first when possible.
+              </p>
+              {strictMatchCount < 7 && (
+                <p className="mt-2 rounded-2xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
+                  We avoided your red flags first. A few recommendations may be broader because your filters were very specific.
+                </p>
+              )}
+              {feedbackMessage && (
+                <p className="mt-2 text-xs text-stone-600" aria-live="polite">{feedbackMessage}</p>
+              )}
             </section>
           </section>
 
@@ -353,6 +405,7 @@ export default function ResultsPage({
                     result={result}
                     rank={index + 1}
                     currency={currency}
+                    onNotMyVibe={handleFeedback}
                   />
                 ))}
               </div>
@@ -368,7 +421,10 @@ export default function ResultsPage({
 
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <button
-              onClick={onRestart}
+              onClick={() => {
+                trackEvent('quiz_retake', { source: 'results_footer' });
+                onRestart();
+              }}
               className="min-h-11 rounded-full border border-stone-300 bg-white px-5 text-base font-bold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
             >
               Retake quiz

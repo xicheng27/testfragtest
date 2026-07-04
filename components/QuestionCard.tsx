@@ -140,7 +140,7 @@ const SECTION_LABELS: Record<string, string> = {
         )}>
           {SECTION_LABELS[question.id] ?? (question.category === 'fun' ? 'Just for fun' : 'Scent match')}
         </span>
-        <h2 id={headingId} className="text-[1.35rem] font-semibold leading-[1.08] tracking-[-0.035em] text-stone-950 sm:mt-2 sm:text-2xl">
+        <h2 id={headingId} tabIndex={-1} className="text-[1.35rem] font-semibold leading-[1.08] tracking-[-0.035em] text-stone-950 outline-none sm:mt-2 sm:text-2xl">
           {question.question}
         </h2>
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5 sm:gap-2">

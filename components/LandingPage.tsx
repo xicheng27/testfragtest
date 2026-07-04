@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AuthModal from './AuthModal';
 import ProductImage from './ProductImage';
 import MobileNav from './MobileNav';
 import { useAuth } from '@/lib/auth-context';
+import { trackEvent } from '@/lib/analytics';
 
 interface LandingPageProps {
   onStartQuiz: () => void;
@@ -34,19 +35,19 @@ const heroBottles = [
 
 const previewChips = [
   'Best Match',
-  'Everyday Scent',
-  'Date Night Pick',
+  'Safest Pick',
+  'Hot Weather Pick',
   'Budget Alternative',
-  'Wildcard Pick',
+  'Avoids Red Flags',
 ] as const;
 
 const trendingPicks = [
-  { label: 'Fresh/Clean Pick', note: 'shower-clean, easy daily reach' },
-  { label: 'Sweet/Cozy Pick', note: 'soft vanilla and warm skin' },
-  { label: 'Date Night Pick', note: 'close, warm, memorable' },
-  { label: 'Budget Alternative', note: 'similar vibe without the full splurge' },
-  { label: 'Wildcard Pick', note: 'less obvious, more signature' },
-  { label: 'Everyday Scent', note: 'low-effort, high-compliment' },
+  { label: 'Clean Everyday', note: 'fresh, easy, school/work-safe' },
+  { label: 'Sweet Main Character', note: 'warm, playful, compliment-friendly' },
+  { label: 'Quiet Luxury', note: 'smooth, polished, expensive-feeling' },
+  { label: 'Date Night', note: 'soft, warm, memorable up close' },
+  { label: 'Fresh Hot Weather Pick', note: 'citrus, tea, aquatic, clean musk' },
+  { label: 'Budget Alternative', note: 'useful lower-price options when available' },
 ] as const;
 
 const resultPreviews = [
@@ -76,18 +77,18 @@ const resultPreviews = [
   },
 ] as const;
 
-const reviews = [
-  'Wait this actually got my vibe right.',
-  'I finally found a vanilla scent that does not smell basic.',
-  'The budget picks are actually useful.',
-  'Sent this to the group chat immediately.',
-] as const;
-
-const footerLinks = ['Contact', 'Privacy', 'Terms'] as const;
-
 export default function LandingPage({ onStartQuiz }: LandingPageProps) {
   const [authMode, setAuthMode] = useState<'signup' | 'login' | null>(null);
   const { continueAsGuest } = useAuth();
+
+  useEffect(() => {
+    trackEvent('landing_view');
+  }, []);
+
+  const startQuiz = () => {
+    trackEvent('quiz_start', { source: 'landing' });
+    onStartQuiz();
+  };
 
   return (
     <>
@@ -97,7 +98,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
             <span className="text-base font-black tracking-[-0.03em] text-stone-950">ScentMatch</span>
             <nav className="hidden items-center gap-6 text-sm text-stone-700 md:flex" aria-label="Primary navigation">
               <a href="#how-it-works" className="transition-colors hover:text-stone-950">How it works</a>
-              <a href="#trending" className="transition-colors hover:text-stone-950">Trending</a>
+              <a href="#result-types" className="transition-colors hover:text-stone-950">Result types</a>
               <a href="#results-preview" className="transition-colors hover:text-stone-950">Results</a>
               <Link href="/about" className="transition-colors hover:text-stone-950">About</Link>
             </nav>
@@ -120,10 +121,10 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
             <MobileNav
               breakpoint="md"
               label="Open navigation menu"
-              cta={{ label: 'Find my scent', onClick: onStartQuiz }}
+              cta={{ label: 'Find my scent', onClick: startQuiz }}
               items={[
                 { label: 'How it works', href: '#how-it-works' },
-                { label: 'Trending', href: '#trending' },
+                { label: 'Result types', href: '#result-types' },
                 { label: 'Results', href: '#results-preview' },
                 { label: 'About', href: '/about' },
                 { label: 'Disclaimer', href: '/disclaimer' },
@@ -140,13 +141,13 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-stone-700 shadow-sm">
                   <span className="h-2 w-2 rounded-full bg-[#b08d57]" aria-hidden="true" />
-                  No account needed. No fragrance knowledge needed.
+                  No account needed. Takes about 2 minutes.
                 </div>
                 <h1 className="mt-4 max-w-[12ch] text-[clamp(2.75rem,11vw,5.5rem)] font-black leading-[0.95] tracking-[-0.05em] text-stone-950 [text-wrap:balance] lg:max-w-3xl">
-                  Your scent era starts here.
+                  Find a fragrance that actually feels like you.
                 </h1>
                 <p className="mt-4 max-w-[34ch] text-[clamp(1rem,4.2vw,1.15rem)] leading-relaxed text-stone-700 [text-wrap:pretty] sm:max-w-xl">
-                  Take the quiz and get fragrance matches for your vibe, budget, occasion, and style.
+                  Answer 10 quick visual questions and get scent matches based on your vibe, budget, occasion, weather, and fragrance red flags.
                 </p>
 
                 <div className="mt-5 flex flex-wrap gap-2">
@@ -160,8 +161,8 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                 <div className="mt-7 grid gap-2 sm:max-w-md sm:grid-cols-[1fr_auto] sm:gap-3">
                   <button
                     type="button"
-                    onClick={onStartQuiz}
-                    className="sheen relative min-h-14 overflow-hidden rounded-2xl bg-stone-950 px-7 text-base font-bold text-white shadow-[0_18px_45px_rgba(28,25,23,0.2)] transition-transform hover:-translate-y-0.5 active:scale-[0.99]"
+                    onClick={startQuiz}
+                    className="sheen relative min-h-14 overflow-hidden rounded-2xl bg-stone-950 px-7 text-base font-bold text-white shadow-[0_18px_45px_rgba(28,25,23,0.22)] transition-transform hover:-translate-y-0.5 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
                   >
                     Find my scent
                   </button>
@@ -173,7 +174,7 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                     Continue as guest
                   </button>
                 </div>
-                <p className="mt-3 text-xs text-stone-500">Takes about two minutes. Retake anytime. Shelf stays saved.</p>
+                <p className="mt-3 text-xs text-stone-500">No account needed. Takes about 2 minutes. Retake anytime.</p>
               </div>
 
               <div className="relative mx-auto w-full max-w-md lg:max-w-none">
@@ -237,14 +238,14 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
             </div>
           </section>
 
-          <section id="trending" className="scroll-mt-24 border-y border-stone-200/80 bg-white/70 px-4 py-12 sm:px-6 sm:py-16">
+          <section id="result-types" className="scroll-mt-24 border-y border-stone-200/80 bg-white/70 px-4 py-12 sm:px-6 sm:py-16">
             <div className="mx-auto max-w-6xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Trending with ScentMatch users</p>
-                  <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Popular recommendation styles</h2>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Popular result types</p>
+                  <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] text-stone-950 sm:text-5xl">Clear categories, not random bottles.</h2>
                 </div>
-                <p className="max-w-sm text-sm leading-relaxed text-stone-600">Placeholder community stats for now. Designed so real data can plug in later.</p>
+                <p className="max-w-sm text-sm leading-relaxed text-stone-600">The quiz sorts matches by actual use case: daily, date night, weather, budget, and wildcard picks.</p>
               </div>
               <div className="mt-8 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none]">
                 {trendingPicks.map((item, index) => (
@@ -288,23 +289,12 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
           </section>
 
           <section className="px-4 pb-14 sm:px-6 sm:pb-20">
-            <div className="mx-auto grid max-w-6xl gap-3 md:grid-cols-[0.9fr_1.1fr] md:items-start">
-              <div className="rounded-[1.6rem] bg-stone-950 p-6 text-white">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-stone-500">Community notes</p>
-                <h2 className="mt-3 text-3xl font-black tracking-[-0.05em]">Feels like a rec from a friend.</h2>
-                <p className="mt-3 text-sm leading-relaxed text-stone-400">Future TikTok/user videos can live here without making the page messy.</p>
-                <div className="mt-6 rounded-2xl border border-dashed border-white/20 p-5 text-sm text-stone-500">
-                  TikTok embeds coming soon
-                </div>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {reviews.map(review => (
-                  <article key={review} className="rounded-[1.35rem] border border-stone-200 bg-white/85 p-5 shadow-sm">
-                    <p className="text-base font-bold leading-snug text-stone-950">&ldquo;{review}&rdquo;</p>
-                    <p className="mt-4 text-xs font-medium text-stone-400">ScentMatch user</p>
-                  </article>
-                ))}
-              </div>
+            <div className="mx-auto rounded-[1.6rem] bg-stone-950 p-6 text-white sm:max-w-6xl sm:p-8">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-stone-500">Trust note</p>
+              <h2 className="mt-3 text-3xl font-black tracking-[-0.05em]">Useful recommendations, not a sales page.</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-300">
+                ScentMatch is independent. Product names and images are used for identification. Use official brand or retailer links when available, and sample first when you can.
+              </p>
             </div>
           </section>
         </main>
@@ -323,12 +313,6 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                 <Link href="/disclaimer" className="text-stone-300 transition-colors hover:text-white">Disclaimer</Link>
                 <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="text-stone-300 transition-colors hover:text-white">Instagram</a>
                 <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" className="text-stone-300 transition-colors hover:text-white">TikTok</a>
-                {footerLinks.map(label => (
-                  <span key={label} className="inline-flex cursor-default items-center gap-1.5 text-stone-500" title={`${label} page coming soon`}>
-                    {label}
-                    <span className="text-[9px] uppercase tracking-wider text-stone-600">Soon</span>
-                  </span>
-                ))}
               </nav>
             </div>
             <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">

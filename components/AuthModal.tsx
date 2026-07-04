@@ -1,8 +1,9 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { useDialog } from '@/lib/use-dialog';
+import { trackEvent } from '@/lib/analytics';
 import clsx from 'clsx';
 
 type AuthMode = 'signup' | 'login';
@@ -27,6 +28,10 @@ export default function AuthModal({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    trackEvent('signup_prompt_view', { initialMode, allowGuest });
+  }, [allowGuest, initialMode]);
 
   const changeMode = (nextMode: AuthMode) => {
     setMode(nextMode);
@@ -64,6 +69,9 @@ export default function AuthModal({
     }
 
     setIsSubmitting(true);
+    if (mode === 'signup') {
+      trackEvent('signup_start');
+    }
     const result = mode === 'signup'
       ? await signUp(trimmedName, trimmedEmail, password)
       : await logIn(trimmedEmail, password);
@@ -72,6 +80,9 @@ export default function AuthModal({
     if (!result.ok) {
       setError(result.error ?? 'Something went wrong. Please try again.');
       return;
+    }
+    if (mode === 'signup') {
+      trackEvent('signup_complete');
     }
     onClose();
   };
