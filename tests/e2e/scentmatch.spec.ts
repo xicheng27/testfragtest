@@ -29,7 +29,7 @@ async function completeQuiz(page: Page) {
   for (let index = 0; index < 10; index += 1) {
     await answerCurrentQuestion(page);
   }
-  await expect(page.getByRole('heading', { name: /Your top 3/i })).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/Your Scent Profile Report/i)).toBeVisible({ timeout: 20_000 });
 }
 
 test('landing page starts the quiz', async ({ page }) => {

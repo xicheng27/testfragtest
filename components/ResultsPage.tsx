@@ -10,7 +10,7 @@ import ProductImage from './ProductImage';
 import FragranceCard from './FragranceCard';
 import { useAuth } from '@/lib/auth-context';
 import { useShelf } from '@/lib/shelf-context';
-import { CURRENCIES, PRICED_AS_OF, formatPrice, getSignaturePrice, useCurrency } from '@/lib/pricing';
+import { CURRENCIES, PRICED_AS_OF, useCurrency } from '@/lib/pricing';
 import { trackEvent } from '@/lib/analytics';
 
 interface ResultsPageProps {
@@ -135,13 +135,70 @@ function average(values: number[]) {
   return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
 }
 
-const dashboardMetrics = [
-  ['Scent profile', 'scentProfileFit'],
-  ['Occasion', 'occasionFit'],
-  ['Budget', 'budgetFit'],
-  ['Climate', 'climateFit'],
-  ['Projection', 'projectionFit'],
-  ['Red flag safety', 'redFlagSafety'],
+function clampMetric(value: number) {
+  return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function countSignals(results: ScoredFragrance[], terms: string[]) {
+  return results.slice(0, 7).reduce((count, result) => {
+    const signals = signalsFor(result.fragrance);
+    return count + terms.filter(term => signals.some(signal => signal.includes(term))).length;
+  }, 0);
+}
+
+function projectionCopy(value: string) {
+  if (value === 'subtle') return 'close to skin';
+  if (value === 'moderate') return 'noticeable but controlled';
+  if (value === 'strong') return 'compliment-level presence';
+  if (value === 'beast') return 'high projection';
+  return 'flexible';
+}
+
+function priceSensitivity(value: string) {
+  if (value === 'budget') return 94;
+  if (value === 'mid') return 78;
+  if (value === 'designer') return 55;
+  if (value === 'niche') return 34;
+  return 22;
+}
+
+const dimensionConfig = [
+  {
+    label: 'Fresh',
+    terms: ['fresh', 'clean', 'citrus', 'aquatic', 'green', 'tea', 'linen', 'marine'],
+    answers: ['clean', 'fresh', 'aquatic', 'sporty', 'hot-humid', 'you-smell-clean'],
+    explanation: 'Driven by clean, citrus, aquatic, tea, and hot-weather answers.',
+  },
+  {
+    label: 'Sweet',
+    terms: ['sweet', 'gourmand', 'vanilla', 'caramel', 'praline', 'tonka'],
+    answers: ['gourmand', 'playful', 'comforting', 'soft-comfort'],
+    explanation: 'Reads vanilla, gourmand, cozy, and compliment-friendly signals.',
+  },
+  {
+    label: 'Woody',
+    terms: ['woody', 'sandalwood', 'cedar', 'vetiver', 'patchouli'],
+    answers: ['woody', 'expensive', 'comforting'],
+    explanation: 'Measures sandalwood, cedar, vetiver, and polished woody structure.',
+  },
+  {
+    label: 'Floral',
+    terms: ['floral', 'rose', 'white floral', 'orange blossom', 'jasmine', 'petal'],
+    answers: ['floral', 'date', 'romantic'],
+    explanation: 'Reflects floral-world answers plus romantic/date-use matching.',
+  },
+  {
+    label: 'Spicy',
+    terms: ['spicy', 'amber', 'smoky', 'tobacco', 'incense', 'warm'],
+    answers: ['spicy', 'oriental', 'bold', 'mysterious', 'rich-mysterious', 'cool'],
+    explanation: 'Highlights amber, spice, smoke, and darker evening texture.',
+  },
+  {
+    label: 'Musky',
+    terms: ['musk', 'musky', 'skin', 'soft', 'intimate', 'linen'],
+    answers: ['clean', 'intimate', 'soft-comfort', 'you-smell-clean'],
+    explanation: 'Tracks skin-like musk, soft laundry, and close-wearing picks.',
+  },
 ] as const;
 
 export default function ResultsPage({
@@ -205,27 +262,108 @@ export default function ResultsPage({
     const breakdowns = personalisedPool.map(result => result.matchBreakdown);
     const topThree = personalisedPool.slice(0, 3);
     const missingData = [...new Set(breakdowns.flatMap(item => item.missingDataFields))];
+    const avoided = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
+    const selectedSignals = [
+      ...valuesFor(answers, 'desired-feel'),
+      ...valuesFor(answers, 'scent-family'),
+      ...valuesFor(answers, 'occasion'),
+      ...valuesFor(answers, 'weather'),
+      ...valuesFor(answers, 'compliment-style'),
+    ];
+    const cleanFreshAlignment = clampMetric(
+      38
+      + selectedSignals.filter(value => ['clean', 'fresh', 'aquatic', 'sporty', 'hot-humid', 'you-smell-clean'].includes(value)).length * 15
+      + countSignals(topThree, ['fresh', 'clean', 'citrus', 'aquatic', 'musk']) * 4,
+    );
+    const sweetnessTolerance = clampMetric(
+      48
+      + selectedSignals.filter(value => ['gourmand', 'playful', 'comforting', 'soft-comfort'].includes(value)).length * 16
+      + countSignals(topThree, ['sweet', 'vanilla', 'gourmand', 'caramel']) * 3
+      - (avoided.includes('too-sweet') ? 45 : 0)
+      - (avoided.includes('vanilla') ? 25 : 0),
+    );
+    const projectionAnswer = valuesFor(answers, 'projection')[0] ?? '';
+    const weatherAnswer = valuesFor(answers, 'weather')[0] ?? '';
+    const budgetAnswer = valuesFor(answers, 'price-range')[0] ?? 'any';
     const exactMatches = breakdowns.filter(item => item.matchType === 'Exact match').length;
     const strongMatches = breakdowns.filter(item => item.matchType === 'Strong match').length;
     const partialMatches = breakdowns.filter(item => item.matchType === 'Partial match').length;
+    const hardPassed = topThree.reduce((sum, result) => sum + result.matchBreakdown.hardFiltersPassed, 0);
+    const hardTotal = topThree.reduce((sum, result) => sum + result.matchBreakdown.hardFiltersTotal, 0);
+    const softMatched = topThree.reduce((sum, result) => sum + result.matchBreakdown.softPreferencesMatched, 0);
+    const softTotal = topThree.reduce((sum, result) => sum + result.matchBreakdown.softPreferencesTotal, 0);
+    const scentDimensions = dimensionConfig.map(dimension => {
+      const answerBoost = selectedSignals.filter(value => (dimension.answers as readonly string[]).includes(value)).length * 16;
+      const recommendationBoost = countSignals(personalisedPool, [...dimension.terms]) * 4;
+      const penalty = dimension.label === 'Sweet'
+        ? (avoided.includes('too-sweet') ? 34 : 0) + (avoided.includes('vanilla') ? 18 : 0)
+        : dimension.label === 'Floral' && avoided.includes('rose')
+          ? 16
+          : 0;
+
+      return {
+        label: dimension.label,
+        value: clampMetric(32 + answerBoost + recommendationBoost - penalty),
+        explanation: dimension.explanation,
+      };
+    });
+
     return {
       overall: average(topThree.map(result => result.matchPercent)),
-      confidence: average(breakdowns.map(item => item.confidenceScore)),
-      hardPassed: average(breakdowns.map(item => item.hardFiltersPassed)),
-      hardTotal: breakdowns[0]?.hardFiltersTotal ?? 4,
-      softMatched: average(breakdowns.map(item => item.softPreferencesMatched)),
-      softTotal: breakdowns[0]?.softPreferencesTotal ?? 5,
+      confidence: average(topThree.map(result => result.matchBreakdown.confidenceScore)),
+      hardPassed,
+      hardTotal,
+      softMatched,
+      softTotal,
       missingData,
       exactMatches,
       strongMatches,
       partialMatches,
-      metricAverages: dashboardMetrics.map(([label, key]) => ({
-        label,
-        value: average(breakdowns.map(item => item[key])),
-      })),
+      avoided,
+      projectionAnswer,
+      weatherAnswer,
+      budgetAnswer,
+      profileMetrics: [
+        {
+          label: 'Overall profile confidence',
+          value: average(topThree.map(result => result.matchBreakdown.confidenceScore)),
+          detail: 'Average source and data confidence for the top recommendations.',
+        },
+        {
+          label: 'Clean/fresh alignment',
+          value: cleanFreshAlignment,
+          detail: 'Measures your clean, aquatic, citrus, musk, and hot-weather signals.',
+        },
+        {
+          label: 'Sweetness tolerance',
+          value: sweetnessTolerance,
+          detail: avoided.includes('too-sweet') ? 'Lower because you marked sweet scents as a red flag.' : 'Based on gourmand, vanilla, cozy, and playful signals.',
+        },
+        {
+          label: 'Projection preference',
+          value: average(topThree.map(result => result.matchBreakdown.projectionFit)),
+          detail: `Your target reads as ${projectionCopy(projectionAnswer)}.`,
+        },
+        {
+          label: 'Budget sensitivity',
+          value: priceSensitivity(budgetAnswer),
+          detail: budgetAnswer === 'any' ? 'Low sensitivity because you left price open.' : `Higher because you chose ${pretty(budgetAnswer)} pricing.`,
+        },
+        {
+          label: 'Weather compatibility',
+          value: average(topThree.map(result => result.matchBreakdown.climateFit)),
+          detail: weatherAnswer ? `Checks how well picks survive ${pretty(weatherAnswer)} conditions.` : 'Balanced for year-round wear.',
+        },
+        {
+          label: 'Risk/red-flag strictness',
+          value: avoided.length ? clampMetric(48 + avoided.length * 13) : 18,
+          detail: avoided.length ? `Strictly avoids ${avoided.map(pretty).join(', ')}.` : 'Low strictness because no avoid notes were selected.',
+        },
+      ],
+      scentDimensions,
       topThree,
     };
-  }, [personalisedPool]);
+  }, [answers, personalisedPool]);
 
   const answerSummary = useMemo(() => {
     const avoids = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
@@ -270,177 +408,168 @@ export default function ResultsPage({
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
-          <section className="mb-6 rounded-[2rem] border border-stone-200 bg-white/88 p-5 shadow-sm backdrop-blur sm:mb-8 sm:p-8">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Your scent profile</p>
-            <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div className="min-w-0">
-                <h1 className="text-[clamp(2.1rem,10vw,4.7rem)] font-black leading-[0.9] tracking-[-0.075em] text-stone-950">
-                  {scentProfile.title}
-                </h1>
-                <p className="mt-4 max-w-2xl text-base leading-relaxed text-stone-600 sm:text-lg">
-                  {scentProfile.description}
-                </p>
-              </div>
-              <button
-                onClick={() => {
-                  trackEvent('quiz_retake', { source: 'results_profile' });
-                  onRestart();
-                }}
-                className="min-h-11 shrink-0 rounded-full border border-stone-300 bg-white px-5 text-base font-bold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
-              >
-                Retake quiz
-              </button>
-            </div>
-          </section>
-
-          <section className="mb-7 rounded-[2rem] border border-stone-200 bg-stone-950 p-5 text-white shadow-[0_24px_70px_rgba(28,25,23,0.16)] sm:p-7" aria-labelledby="analysis-heading">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-              <div className="max-w-2xl">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-stone-400">Recommendation analysis</p>
-                <h2 id="analysis-heading" className="mt-2 text-3xl font-black tracking-[-0.05em] sm:text-5xl">
-                  The data behind your matches.
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-stone-300 sm:text-base">
-                  We ranked fragrances by scent profile, occasion, climate, budget, projection, red-flag safety, and data confidence. Hard dislikes stay strict.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:min-w-[27rem]">
-                <MetricTile label="Overall" value={`${analysis.overall || 0}%`} tone="dark" />
-                <MetricTile label="Confidence" value={`${analysis.confidence || 0}%`} tone="dark" />
-                <MetricTile label="Hard checks" value={`${analysis.hardPassed}/${analysis.hardTotal}`} tone="dark" />
-                <MetricTile label="Soft matches" value={`${analysis.softMatched}/${analysis.softTotal}`} tone="dark" />
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-4 sm:p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-stone-300">Score breakdown</h3>
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-stone-300">
-                    {analysis.exactMatches} exact / {analysis.strongMatches} strong / {analysis.partialMatches} partial
-                  </span>
+          <section className="mb-7 overflow-hidden rounded-[2.15rem] border border-stone-200 bg-stone-950 text-white shadow-[0_30px_90px_rgba(28,25,23,0.18)]" aria-labelledby="scent-profile-report">
+            <div className="relative p-5 sm:p-8">
+              <div className="pointer-events-none absolute inset-0 opacity-70 [background:radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.16),transparent_28%),radial-gradient(circle_at_88%_0%,rgba(176,141,87,0.18),transparent_34%)]" aria-hidden="true" />
+              <div className="relative grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-[#d2b886]">Your Scent Profile Report</p>
+                  <h1 id="scent-profile-report" className="mt-3 max-w-4xl text-[clamp(2.35rem,9vw,5.7rem)] font-black leading-[0.88] tracking-[-0.075em] text-white">
+                    {scentProfile.title}
+                  </h1>
+                  <p className="mt-5 max-w-2xl text-base leading-relaxed text-stone-300 sm:text-lg">
+                    {scentProfile.description} Your matches are weighted by the vibe, occasion, weather, budget, projection, and red flags you selected.
+                  </p>
+                  <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {answerSummary.map(item => (
+                      <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">{item.label}</p>
+                        <p className="mt-1 text-sm capitalize text-stone-100">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+
+                <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.08] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-stone-500">Report confidence</p>
+                      <p className="mt-1 text-sm leading-relaxed text-stone-300">
+                        Average data confidence across your top matches.
+                      </p>
+                    </div>
+                    <CircularScore value={analysis.confidence || 0} />
+                  </div>
+                  <button
+                    onClick={() => {
+                      trackEvent('quiz_retake', { source: 'results_profile_report' });
+                      onRestart();
+                    }}
+                    className="mt-5 min-h-11 w-full rounded-2xl border border-white/15 bg-white px-5 text-base font-bold text-stone-950 transition-all hover:-translate-y-0.5 hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  >
+                    Retake quiz
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-white/10 bg-white/[0.03] p-5 sm:p-7">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {analysis.profileMetrics.map(metric => (
+                  <ReportMetric key={metric.label} label={metric.label} value={metric.value} detail={metric.detail} />
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-0 border-t border-white/10 lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="border-b border-white/10 p-5 sm:p-7 lg:border-b-0 lg:border-r">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d2b886]">Scent dimensions</p>
+                <h2 className="mt-2 text-3xl font-black tracking-[-0.05em] sm:text-4xl">What your profile leans toward.</h2>
+                <p className="mt-3 text-sm leading-relaxed text-stone-300">
+                  This radar blends your quiz answers with scent families and notes from the top recommendations, so each axis explains a reason behind the picks.
+                </p>
+                <ScentRadarChart metrics={analysis.scentDimensions} />
+              </div>
+
+              <div className="p-5 sm:p-7">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d2b886]">Dimension notes</p>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {analysis.metricAverages.map(metric => (
-                    <ScoreBar key={metric.label} label={metric.label} value={metric.value} inverted />
+                  {analysis.scentDimensions.map(metric => (
+                    <ScoreBar key={metric.label} label={metric.label} value={metric.value} inverted caption={metric.explanation} />
                   ))}
                 </div>
               </div>
-
-              <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-4 sm:p-5">
-                <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-stone-300">Fit radar</h3>
-                <RadarChart metrics={analysis.metricAverages.slice(0, 5)} />
-              </div>
             </div>
 
-            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {answerSummary.map(item => (
-                <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">{item.label}</p>
-                  <p className="mt-1 text-sm capitalize text-stone-100">{item.value}</p>
+            {analysis.topThree.length > 0 && (
+              <div className="border-t border-white/10 p-5 sm:p-7">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d2b886]">Top 3 recommendation comparison</p>
+                    <h2 className="mt-1 text-2xl font-black tracking-[-0.04em] text-white">Why these rose to the top</h2>
+                  </div>
+                  <p className="text-sm text-stone-400">Swipe on mobile to compare the match data.</p>
                 </div>
-              ))}
-            </div>
-
-            {analysis.missingData.length > 0 && (
-              <p className="mt-4 rounded-2xl border border-amber-200/20 bg-amber-100/10 px-4 py-3 text-xs leading-relaxed text-amber-50">
-                Missing data warning: some matches still need stronger {analysis.missingData.slice(0, 4).join(', ')}. These are reflected in the confidence score.
-              </p>
+                <div className="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-white/[0.06]">
+                  <table className="w-full min-w-[860px] border-separate border-spacing-0 text-left text-sm">
+                    <thead>
+                      <tr className="text-[10px] uppercase tracking-[0.16em] text-stone-500">
+                        {['Fragrance', 'Match %', 'Climate fit', 'Budget fit', 'Red flag safety', 'Projection fit', 'Best use case'].map(label => (
+                          <th key={label} className="border-b border-white/10 px-4 py-3 font-bold">{label}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {analysis.topThree.map((result, index) => (
+                        <tr key={result.fragrance.id} className="text-stone-200">
+                          <td className="border-b border-white/10 px-4 py-4">
+                            <Link
+                              href={`/fragrances/${brandSlug(result.fragrance.brand)}#result-${result.fragrance.id}`}
+                              className="group flex items-center gap-3 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                            >
+                              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-xs font-black text-stone-950">{index + 1}</span>
+                              <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-white">
+                                <ProductImage
+                                  src={result.fragrance.imageUrl}
+                                  alt={`${result.fragrance.brand} ${result.fragrance.name} fragrance bottle`}
+                                  eager={index === 0}
+                                  sizes="56px"
+                                  className="object-contain p-2"
+                                />
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block font-bold text-white group-hover:underline">{result.fragrance.name}</span>
+                                <span className="block text-xs text-stone-400">{result.fragrance.brand}</span>
+                                <span className="mt-1 block max-w-xs text-xs leading-snug text-stone-500">{result.matchReasons[0]}</span>
+                              </span>
+                            </Link>
+                          </td>
+                          <td className="border-b border-white/10 px-4 py-4 font-black text-white">{result.matchPercent}%</td>
+                          <td className="border-b border-white/10 px-4 py-4">{result.matchBreakdown.climateFit}%</td>
+                          <td className="border-b border-white/10 px-4 py-4">{result.matchBreakdown.budgetFit}%</td>
+                          <td className="border-b border-white/10 px-4 py-4">{result.matchBreakdown.redFlagSafety}%</td>
+                          <td className="border-b border-white/10 px-4 py-4">{result.matchBreakdown.projectionFit}%</td>
+                          <td className="border-b border-white/10 px-4 py-4">
+                            <span className="block font-semibold text-white">{result.recommendationLabel}</span>
+                            <span className="mt-1 block text-xs capitalize text-stone-400">{result.fragrance.occasions.slice(0, 2).map(pretty).join(' / ')}</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             )}
 
-            <details className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-              <summary className="cursor-pointer text-sm font-bold text-white">How we calculated this</summary>
-              <p className="mt-3 text-sm leading-relaxed text-stone-300">
-                Red flags are checked first. Scent family, vibe, occasion, climate, projection, and budget drive ranking. Source quality, availability, and note detail affect confidence. If exact matches are limited, ScentMatch shows fewer recommendations rather than breaking your dislikes.
+            <div className="border-t border-white/10 p-5 sm:p-7">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d2b886]">Scoring methodology</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <MethodCard
+                  label="Hard filters passed"
+                  value={`${analysis.hardPassed}/${analysis.hardTotal || 0}`}
+                  detail="Red flags, budget ceiling, weather fit, and projection rules are checked before ranking."
+                />
+                <MethodCard
+                  label="Soft preferences matched"
+                  value={`${analysis.softMatched}/${analysis.softTotal || 0}`}
+                  detail="Scent family, occasion, notes, uniqueness, and wearability decide the final order."
+                />
+                <MethodCard
+                  label="Disliked notes avoided"
+                  value={analysis.avoided.length ? analysis.avoided.map(pretty).join(', ') : 'None selected'}
+                  detail={analysis.avoided.length ? 'These are treated as strict avoid rules.' : 'No hard note dislikes were selected.'}
+                />
+                <MethodCard
+                  label="Missing data warnings"
+                  value={analysis.missingData.length ? analysis.missingData.slice(0, 3).join(', ') : 'None'}
+                  detail={analysis.missingData.length ? 'Warnings lower confidence when product data is incomplete.' : 'Top matches have enough source and note data for scoring.'}
+                />
+              </div>
+              <p className="mt-4 text-xs leading-relaxed text-stone-400">
+                Match quality: {analysis.exactMatches} exact, {analysis.strongMatches} strong, {analysis.partialMatches} partial. If exact matches are limited, ScentMatch shows fewer results rather than breaking your avoid rules.
               </p>
-            </details>
+            </div>
           </section>
-
-          <section aria-label="Your top 3 fragrance matches">
-            <h2 className="mb-3 text-lg font-black tracking-[-0.02em] text-stone-950">Your top 3</h2>
-            <ul className="space-y-3">
-              {personalisedPool.slice(0, 3).map((result, i) => {
-                const fragrance = result.fragrance;
-                const price = getSignaturePrice(fragrance, currency);
-                return (
-                  <li key={`${fragrance.id}-${activeMood}-${adjustMode}`}>
-                    <Link
-                      href={`/fragrances/${brandSlug(fragrance.brand)}#result-${fragrance.id}`}
-                      className="group flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:border-stone-400 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 sm:gap-4 sm:p-4"
-                      aria-label={`${fragrance.name} by ${fragrance.brand}, ${result.matchPercent}% match - view fragrance`}
-                    >
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-950 text-sm font-black text-white">
-                        {i + 1}
-                      </span>
-                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-stone-100 bg-stone-50 sm:h-20 sm:w-20">
-                        <ProductImage
-                          src={fragrance.imageUrl}
-                          alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
-                          eager={i === 0}
-                          sizes="80px"
-                          className="object-contain p-2"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-[11px] font-medium uppercase tracking-[0.14em] text-stone-400">{fragrance.brand}</p>
-                        <h3 className="truncate text-base font-bold tracking-[-0.01em] text-stone-950 sm:text-lg">{fragrance.name}</h3>
-                        <p className="mt-0.5 truncate text-xs text-stone-500">{result.recommendationLabel}</p>
-                      </div>
-                      <div className="flex shrink-0 flex-col items-end gap-0.5 text-right">
-                        <span className="text-lg font-black leading-none text-stone-950">{result.matchPercent}%</span>
-                        <span className="text-[11px] text-stone-500">
-                          {price.exact ? '' : 'approx. '}{formatPrice(price.amount, currency)}
-                        </span>
-                        <svg className="mt-0.5 h-4 w-4 text-stone-400 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-
-          {analysis.topThree.length > 0 && (
-            <section className="mt-7 rounded-[2rem] border border-stone-200 bg-white/90 p-5 shadow-sm sm:p-7" aria-labelledby="comparison-heading">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Top 3 comparison</p>
-                  <h2 id="comparison-heading" className="mt-1 text-2xl font-black tracking-[-0.04em] text-stone-950">Why these rose to the top</h2>
-                </div>
-                <p className="text-sm text-stone-500">Swipe on mobile to compare the scores.</p>
-              </div>
-              <div className="mt-5 overflow-x-auto">
-                <table className="w-full min-w-[740px] border-separate border-spacing-0 text-left text-sm">
-                  <thead>
-                    <tr className="text-[10px] uppercase tracking-[0.16em] text-stone-400">
-                      {['Fragrance', 'Scent', 'Occasion', 'Budget', 'Climate', 'Safety', 'Confidence', 'Final'].map(label => (
-                        <th key={label} className="border-b border-stone-200 px-3 py-2 font-bold">{label}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {analysis.topThree.map(result => (
-                      <tr key={result.fragrance.id} className="text-stone-700">
-                        <td className="border-b border-stone-100 px-3 py-3">
-                          <span className="block font-bold text-stone-950">{result.fragrance.name}</span>
-                          <span className="text-xs text-stone-500">{result.fragrance.brand} / {result.matchBreakdown.matchType}</span>
-                        </td>
-                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.scentProfileFit}%</td>
-                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.occasionFit}%</td>
-                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.budgetFit}%</td>
-                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.climateFit}%</td>
-                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.redFlagSafety}%</td>
-                        <td className="border-b border-stone-100 px-3 py-3">{result.matchBreakdown.confidenceScore}%</td>
-                        <td className="border-b border-stone-100 px-3 py-3 font-black text-stone-950">{result.matchPercent}%</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
 
           <section className="mt-7">
             <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
@@ -609,36 +738,95 @@ export default function ResultsPage({
   );
 }
 
-function MetricTile({ label, value, tone = 'light' }: { label: string; value: string; tone?: 'light' | 'dark' }) {
+function CircularScore({ value }: { value: number }) {
+  const safeValue = clampMetric(value);
+  const radius = 39;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (safeValue / 100) * circumference;
+
   return (
-    <div className={clsx(
-      'rounded-2xl border p-3',
-      tone === 'dark' ? 'border-white/10 bg-white/[0.08]' : 'border-stone-200 bg-white',
-    )}>
-      <p className={clsx('text-[10px] font-bold uppercase tracking-[0.16em]', tone === 'dark' ? 'text-stone-400' : 'text-stone-500')}>{label}</p>
-      <p className={clsx('mt-1 text-2xl font-black tracking-[-0.04em]', tone === 'dark' ? 'text-white' : 'text-stone-950')}>{value}</p>
+    <div className="relative h-24 w-24 shrink-0" aria-label={`${safeValue}% report confidence`}>
+      <svg className="-rotate-90" viewBox="0 0 96 96" aria-hidden="true">
+        <circle cx="48" cy="48" r={radius} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="8" />
+        <circle
+          cx="48"
+          cy="48"
+          r={radius}
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="8"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-2xl font-black tracking-[-0.05em] text-white">{safeValue}%</span>
+      </div>
     </div>
   );
 }
 
-function ScoreBar({ label, value, inverted = false }: { label: string; value: number; inverted?: boolean }) {
+function ReportMetric({ label, value, detail }: { label: string; value: number; detail: string }) {
+  return (
+    <article className="rounded-[1.35rem] border border-white/10 bg-white/[0.07] p-4">
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-500">{label}</p>
+        <span className="text-xl font-black tabular-nums text-white">{clampMetric(value)}%</span>
+      </div>
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
+        <div className="h-full rounded-full bg-white" style={{ width: `${Math.max(4, clampMetric(value))}%` }} />
+      </div>
+      <p className="mt-3 text-xs leading-relaxed text-stone-400">{detail}</p>
+    </article>
+  );
+}
+
+function MethodCard({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <article className="rounded-[1.35rem] border border-white/10 bg-white/[0.06] p-4">
+      <p className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-500">{label}</p>
+      <p className="mt-2 break-words text-lg font-black leading-tight text-white">{value}</p>
+      <p className="mt-2 text-xs leading-relaxed text-stone-400">{detail}</p>
+    </article>
+  );
+}
+
+function ScoreBar({
+  label,
+  value,
+  inverted = false,
+  caption,
+}: {
+  label: string;
+  value: number;
+  inverted?: boolean;
+  caption?: string;
+}) {
+  const safeValue = clampMetric(value);
+
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between gap-3">
         <span className={clsx('text-sm font-semibold', inverted ? 'text-stone-200' : 'text-stone-700')}>{label}</span>
-        <span className={clsx('text-sm font-black tabular-nums', inverted ? 'text-white' : 'text-stone-950')}>{value}%</span>
+        <span className={clsx('text-sm font-black tabular-nums', inverted ? 'text-white' : 'text-stone-950')}>{safeValue}%</span>
       </div>
       <div className={clsx('h-2 overflow-hidden rounded-full', inverted ? 'bg-white/10' : 'bg-stone-100')}>
         <div
           className={clsx('h-full rounded-full', inverted ? 'bg-white' : 'bg-stone-950')}
-          style={{ width: `${Math.max(4, Math.min(100, value))}%` }}
+          style={{ width: `${Math.max(4, safeValue)}%` }}
         />
       </div>
+      {caption && (
+        <p className={clsx('mt-1.5 text-xs leading-relaxed', inverted ? 'text-stone-500' : 'text-stone-500')}>
+          {caption}
+        </p>
+      )}
     </div>
   );
 }
 
-function RadarChart({ metrics }: { metrics: Array<{ label: string; value: number }> }) {
+function ScentRadarChart({ metrics }: { metrics: Array<{ label: string; value: number; explanation?: string }> }) {
   const center = 60;
   const maxRadius = 48;
   const points = metrics.map((metric, index) => {
@@ -648,8 +836,8 @@ function RadarChart({ metrics }: { metrics: Array<{ label: string; value: number
   }).join(' ');
 
   return (
-    <div className="mt-4 grid gap-4 sm:grid-cols-[140px_minmax(0,1fr)] sm:items-center lg:grid-cols-1">
-      <svg viewBox="0 0 120 120" className="mx-auto h-36 w-36" role="img" aria-label="Radar chart of match scores">
+    <div className="mt-6 grid gap-5 sm:grid-cols-[170px_minmax(0,1fr)] sm:items-center lg:grid-cols-1">
+      <svg viewBox="0 0 120 120" className="mx-auto h-44 w-44" role="img" aria-label="Radar chart of scent dimensions">
         {[0.33, 0.66, 1].map(scale => (
           <polygon
             key={scale}
@@ -662,7 +850,7 @@ function RadarChart({ metrics }: { metrics: Array<{ label: string; value: number
             stroke="rgba(255,255,255,0.14)"
           />
         ))}
-        <polygon points={points} fill="rgba(255,255,255,0.26)" stroke="white" strokeWidth="2" />
+        <polygon points={points} fill="rgba(210,184,134,0.26)" stroke="#ffffff" strokeWidth="2" />
         {metrics.map((_, index) => {
           const angle = (-90 + (360 / metrics.length) * index) * (Math.PI / 180);
           return (
@@ -676,12 +864,30 @@ function RadarChart({ metrics }: { metrics: Array<{ label: string; value: number
             />
           );
         })}
+        {metrics.map((metric, index) => {
+          const angle = (-90 + (360 / metrics.length) * index) * (Math.PI / 180);
+          const labelRadius = maxRadius + 7;
+          return (
+            <text
+              key={metric.label}
+              x={center + Math.cos(angle) * labelRadius}
+              y={center + Math.sin(angle) * labelRadius}
+              fill="rgba(255,255,255,0.78)"
+              fontSize="6"
+              fontWeight="700"
+              textAnchor="middle"
+              dominantBaseline="middle"
+            >
+              {metric.label}
+            </text>
+          );
+        })}
       </svg>
       <div className="grid gap-2">
         {metrics.map(metric => (
           <div key={metric.label} className="flex items-center justify-between rounded-xl bg-white/[0.06] px-3 py-2 text-xs">
             <span className="text-stone-300">{metric.label}</span>
-            <span className="font-black text-white">{metric.value}%</span>
+            <span className="font-black text-white">{clampMetric(metric.value)}%</span>
           </div>
         ))}
       </div>

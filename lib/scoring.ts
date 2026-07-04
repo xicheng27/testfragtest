@@ -506,48 +506,48 @@ export function buildScentProfile(answers: QuizAnswers) {
 
   if (weather === 'hot-humid' || feels.includes('sporty')) {
     return {
-      title: 'Fresh Everyday',
+      title: 'Fresh Hot Weather Signature',
       description: 'Clean, easy, and built for real life. Think fresh air, light texture, and scents that do not overwhelm.',
     };
   }
   if (feels.includes('expensive')) {
     return {
-      title: 'Quiet Luxury',
+      title: 'Soft Luxury Minimalist',
       description: 'Polished, smooth, and expensive-feeling without trying too hard.',
     };
   }
   if (occasion.includes('night') || feels.includes('bold') || statement === 'rich-mysterious') {
     return {
-      title: 'Mysterious Night Out',
+      title: 'After Dark Amber Signature',
       description: 'Darker, warmer, and more memorable, with enough presence to feel intentional.',
     };
   }
   if (occasion.includes('date') || feels.includes('intimate')) {
     return {
-      title: 'Warm Romantic',
+      title: 'Warm Date Night Signature',
       description: 'Soft, close, and attractive without shouting across the room.',
     };
   }
   if (feels.includes('playful')) {
     return {
-      title: 'Sweet Main Character',
+      title: 'Sweet Cozy Signature',
       description: 'Fun, warm, and compliment-friendly, with sweetness kept useful instead of random.',
     };
   }
   if (experience === 'unique' || statement === 'only-you') {
     return {
-      title: 'Unique Niche Explorer',
+      title: 'Niche Explorer Signature',
       description: 'A little less obvious, a little more signature-worthy, and still wearable.',
     };
   }
   if (feels.includes('comforting')) {
     return {
-      title: 'Cozy Softie',
+      title: 'Soft Comfort Signature',
       description: 'Comforting, warm, and easy to live in, like a scent version of soft lighting.',
     };
   }
   return {
-    title: 'Clean Minimalist',
+    title: 'Clean Skin Main Character',
     description: 'Fresh, simple, and put-together. Nothing fussy, just a scent that feels like you.',
   };
 }
