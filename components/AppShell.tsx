@@ -162,7 +162,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
         </motion.div>
       )}
       {currentView === 'results' && (
-        <motion.div key="results" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
+        <div key="results">
           <ResultsPage
             results={results}
             answers={quizAnswers}
@@ -171,7 +171,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
             onViewShelf={() => handleViewShelf('results')}
             isExtended={isExtended}
           />
-        </motion.div>
+        </div>
       )}
       {currentView === 'shelf' && (
         <motion.div key="shelf" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>

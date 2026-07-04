@@ -55,6 +55,7 @@ export default function FragranceCard({
   const { isOnShelf, addToShelf, removeFromShelf } = useShelf();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [similarOpen, setSimilarOpen] = useState(false);
+  const [evidenceOpen, setEvidenceOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [shelfMessage, setShelfMessage] = useState('');
   const fragrance = result?.fragrance ?? fragranceProp;
@@ -70,6 +71,7 @@ export default function FragranceCard({
   const saved = isOnShelf(fragrance.id);
   const detailsId = `fragrance-details-${fragrance.id}`;
   const similarId = `similar-fragrance-${fragrance.id}`;
+  const evidenceId = `fragrance-evidence-${fragrance.id}`;
   const reasonItems = result?.matchReasons?.length
     ? result.matchReasons
     : result?.matchReason
@@ -94,7 +96,7 @@ export default function FragranceCard({
       tabIndex={-1}
       data-fragrance-id={fragrance.id}
       className={clsx(
-        'scroll-mt-24 overflow-hidden rounded-3xl border bg-white transition-all duration-300 focus:outline-none',
+        'scroll-mt-24 overflow-hidden rounded-3xl border bg-white transition-shadow duration-200 focus:outline-none',
         rank === 1 ? 'border-stone-300 shadow-sm' : 'border-stone-200',
       )}
     >
@@ -131,8 +133,8 @@ export default function FragranceCard({
       )}
 
       <div className="md:grid md:grid-cols-[minmax(220px,0.82fr)_minmax(0,1.65fr)]">
-        <div className="relative min-h-64 overflow-hidden border-b border-stone-100 bg-stone-50 md:min-h-full md:border-b-0 md:border-r">
-          <div className="relative aspect-[4/3] w-full md:aspect-auto md:h-[31rem]">
+        <div className="relative overflow-hidden border-b border-stone-100 bg-stone-50 md:min-h-full md:border-b-0 md:border-r">
+          <div className="relative h-52 w-full sm:h-64 md:h-[31rem]">
             <ProductImage
               src={fragrance.imageUrl}
               alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
@@ -247,18 +249,31 @@ export default function FragranceCard({
                   </span>
                 </div>
               </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <MiniScore label="Scent" value={result.matchBreakdown.scentProfileFit} />
-                <MiniScore label="Occasion" value={result.matchBreakdown.occasionFit} />
-                <MiniScore label="Budget" value={result.matchBreakdown.budgetFit} />
-                <MiniScore label="Weather" value={result.matchBreakdown.climateFit} />
-                <MiniScore label="Projection" value={result.matchBreakdown.projectionFit} />
-                <MiniScore label="Red flags" value={result.matchBreakdown.redFlagSafety} />
-              </div>
-              {result.matchBreakdown.missingDataFields.length > 0 && (
-                <p className="mt-3 text-xs leading-relaxed text-amber-800">
-                  Missing data to check: {result.matchBreakdown.missingDataFields.slice(0, 3).join(', ')}.
-                </p>
+              <button
+                type="button"
+                onClick={() => setEvidenceOpen(open => !open)}
+                aria-expanded={evidenceOpen}
+                aria-controls={evidenceId}
+                className="mt-3 inline-flex min-h-10 items-center rounded-full border border-stone-200 bg-white px-3 text-xs font-semibold text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+              >
+                {evidenceOpen ? 'Hide score details' : 'Show score details'}
+              </button>
+              {evidenceOpen && (
+                <div id={evidenceId} className="mt-4">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <MiniScore label="Scent" value={result.matchBreakdown.scentProfileFit} />
+                    <MiniScore label="Occasion" value={result.matchBreakdown.occasionFit} />
+                    <MiniScore label="Budget" value={result.matchBreakdown.budgetFit} />
+                    <MiniScore label="Weather" value={result.matchBreakdown.climateFit} />
+                    <MiniScore label="Projection" value={result.matchBreakdown.projectionFit} />
+                    <MiniScore label="Red flags" value={result.matchBreakdown.redFlagSafety} />
+                  </div>
+                  {result.matchBreakdown.missingDataFields.length > 0 && (
+                    <p className="mt-3 text-xs leading-relaxed text-amber-800">
+                      Missing data to check: {result.matchBreakdown.missingDataFields.slice(0, 3).join(', ')}.
+                    </p>
+                  )}
+                </div>
               )}
             </section>
           )}

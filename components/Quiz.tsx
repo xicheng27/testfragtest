@@ -16,7 +16,7 @@ interface QuizProps {
 }
 
 const loadingMessages = [
-  'Matching your vibe...',
+  'Building your scent profile...',
   'Checking notes you hate...',
   'Finding your best scent energy...',
 ];

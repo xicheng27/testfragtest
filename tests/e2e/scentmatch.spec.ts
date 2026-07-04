@@ -38,6 +38,19 @@ test('landing page starts the quiz', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /Who is this scent mission for/i })).toBeVisible();
 });
 
+test('mobile long quiz questions clearly show more choices below', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await startQuiz(page);
+  await expect(page.getByText(/^3 choices$/i)).toBeVisible();
+
+  await page.locator('main button[aria-pressed]').first().click();
+  await page.getByRole('button', { name: /^Next$/i }).click();
+
+  await expect(page.getByRole('heading', { name: /What should your fragrance say before you do/i })).toBeVisible();
+  await expect(page.getByText(/^8 choices$/i)).toBeVisible();
+  await expect(page.getByText(/More choices below/i)).toBeVisible();
+});
+
 test('guest can complete quiz, view results, save to Shelf, give feedback, and open official link', async ({ page, context }) => {
   await completeQuiz(page);
 

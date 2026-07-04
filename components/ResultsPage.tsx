@@ -215,6 +215,7 @@ export default function ResultsPage({
   const [adjustMode, setAdjustMode] = useState<AdjustMode>('default');
   const [hiddenIds, setHiddenIds] = useState<string[]>([]);
   const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [deferredResults, setDeferredResults] = useState({ key: '', ready: false });
   const scentProfile = useMemo(() => buildScentProfile(answers), [answers]);
   const strictMatchCount = useMemo(() => getStrictMatchCount(answers), [answers]);
 
@@ -237,6 +238,19 @@ export default function ResultsPage({
 
     return enhanced.length ? enhanced.slice(0, 7) : results.filter(result => !hiddenIds.includes(result.fragrance.id));
   }, [activeMood, adjustMode, answers, hiddenIds, results]);
+
+  const topResults = personalisedPool.slice(0, 3);
+  const deferredKey = personalisedPool.map(result => result.fragrance.id).join('|');
+  const showDeferredResults = deferredResults.key === deferredKey && deferredResults.ready;
+  const visibleResults = showDeferredResults ? personalisedPool : topResults;
+  const deferredCount = Math.max(0, personalisedPool.length - topResults.length);
+
+  useEffect(() => {
+    if (personalisedPool.length <= 3) return;
+
+    const timeout = window.setTimeout(() => setDeferredResults({ key: deferredKey, ready: true }), 220);
+    return () => window.clearTimeout(timeout);
+  }, [deferredKey, personalisedPool.length]);
 
   const handleFeedback = (fragranceId: string, reason: string) => {
     setHiddenIds(current => current.includes(fragranceId) ? current : [...current, fragranceId]);
@@ -693,7 +707,7 @@ export default function ResultsPage({
 
             {personalisedPool.length > 0 ? (
               <div className="flex flex-col gap-5">
-                {personalisedPool.map((result, index) => (
+                {visibleResults.map((result, index) => (
                   <FragranceCard
                     key={`${result.fragrance.id}-card-${activeMood}-${adjustMode}`}
                     result={result}
@@ -702,6 +716,18 @@ export default function ResultsPage({
                     onNotMyVibe={handleFeedback}
                   />
                 ))}
+                {!showDeferredResults && deferredCount > 0 && (
+                  <div className="rounded-3xl border border-stone-200 bg-white/80 p-5 shadow-sm" aria-live="polite">
+                    <div className="h-3 w-36 rounded-full bg-stone-100" />
+                    <div className="mt-4 grid gap-2">
+                      <div className="h-3 w-full rounded-full bg-stone-100" />
+                      <div className="h-3 w-2/3 rounded-full bg-stone-100" />
+                    </div>
+                    <p className="mt-4 text-sm font-medium text-stone-500">
+                      Loading {deferredCount} more matches...
+                    </p>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="rounded-[1.5rem] border border-stone-200 bg-white/85 p-6 text-center shadow-sm sm:p-8">

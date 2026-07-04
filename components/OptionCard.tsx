@@ -33,7 +33,7 @@ export default function OptionCard({
 }: OptionCardProps) {
   if (variant === 'image') {
     const isProduct = option.imageFit === 'contain';
-    const sizes = '(max-width: 640px) 45vw, (max-width: 1280px) 30vw, 280px';
+    const sizes = '(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) 30vw, 280px';
 
     // Product packshots sit on white, so text can't be overlaid on the image.
     // Give them an image area + a clean caption footer instead.

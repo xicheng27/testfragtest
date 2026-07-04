@@ -1,5 +1,5 @@
 'use client';
-import { KeyboardEvent, RefObject, useEffect, useState } from 'react';
+import { KeyboardEvent, MutableRefObject, useEffect, useRef, useState } from 'react';
 import { QuizQuestion } from '@/lib/quiz';
 import OptionCard from './OptionCard';
 import clsx from 'clsx';
@@ -8,7 +8,7 @@ interface QuestionCardProps {
   question: QuizQuestion;
   selected: string[];
   onChange: (values: string[]) => void;
-  optionsRef?: RefObject<HTMLDivElement | null>;
+  optionsRef?: MutableRefObject<HTMLDivElement | null>;
 }
 
 // Resolve how many columns the image grid should use at the current breakpoint.
@@ -39,6 +39,9 @@ function useGridColumns(count: number): number {
 
 export default function QuestionCard({ question, selected, onChange, optionsRef }: QuestionCardProps) {
   const headingId = `quiz-question-${question.id}`;
+  const localOptionsRef = useRef<HTMLDivElement | null>(null);
+  const [hasHiddenOptions, setHasHiddenOptions] = useState(false);
+  const [hasScrolledOptions, setHasScrolledOptions] = useState(false);
 
   // An "exclusive" option (e.g. "None / I'm open to everything") can't coexist
   // with other selections — picking it clears the rest, and picking anything
@@ -103,6 +106,35 @@ const SECTION_LABELS: Record<string, string> = {
   // there's no awkward empty cell.
   const lastSpansFull = columns === 2 && optionCount % 2 === 1;
 
+  const setOptionsNode = (node: HTMLDivElement | null) => {
+    localOptionsRef.current = node;
+    if (optionsRef) optionsRef.current = node;
+  };
+
+  useEffect(() => {
+    const node = localOptionsRef.current;
+    if (!node) return;
+
+    setHasScrolledOptions(false);
+    const updateScrollState = () => {
+      const tolerance = 8;
+      const canScroll = node.scrollHeight > node.clientHeight + tolerance;
+      const below = node.scrollTop + node.clientHeight < node.scrollHeight - tolerance;
+      setHasHiddenOptions(canScroll && below);
+      if (node.scrollTop > tolerance) setHasScrolledOptions(true);
+    };
+
+    updateScrollState();
+    const raf = window.requestAnimationFrame(updateScrollState);
+    node.addEventListener('scroll', updateScrollState, { passive: true });
+    window.addEventListener('resize', updateScrollState);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      node.removeEventListener('scroll', updateScrollState);
+      window.removeEventListener('resize', updateScrollState);
+    };
+  }, [question.id, columns, optionCount]);
+
   const handleOptionKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
 
@@ -144,6 +176,9 @@ const SECTION_LABELS: Record<string, string> = {
           {question.question}
         </h2>
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <span className="rounded-full bg-stone-950 px-2 py-0.5 text-[11px] font-semibold text-white">
+            {optionCount} {optionCount === 1 ? 'choice' : 'choices'}
+          </span>
           {question.subtitle && (
             <p className="text-[13px] leading-snug text-stone-500 sm:text-sm">{question.subtitle}</p>
           )}
@@ -156,96 +191,120 @@ const SECTION_LABELS: Record<string, string> = {
       </div>
 
       {isImageCards ? (
-        <div
-          className={clsx(
-            'grid min-h-0 flex-1 gap-2 sm:gap-2.5',
-            scrollImageGrid && 'content-start overflow-y-auto overscroll-contain pr-0.5',
-          )}
-          style={{
-            gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-            ...(scrollImageGrid
-              ? { gridAutoRows: columns === 1 ? 'minmax(126px, 144px)' : 'minmax(148px, 168px)' }
-              : { gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }),
-          }}
-          ref={optionsRef}
-          role="group"
-          aria-labelledby={headingId}
-          onKeyDown={handleOptionKeyDown}
-        >
-          {question.options.map((option, index) => (
-            <OptionCard
-              key={option.id}
-              option={option}
-              selected={selected.includes(option.id)}
-              onClick={() => toggle(option.id)}
-              variant="image"
-              priority
-              className={clsx(
-                lastSpansFull && index === optionCount - 1 && 'col-span-2',
-              )}
-            />
-          ))}
+        <div className="relative min-h-0 flex-1">
+          <div
+            className={clsx(
+              'grid h-full min-h-0 gap-2 pb-16 sm:gap-2.5 sm:pb-4',
+              scrollImageGrid && 'content-start overflow-y-auto overscroll-contain pr-0.5',
+            )}
+            style={{
+              gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+              ...(scrollImageGrid
+                ? { gridAutoRows: columns === 1 ? 'minmax(154px, 178px)' : 'minmax(148px, 168px)' }
+                : { gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }),
+            }}
+            ref={setOptionsNode}
+            role="group"
+            aria-labelledby={headingId}
+            onKeyDown={handleOptionKeyDown}
+          >
+            {question.options.map((option, index) => (
+              <OptionCard
+                key={option.id}
+                option={option}
+                selected={selected.includes(option.id)}
+                onClick={() => toggle(option.id)}
+                variant="image"
+                priority
+                className={clsx(
+                  lastSpansFull && index === optionCount - 1 && 'col-span-2',
+                )}
+              />
+            ))}
+          </div>
+          <ScrollAffordance visible={hasHiddenOptions && !hasScrolledOptions} />
         </div>
       ) : isCards ? (
-        <div
-          ref={optionsRef}
-          role="group"
-          aria-labelledby={headingId}
-          onKeyDown={handleOptionKeyDown}
-          className="grid min-h-0 flex-1 grid-cols-1 content-start gap-2 overflow-y-auto overscroll-contain sm:grid-cols-2 sm:gap-3 lg:grid-cols-3"
-        >
-          {question.options.map(option => (
-            <button
-              key={option.id}
-              type="button"
-              onClick={() => toggle(option.id)}
-              aria-pressed={selected.includes(option.id)}
-              aria-label={option.description ? `${option.label}: ${option.description}` : option.label}
-              className={clsx(
-                'relative min-h-11 rounded-xl border p-4 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-stone-950',
-                selected.includes(option.id)
-                  ? 'bg-stone-900 border-stone-900 text-white'
-                  : 'bg-white border-stone-200 text-stone-800 hover:border-stone-400 hover:bg-stone-50'
-              )}
-            >
-              {selected.includes(option.id) && (
-                <span className="absolute right-2.5 top-2.5 flex h-6 w-6 items-center justify-center rounded-full bg-white text-stone-950" aria-hidden="true">
-                  <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </span>
-              )}
-              <div className="text-2xl mb-2">{option.emoji}</div>
-              <div className="text-sm font-medium">
-                {option.label}
-                {selected.includes(option.id) && <span className="sr-only">, selected</span>}
-              </div>
-              {option.description && (
-                <div className={clsx('text-xs mt-1', selected.includes(option.id) ? 'text-stone-300' : 'text-stone-400')}>
-                  {option.description}
+        <div className="relative min-h-0 flex-1">
+          <div
+            ref={setOptionsNode}
+            role="group"
+            aria-labelledby={headingId}
+            onKeyDown={handleOptionKeyDown}
+            className="grid h-full min-h-0 grid-cols-1 content-start gap-2 overflow-y-auto overscroll-contain pb-16 sm:grid-cols-2 sm:gap-3 sm:pb-4 lg:grid-cols-3"
+          >
+            {question.options.map(option => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => toggle(option.id)}
+                aria-pressed={selected.includes(option.id)}
+                aria-label={option.description ? `${option.label}: ${option.description}` : option.label}
+                className={clsx(
+                  'relative min-h-16 rounded-xl border p-4 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-stone-950',
+                  selected.includes(option.id)
+                    ? 'bg-stone-900 border-stone-900 text-white'
+                    : 'bg-white border-stone-200 text-stone-800 hover:border-stone-400 hover:bg-stone-50'
+                )}
+              >
+                {selected.includes(option.id) && (
+                  <span className="absolute right-2.5 top-2.5 flex h-6 w-6 items-center justify-center rounded-full bg-white text-stone-950" aria-hidden="true">
+                    <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </span>
+                )}
+                <div className="text-2xl mb-2">{option.emoji}</div>
+                <div className="text-sm font-medium">
+                  {option.label}
+                  {selected.includes(option.id) && <span className="sr-only">, selected</span>}
                 </div>
-              )}
-            </button>
-          ))}
+                {option.description && (
+                  <div className={clsx('text-xs mt-1', selected.includes(option.id) ? 'text-stone-300' : 'text-stone-400')}>
+                    {option.description}
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+          <ScrollAffordance visible={hasHiddenOptions && !hasScrolledOptions} />
         </div>
       ) : (
-        <div
-          ref={optionsRef}
-          role="group"
-          aria-labelledby={headingId}
-          onKeyDown={handleOptionKeyDown}
-          className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain"
-        >
-          {question.options.map(option => (
-            <OptionCard
-              key={option.id}
-              option={option}
-              selected={selected.includes(option.id)}
-              onClick={() => toggle(option.id)}
-            />
-          ))}
+        <div className="relative min-h-0 flex-1">
+          <div
+            ref={setOptionsNode}
+            role="group"
+            aria-labelledby={headingId}
+            onKeyDown={handleOptionKeyDown}
+            className="flex h-full min-h-0 flex-col gap-2 overflow-y-auto overscroll-contain pb-16 sm:pb-4"
+          >
+            {question.options.map(option => (
+              <OptionCard
+                key={option.id}
+                option={option}
+                selected={selected.includes(option.id)}
+                onClick={() => toggle(option.id)}
+              />
+            ))}
+          </div>
+          <ScrollAffordance visible={hasHiddenOptions && !hasScrolledOptions} />
         </div>
       )}
+    </div>
+  );
+}
+
+function ScrollAffordance({ visible }: { visible: boolean }) {
+  if (!visible) return null;
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-center justify-end bg-gradient-to-t from-stone-50 via-stone-50/92 to-transparent pb-3 pt-12">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white/95 px-3 py-1.5 text-[11px] font-semibold text-stone-700 shadow-sm">
+        More choices below
+        <svg className="h-3.5 w-3.5 animate-bounce motion-reduce:animate-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </span>
     </div>
   );
 }
