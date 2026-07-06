@@ -106,6 +106,9 @@ const SECTION_LABELS: Record<string, string> = {
   const columns = useGridColumns(optionCount);
   const rows = Math.ceil(optionCount / columns);
   const scrollImageGrid = columns <= 2 && optionCount >= 5;
+  const imageSizes = columns === 1
+    ? '(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 46vw, 30vw'
+    : '(max-width: 767px) calc(50vw - 24px), (max-width: 1023px) 46vw, 30vw';
   // A lone trailing card on a 2-column mobile layout spans the full width so
   // there's no awkward empty cell.
   const lastSpansFull = columns === 2 && optionCount % 2 === 1;
@@ -219,7 +222,8 @@ const SECTION_LABELS: Record<string, string> = {
                 selected={selected.includes(option.id)}
                 onClick={() => toggle(option.id)}
                 variant="image"
-                priority
+                priority={index < (columns === 1 ? 1 : 2)}
+                imageSizes={imageSizes}
                 className={clsx(
                   lastSpansFull && index === optionCount - 1 && 'col-span-2',
                 )}
@@ -245,7 +249,7 @@ const SECTION_LABELS: Record<string, string> = {
                 aria-pressed={selected.includes(option.id)}
                 aria-label={option.description ? `${option.label}: ${option.description}` : option.label}
                 className={clsx(
-                  'relative min-h-16 rounded-xl border p-4 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-stone-950',
+                  'relative min-h-[5rem] rounded-2xl border px-4 py-4 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-stone-950 sm:min-h-16 sm:rounded-xl',
                   selected.includes(option.id)
                     ? 'bg-stone-900 border-stone-900 text-white'
                     : 'bg-white border-stone-200 text-stone-800 hover:border-stone-400 hover:bg-stone-50'
@@ -258,13 +262,13 @@ const SECTION_LABELS: Record<string, string> = {
                     </svg>
                   </span>
                 )}
-                <div className="text-2xl mb-2">{option.emoji}</div>
-                <div className="text-sm font-medium">
+                <div className="mb-2 text-2xl">{option.emoji}</div>
+                <div className="text-sm font-semibold leading-snug">
                   {option.label}
                   {selected.includes(option.id) && <span className="sr-only">, selected</span>}
                 </div>
                 {option.description && (
-                  <div className={clsx('text-xs mt-1', selected.includes(option.id) ? 'text-stone-300' : 'text-stone-400')}>
+                  <div className={clsx('mt-1.5 text-xs leading-relaxed', selected.includes(option.id) ? 'text-stone-300' : 'text-stone-500')}>
                     {option.description}
                   </div>
                 )}

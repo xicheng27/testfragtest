@@ -9,6 +9,7 @@ interface OptionCardProps {
   onClick: () => void;
   variant?: 'default' | 'image';
   priority?: boolean; // current question loads image immediately at high priority
+  imageSizes?: string;
   className?: string;
 }
 
@@ -29,11 +30,12 @@ export default function OptionCard({
   onClick,
   variant = 'default',
   priority = false,
+  imageSizes,
   className,
 }: OptionCardProps) {
   if (variant === 'image') {
     const isProduct = option.imageFit === 'contain';
-    const sizes = '(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) 30vw, 280px';
+    const sizes = imageSizes ?? '(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) 30vw, 280px';
 
     // Product packshots sit on white, so text can't be overlaid on the image.
     // Give them an image area + a clean caption footer instead.
@@ -57,13 +59,13 @@ export default function OptionCard({
           <div className="relative min-h-0 flex-1">
             <QuizChoiceImage src={option.imageUrl!} alt={option.label} sizes={sizes} productImage eager={priority} />
           </div>
-          <div className="shrink-0 border-t border-stone-100 px-3 py-2">
+          <div className="shrink-0 border-t border-stone-100 px-3.5 py-2.5">
             <div className="text-sm font-semibold leading-tight text-stone-900">
               {option.label}
               {selected && <span className="sr-only">, selected</span>}
             </div>
             {option.description && (
-              <div className="mt-0.5 line-clamp-1 text-[11px] leading-tight text-stone-400">{option.description}</div>
+              <div className="mt-1 line-clamp-2 text-[11px] leading-snug text-stone-500">{option.description}</div>
             )}
           </div>
         </button>
@@ -95,13 +97,13 @@ export default function OptionCard({
         {selected && <div className="absolute inset-0 bg-stone-900/20" />}
         {selected && <CheckBadge />}
 
-        <div className="absolute inset-x-0 bottom-0 p-3 text-left">
+        <div className="absolute inset-x-0 bottom-0 p-3.5 text-left">
           <div className="text-sm font-semibold leading-tight tracking-tight text-white">
             {option.label}
             {selected && <span className="sr-only">, selected</span>}
           </div>
           {option.description && (
-            <div className="mt-0.5 line-clamp-1 text-[11px] leading-tight text-white/70">{option.description}</div>
+            <div className="mt-1 line-clamp-2 text-[11px] leading-snug text-white/75">{option.description}</div>
           )}
         </div>
       </button>
@@ -115,7 +117,7 @@ export default function OptionCard({
       onClick={onClick}
       aria-pressed={selected}
       className={clsx(
-        'flex min-h-12 w-full items-start gap-3 rounded-2xl border px-4 py-3.5 text-left transition-all duration-150 active:scale-[0.99]',
+        'flex min-h-[4.75rem] w-full items-start gap-3 rounded-2xl border px-4 py-4 text-left transition-all duration-150 active:scale-[0.99] sm:min-h-12 sm:py-3.5',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900',
         selected
           ? 'bg-stone-900 border-stone-900 text-white shadow-[0_12px_28px_rgba(28,25,23,0.16)]'
@@ -125,12 +127,12 @@ export default function OptionCard({
     >
       {option.emoji && <span className="mt-0.5 shrink-0 text-lg">{option.emoji}</span>}
       <div className="min-w-0">
-        <div className="font-medium text-sm">
+        <div className="text-sm font-semibold leading-snug">
           {option.label}
           {selected && <span className="sr-only">, selected</span>}
         </div>
         {option.description && (
-          <div className={clsx('mt-0.5 text-xs', selected ? 'text-stone-300' : 'text-stone-400')}>
+          <div className={clsx('mt-1.5 text-xs leading-relaxed', selected ? 'text-stone-300' : 'text-stone-500')}>
             {option.description}
           </div>
         )}

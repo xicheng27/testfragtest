@@ -21,8 +21,10 @@ export default function QuizChoiceImage({
   eager = false,
   className,
 }: QuizChoiceImageProps) {
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
+  const failed = failedSrc === src;
+  const loaded = loadedSrc === src || failed;
 
   return (
     <div className={clsx('absolute inset-0 overflow-hidden', productImage ? 'bg-white' : 'bg-stone-200', className)}>
@@ -45,18 +47,18 @@ export default function QuizChoiceImage({
           alt={alt}
           fill
           sizes={sizes}
-          priority={eager}
           loading={eager ? 'eager' : 'lazy'}
           fetchPriority={eager ? 'high' : 'auto'}
+          quality={productImage ? 72 : 62}
           className={clsx(
             'transition-opacity duration-200',
             loaded ? 'opacity-100' : 'opacity-0',
             productImage ? 'object-contain p-3' : 'object-cover',
           )}
-          onLoad={() => setLoaded(true)}
+          onLoad={() => setLoadedSrc(src)}
           onError={() => {
-            setFailed(true);
-            setLoaded(true);
+            setFailedSrc(src);
+            setLoadedSrc(src);
           }}
         />
       )}

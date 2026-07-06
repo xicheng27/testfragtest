@@ -41,8 +41,9 @@ export default function ProductImage({
         fill
         sizes={sizes}
         className={clsx(className, 'transition-opacity duration-200', loaded ? 'opacity-100' : 'opacity-0')}
-        priority={eager}
-        loading={eager ? undefined : 'lazy'}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchPriority={eager ? 'high' : 'auto'}
+        quality={70}
         onLoad={() => setLoadedSrc(imageSrc)}
         onError={() => {
           if (imageSrc !== FALLBACK_IMAGE) {

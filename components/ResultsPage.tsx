@@ -432,9 +432,9 @@ export default function ResultsPage({
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
-          <section className="mb-7 overflow-hidden rounded-[2.15rem] border border-stone-200 bg-stone-950 text-white shadow-[0_30px_90px_rgba(28,25,23,0.18)]" aria-labelledby="scent-profile-report">
+          <section className="mb-7 overflow-hidden rounded-[2.15rem] border border-stone-200 bg-stone-950 text-white shadow-[0_14px_34px_rgba(28,25,23,0.12)] sm:shadow-[0_30px_90px_rgba(28,25,23,0.18)]" aria-labelledby="scent-profile-report">
             <div className="relative p-5 sm:p-8">
-              <div className="pointer-events-none absolute inset-0 opacity-70 [background:radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.16),transparent_28%),radial-gradient(circle_at_88%_0%,rgba(176,141,87,0.18),transparent_34%)]" aria-hidden="true" />
+              <div className="pointer-events-none absolute inset-0 opacity-35 sm:opacity-70 [background:radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.16),transparent_28%),radial-gradient(circle_at_88%_0%,rgba(176,141,87,0.18),transparent_34%)]" aria-hidden="true" />
               <div className="relative grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.22em] text-[#d2b886]">Your Scent Profile Report</p>
@@ -536,7 +536,7 @@ export default function ResultsPage({
                                 <ProductImage
                                   src={result.fragrance.imageUrl}
                                   alt={`${result.fragrance.brand} ${result.fragrance.name} fragrance bottle`}
-                                  eager={index === 0}
+                                  eager={false}
                                   sizes="56px"
                                   className="object-contain p-2"
                                 />

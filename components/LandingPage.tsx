@@ -54,9 +54,9 @@ const trendingPicks = [
 const resultPreviews = [
   {
     category: 'Best Match',
-    name: 'Lazy Sunday Morning',
+    name: 'Bubble Bath',
     brand: 'Maison Margiela',
-    imageUrl: '/images/products/replica-lazy-sunday-morning.jpg',
+    imageUrl: '/images/products/replica-bubble-bath.jpg',
   },
   {
     category: 'Date Night',
@@ -200,7 +200,7 @@ export default function LandingPage({ onStartQuiz, onViewShelf }: LandingPagePro
                             <ProductImage
                               src={item.imageUrl}
                               alt={`${item.brand} ${item.name} fragrance bottle`}
-                              eager
+                              eager={index === 0}
                               sizes="(max-width: 1023px) 30vw, 180px"
                               className="object-contain p-3"
                             />
@@ -276,7 +276,7 @@ export default function LandingPage({ onStartQuiz, onViewShelf }: LandingPagePro
                       <ProductImage
                         src={item.imageUrl}
                         alt={`${item.brand} ${item.name} fragrance bottle`}
-                        eager={item.category === 'Best Match'}
+                        eager={false}
                         sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 260px"
                         className="object-contain p-4 sm:p-6"
                       />
