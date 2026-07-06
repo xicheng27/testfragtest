@@ -9,7 +9,8 @@ interface QuizChoiceImageProps {
   sizes: string;
   alt: string;
   productImage?: boolean; // packshot on white, use object-contain
-  eager?: boolean; // current/visible question loads immediately
+  immediate?: boolean; // current question images should not wait for viewport lazy-loading
+  eager?: boolean; // high-priority hero/current-above-fold image
   className?: string;
 }
 
@@ -18,6 +19,7 @@ export default function QuizChoiceImage({
   sizes,
   alt,
   productImage = false,
+  immediate = false,
   eager = false,
   className,
 }: QuizChoiceImageProps) {
@@ -31,7 +33,7 @@ export default function QuizChoiceImage({
       {/* Skeleton shimmer while the image decodes, preventing a blank flash. */}
       <div
         className={clsx(
-          'absolute inset-0 animate-pulse bg-gradient-to-br from-stone-100 via-stone-200 to-stone-100 transition-opacity duration-300',
+          'absolute inset-0 bg-gradient-to-br from-stone-100 via-stone-200 to-stone-100 transition-opacity duration-150 motion-safe:animate-pulse',
           loaded ? 'pointer-events-none opacity-0' : 'opacity-100',
         )}
         aria-hidden="true"
@@ -47,11 +49,11 @@ export default function QuizChoiceImage({
           alt={alt}
           fill
           sizes={sizes}
-          loading={eager ? 'eager' : 'lazy'}
-          fetchPriority={eager ? 'high' : 'auto'}
+          loading={immediate || eager ? 'eager' : 'lazy'}
+          fetchPriority={eager ? 'high' : immediate ? 'low' : 'auto'}
           quality={productImage ? 72 : 62}
           className={clsx(
-            'transition-opacity duration-200',
+            'transition-opacity duration-150',
             loaded ? 'opacity-100' : 'opacity-0',
             productImage ? 'object-contain p-3' : 'object-cover',
           )}

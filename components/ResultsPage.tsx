@@ -217,7 +217,6 @@ export default function ResultsPage({
   const [adjustMode, setAdjustMode] = useState<AdjustMode>('default');
   const [hiddenIds, setHiddenIds] = useState<string[]>([]);
   const [feedbackMessage, setFeedbackMessage] = useState('');
-  const [deferredResults, setDeferredResults] = useState({ key: '', ready: false });
   const [filtersOpen, setFiltersOpen] = useState(false);
   const filterDialogId = useId();
   const filterDialogRef = useDialog<HTMLDivElement>(filtersOpen, () => setFiltersOpen(false));
@@ -244,23 +243,11 @@ export default function ResultsPage({
     return enhanced.length ? enhanced.slice(0, 7) : results.filter(result => !hiddenIds.includes(result.fragrance.id));
   }, [activeMood, adjustMode, answers, hiddenIds, results]);
 
-  const topResults = personalisedPool.slice(0, 3);
-  const deferredKey = personalisedPool.map(result => result.fragrance.id).join('|');
-  const showDeferredResults = deferredResults.key === deferredKey && deferredResults.ready;
-  const visibleResults = showDeferredResults ? personalisedPool : topResults;
-  const deferredCount = Math.max(0, personalisedPool.length - topResults.length);
   const filtersActive = activeMood !== 'all' || adjustMode !== 'default';
   const clearFilters = () => {
     setActiveMood('all');
     setAdjustMode('default');
   };
-
-  useEffect(() => {
-    if (personalisedPool.length <= 3) return;
-
-    const timeout = window.setTimeout(() => setDeferredResults({ key: deferredKey, ready: true }), 220);
-    return () => window.clearTimeout(timeout);
-  }, [deferredKey, personalisedPool.length]);
 
   const handleFeedback = (fragranceId: string, reason: string) => {
     setHiddenIds(current => current.includes(fragranceId) ? current : [...current, fragranceId]);
@@ -432,10 +419,10 @@ export default function ResultsPage({
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
-          <section className="mb-7 overflow-hidden rounded-[2.15rem] border border-stone-200 bg-stone-950 text-white shadow-[0_14px_34px_rgba(28,25,23,0.12)] sm:shadow-[0_30px_90px_rgba(28,25,23,0.18)]" aria-labelledby="scent-profile-report">
+          <section className="mb-7 overflow-hidden rounded-[2.15rem] border border-stone-200 bg-stone-950 text-white shadow-[0_10px_24px_rgba(28,25,23,0.1)] sm:shadow-[0_30px_90px_rgba(28,25,23,0.18)]" aria-labelledby="scent-profile-report">
             <div className="relative p-5 sm:p-8">
-              <div className="pointer-events-none absolute inset-0 opacity-35 sm:opacity-70 [background:radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.16),transparent_28%),radial-gradient(circle_at_88%_0%,rgba(176,141,87,0.18),transparent_34%)]" aria-hidden="true" />
-              <div className="relative grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
+              <div className="pointer-events-none absolute inset-0 opacity-0 sm:opacity-70 [background:radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.16),transparent_28%),radial-gradient(circle_at_88%_0%,rgba(176,141,87,0.18),transparent_34%)]" aria-hidden="true" />
+              <div className="relative grid gap-4 sm:gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.22em] text-[#d2b886]">Your Scent Profile Report</p>
                   <h1 id="scent-profile-report" className="mt-3 max-w-4xl text-[clamp(2.35rem,9vw,5.7rem)] font-black leading-[0.88] tracking-[-0.075em] text-white">
@@ -454,7 +441,7 @@ export default function ResultsPage({
                   </div>
                 </div>
 
-                <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.08] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.08] p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <p className="text-[10px] font-black uppercase tracking-[0.18em] text-stone-500">Report confidence</p>
@@ -469,7 +456,7 @@ export default function ResultsPage({
                       trackEvent('quiz_retake', { source: 'results_profile_report' });
                       onRestart();
                     }}
-                    className="mt-5 min-h-11 w-full rounded-2xl border border-white/15 bg-white px-5 text-base font-bold text-stone-950 transition-all hover:-translate-y-0.5 hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    className="mt-5 min-h-11 w-full rounded-2xl border border-white/15 bg-white px-5 text-base font-bold text-stone-950 transition-colors hover:bg-stone-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:transition-all sm:hover:-translate-y-0.5"
                   >
                     Retake quiz
                   </button>
@@ -757,7 +744,7 @@ export default function ResultsPage({
 
             {personalisedPool.length > 0 ? (
               <div className="flex flex-col gap-5">
-                {visibleResults.map((result, index) => (
+                {personalisedPool.map((result, index) => (
                   <FragranceCard
                     key={`${result.fragrance.id}-card-${activeMood}-${adjustMode}`}
                     result={result}
@@ -766,18 +753,6 @@ export default function ResultsPage({
                     onNotMyVibe={handleFeedback}
                   />
                 ))}
-                {!showDeferredResults && deferredCount > 0 && (
-                  <div className="rounded-3xl border border-stone-200 bg-white/80 p-5 shadow-sm" aria-live="polite">
-                    <div className="h-3 w-36 rounded-full bg-stone-100" />
-                    <div className="mt-4 grid gap-2">
-                      <div className="h-3 w-full rounded-full bg-stone-100" />
-                      <div className="h-3 w-2/3 rounded-full bg-stone-100" />
-                    </div>
-                    <p className="mt-4 text-sm font-medium text-stone-500">
-                      Loading {deferredCount} more matches...
-                    </p>
-                  </div>
-                )}
               </div>
             ) : (
               <div className="rounded-[1.5rem] border border-stone-200 bg-white/85 p-6 text-center shadow-sm sm:p-8">

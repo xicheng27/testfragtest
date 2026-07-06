@@ -8,7 +8,8 @@ interface OptionCardProps {
   selected: boolean;
   onClick: () => void;
   variant?: 'default' | 'image';
-  priority?: boolean; // current question loads image immediately at high priority
+  immediate?: boolean; // current question image should start loading immediately
+  priority?: boolean; // first visible images get high network priority
   imageSizes?: string;
   className?: string;
 }
@@ -29,6 +30,7 @@ export default function OptionCard({
   selected,
   onClick,
   variant = 'default',
+  immediate = false,
   priority = false,
   imageSizes,
   className,
@@ -57,7 +59,14 @@ export default function OptionCard({
         >
           {selected && <CheckBadge />}
           <div className="relative min-h-0 flex-1">
-            <QuizChoiceImage src={option.imageUrl!} alt={option.label} sizes={sizes} productImage eager={priority} />
+            <QuizChoiceImage
+              src={option.imageUrl!}
+              alt={option.label}
+              sizes={sizes}
+              productImage
+              immediate={immediate}
+              eager={priority}
+            />
           </div>
           <div className="shrink-0 border-t border-stone-100 px-3.5 py-2.5">
             <div className="text-sm font-semibold leading-tight text-stone-900">
@@ -87,7 +96,13 @@ export default function OptionCard({
         )}
       >
         {option.imageUrl ? (
-          <QuizChoiceImage src={option.imageUrl} alt={option.label} sizes={sizes} eager={priority} />
+          <QuizChoiceImage
+            src={option.imageUrl}
+            alt={option.label}
+            sizes={sizes}
+            immediate={immediate}
+            eager={priority}
+          />
         ) : (
           <div className={clsx('absolute inset-0 bg-gradient-to-br', option.gradient ?? 'from-stone-400 to-stone-700')} />
         )}

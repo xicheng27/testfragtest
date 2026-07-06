@@ -24,6 +24,27 @@ const loadingMessages = [
   'Finding your best scent energy...',
 ];
 
+const PRELOAD_IMAGE_QUESTION_COUNT = 2;
+
+function getUpcomingQuizImageUrls(questions: QuizQuestion[], currentStep: number) {
+  const urls: string[] = [];
+  let imageQuestionsFound = 0;
+
+  for (let index = currentStep + 1; index < questions.length; index += 1) {
+    const question = questions[index];
+    if (question.type !== 'image-cards') continue;
+
+    imageQuestionsFound += 1;
+    for (const option of question.options) {
+      if (option.imageUrl) urls.push(option.imageUrl);
+    }
+
+    if (imageQuestionsFound >= PRELOAD_IMAGE_QUESTION_COUNT) break;
+  }
+
+  return urls;
+}
+
 export default function Quiz({
   questions,
   initialAnswers = {},
@@ -43,15 +64,17 @@ export default function Quiz({
   const preloadedRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    const upcoming = questions[step + 1];
-    if (!upcoming || upcoming.type !== 'image-cards') return;
+    const urls = getUpcomingQuizImageUrls(questions, step);
+    if (urls.length === 0) return;
 
-    for (const option of upcoming.options) {
-      if (!option.imageUrl || preloadedRef.current.has(option.imageUrl)) continue;
-      preloadedRef.current.add(option.imageUrl);
+    for (const url of urls) {
+      if (preloadedRef.current.has(url)) continue;
+      preloadedRef.current.add(url);
       const img = new window.Image();
       img.decoding = 'async';
-      img.src = option.imageUrl;
+      img.loading = 'eager';
+      (img as HTMLImageElement & { fetchPriority?: 'high' | 'low' | 'auto' }).fetchPriority = 'low';
+      img.src = url;
     }
   }, [step, questions]);
 

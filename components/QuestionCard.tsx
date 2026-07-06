@@ -222,6 +222,7 @@ const SECTION_LABELS: Record<string, string> = {
                 selected={selected.includes(option.id)}
                 onClick={() => toggle(option.id)}
                 variant="image"
+                immediate
                 priority={index < (columns === 1 ? 1 : 2)}
                 imageSizes={imageSizes}
                 className={clsx(
