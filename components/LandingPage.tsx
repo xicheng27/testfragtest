@@ -10,6 +10,7 @@ import { trackEvent } from '@/lib/analytics';
 
 interface LandingPageProps {
   onStartQuiz: () => void;
+  onViewShelf?: () => void;
 }
 
 const heroBottles = [
@@ -77,7 +78,7 @@ const resultPreviews = [
   },
 ] as const;
 
-export default function LandingPage({ onStartQuiz }: LandingPageProps) {
+export default function LandingPage({ onStartQuiz, onViewShelf }: LandingPageProps) {
   const [authMode, setAuthMode] = useState<'signup' | 'login' | null>(null);
   const { continueAsGuest } = useAuth();
 
@@ -162,16 +163,17 @@ export default function LandingPage({ onStartQuiz }: LandingPageProps) {
                   <button
                     type="button"
                     onClick={startQuiz}
+                    aria-label="Find my scent - Start Quiz"
                     className="sheen relative min-h-14 overflow-hidden rounded-2xl bg-stone-950 px-7 text-base font-bold text-white shadow-[0_18px_45px_rgba(28,25,23,0.22)] transition-transform hover:-translate-y-0.5 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
                   >
-                    Find my scent
+                    Start Quiz
                   </button>
                   <button
                     type="button"
-                    onClick={continueAsGuest}
+                    onClick={onViewShelf ?? continueAsGuest}
                     className="min-h-11 rounded-2xl border border-transparent px-5 text-sm font-semibold text-stone-500 underline decoration-stone-300 underline-offset-4 transition-colors hover:text-stone-950 sm:min-h-14 sm:border-stone-300 sm:bg-white/80 sm:text-stone-700 sm:no-underline sm:hover:border-stone-950"
                   >
-                    Continue as guest
+                    View my Shelf
                   </button>
                 </div>
                 <p className="mt-3 text-xs text-stone-500">No account needed. Takes about 2 minutes. Retake anytime.</p>

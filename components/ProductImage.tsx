@@ -22,8 +22,9 @@ export default function ProductImage({
   className = 'object-contain p-6 sm:p-8',
 }: ProductImageProps) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
   const imageSrc = !src || failedSrc === src ? FALLBACK_IMAGE : src;
+  const loaded = loadedSrc === imageSrc;
 
   return (
     <>
@@ -42,13 +43,13 @@ export default function ProductImage({
         className={clsx(className, 'transition-opacity duration-200', loaded ? 'opacity-100' : 'opacity-0')}
         priority={eager}
         loading={eager ? undefined : 'lazy'}
-        onLoad={() => setLoaded(true)}
+        onLoad={() => setLoadedSrc(imageSrc)}
         onError={() => {
           if (imageSrc !== FALLBACK_IMAGE) {
-            setLoaded(false);
+            setLoadedSrc(null);
             setFailedSrc(src);
           } else {
-            setLoaded(true);
+            setLoadedSrc(imageSrc);
           }
         }}
         unoptimized={imageSrc.endsWith('.svg')}

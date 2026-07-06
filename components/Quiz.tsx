@@ -11,6 +11,9 @@ import ProgressBar from './ProgressBar';
 interface QuizProps {
   questions: QuizQuestion[];
   initialAnswers?: QuizAnswers;
+  initialStep?: number;
+  autoStart?: boolean;
+  onProgress?: (answers: QuizAnswers, step: number) => void;
   onComplete: (answers: QuizAnswers) => void;
   onBack: () => void;
 }
@@ -21,9 +24,18 @@ const loadingMessages = [
   'Finding your best scent energy...',
 ];
 
-export default function Quiz({ questions, initialAnswers = {}, onComplete, onBack }: QuizProps) {
-  const [started, setStarted] = useState(false);
-  const [step, setStep] = useState(0);
+export default function Quiz({
+  questions,
+  initialAnswers = {},
+  initialStep = 0,
+  autoStart = false,
+  onProgress,
+  onComplete,
+  onBack,
+}: QuizProps) {
+  const safeInitialStep = Math.max(0, Math.min(initialStep, questions.length - 1));
+  const [started, setStarted] = useState(autoStart);
+  const [step, setStep] = useState(safeInitialStep);
   const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
   const [isCompleting, setIsCompleting] = useState(false);
   const [loadingIndex, setLoadingIndex] = useState(0);
@@ -74,11 +86,15 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
   useQuizViewport(optionsRef, question.id);
 
   const moveToStep = (nextStep: number) => {
-    setStep(nextStep);
+    const boundedStep = Math.max(0, Math.min(nextStep, questions.length - 1));
+    setStep(boundedStep);
+    onProgress?.(answers, boundedStep);
   };
 
   const handleChange = (values: string[]) => {
-    setAnswers(previous => ({ ...previous, [question.id]: values }));
+    const nextAnswers = { ...answers, [question.id]: values };
+    setAnswers(nextAnswers);
+    onProgress?.(nextAnswers, step);
     trackEvent('quiz_answer_select', { questionId: question.id, values });
   };
 
@@ -108,6 +124,7 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
     const nextAnswers = { ...answers };
     delete nextAnswers[question.id];
     setAnswers(nextAnswers);
+    onProgress?.(nextAnswers, step);
 
     if (isLast) {
       onComplete(nextAnswers);
@@ -227,13 +244,20 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
         </div>
       </main>
 
-      <footer className="z-20 border-t border-white/70 bg-stone-50/80 px-3 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2.5 shadow-[0_-12px_34px_rgba(28,25,23,0.08)] backdrop-blur-xl sm:px-6 sm:py-3">
+      <footer className="z-20 border-t border-white/70 bg-stone-50/80 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-2.5 shadow-[0_-12px_34px_rgba(28,25,23,0.08)] backdrop-blur-xl sm:px-6 sm:py-3">
         <div className="mx-auto flex w-full max-w-2xl items-center gap-2 rounded-[1.35rem] border border-stone-200/80 bg-white/90 p-1.5 shadow-[0_12px_34px_rgba(28,25,23,0.08)]">
+          <button
+            type="button"
+            onClick={goPrev}
+            className="min-h-12 shrink-0 rounded-[1rem] border border-stone-200 bg-stone-50 px-4 text-sm font-semibold text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 sm:px-5"
+          >
+            Back
+          </button>
           {question.allowSkip && (
             <button
               type="button"
               onClick={skipQuestion}
-              className="min-h-12 shrink-0 rounded-[1rem] border border-stone-200 bg-stone-50 px-4 text-sm font-semibold text-stone-600 transition-colors hover:border-stone-400 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 sm:px-5"
+              className="hidden min-h-12 shrink-0 rounded-[1rem] border border-stone-200 bg-stone-50 px-4 text-sm font-semibold text-stone-600 transition-colors hover:border-stone-400 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 min-[380px]:inline-flex min-[380px]:items-center sm:px-5"
             >
               {question.skipLabel ?? 'Skip'}
             </button>
@@ -242,11 +266,21 @@ export default function Quiz({ questions, initialAnswers = {}, onComplete, onBac
             type="button"
             onClick={goNext}
             disabled={!hasAnswer}
+            aria-label={isLast ? 'Reveal my matches - See my matches' : undefined}
             className="sheen relative min-h-12 flex-1 overflow-hidden rounded-[1rem] bg-stone-950 px-5 py-3 text-sm font-bold text-white shadow-[0_12px_28px_rgba(28,25,23,0.16)] transition-all duration-150 hover:-translate-y-0.5 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950 disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-500 disabled:shadow-none"
           >
-            {isLast ? 'Reveal my matches' : 'Next'}
+            {isLast ? 'See my matches' : 'Next'}
           </button>
         </div>
+        {question.allowSkip && (
+          <button
+            type="button"
+            onClick={skipQuestion}
+            className="mx-auto mt-1.5 block min-h-8 px-3 text-xs font-semibold text-stone-500 underline decoration-stone-300 underline-offset-4 min-[380px]:hidden"
+          >
+            {question.skipLabel ?? 'Skip'}
+          </button>
+        )}
       </footer>
     </div>
   );

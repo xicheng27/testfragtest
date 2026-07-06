@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { ScoredFragrance, QuizAnswers, buildScentProfile, getRecommendations, getStrictMatchCount, scoreFragrance } from '@/lib/scoring';
@@ -12,6 +13,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useShelf } from '@/lib/shelf-context';
 import { CURRENCIES, PRICED_AS_OF, useCurrency } from '@/lib/pricing';
 import { trackEvent } from '@/lib/analytics';
+import { useDialog } from '@/lib/use-dialog';
 
 interface ResultsPageProps {
   results: ScoredFragrance[];
@@ -216,6 +218,9 @@ export default function ResultsPage({
   const [hiddenIds, setHiddenIds] = useState<string[]>([]);
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [deferredResults, setDeferredResults] = useState({ key: '', ready: false });
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const filterDialogId = useId();
+  const filterDialogRef = useDialog<HTMLDivElement>(filtersOpen, () => setFiltersOpen(false));
   const scentProfile = useMemo(() => buildScentProfile(answers), [answers]);
   const strictMatchCount = useMemo(() => getStrictMatchCount(answers), [answers]);
 
@@ -244,6 +249,11 @@ export default function ResultsPage({
   const showDeferredResults = deferredResults.key === deferredKey && deferredResults.ready;
   const visibleResults = showDeferredResults ? personalisedPool : topResults;
   const deferredCount = Math.max(0, personalisedPool.length - topResults.length);
+  const filtersActive = activeMood !== 'all' || adjustMode !== 'default';
+  const clearFilters = () => {
+    setActiveMood('all');
+    setAdjustMode('default');
+  };
 
   useEffect(() => {
     if (personalisedPool.length <= 3) return;
@@ -586,7 +596,45 @@ export default function ResultsPage({
           </section>
 
           <section className="mt-7">
-            <section className="min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:p-7">
+            <div className="rounded-[1.6rem] border border-stone-200 bg-white/85 p-4 shadow-sm backdrop-blur sm:hidden">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#8a6417]">Refine</p>
+                  <p className="mt-1 text-sm font-semibold text-stone-700">{personalisedPool.length} matches shown</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFiltersOpen(true)}
+                  className="min-h-12 rounded-2xl bg-stone-950 px-4 text-sm font-bold text-white shadow-[0_12px_28px_rgba(28,25,23,0.14)]"
+                >
+                  Filter & Sort
+                </button>
+              </div>
+              {filtersActive && (
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  {activeMood !== 'all' && (
+                    <FilterChip label={moodFilters.find(filter => filter.id === activeMood)?.label ?? 'Mood'} onRemove={() => setActiveMood('all')} />
+                  )}
+                  {adjustMode !== 'default' && (
+                    <FilterChip label={adjustModes.find(mode => mode.id === adjustMode)?.label ?? 'Sort'} onRemove={() => setAdjustMode('default')} />
+                  )}
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="min-h-9 rounded-full px-2 text-xs font-semibold text-stone-500 underline decoration-stone-300 underline-offset-4"
+                  >
+                    Clear all
+                  </button>
+                </div>
+              )}
+              {strictMatchCount < 7 && (
+                <p className="mt-3 rounded-2xl bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900">
+                  Strict red flags may show fewer results instead of breaking your avoid rules.
+                </p>
+              )}
+            </div>
+
+            <section className="hidden min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:block sm:p-7">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Refine results</p>
@@ -690,10 +738,12 @@ export default function ResultsPage({
                   Your red flags are strict, so we may show fewer results instead of recommending scents you asked us to avoid. Loosen one avoid filter if you want more options.
                 </p>
               )}
-              {feedbackMessage && (
-                <p className="mt-2 text-xs text-stone-600" aria-live="polite">{feedbackMessage}</p>
-              )}
             </section>
+            {feedbackMessage && (
+              <p className="mt-3 rounded-2xl border border-stone-200 bg-white/85 px-3 py-2 text-xs text-stone-600 shadow-sm" aria-live="polite">
+                {feedbackMessage}
+              </p>
+            )}
           </section>
 
           <section className="mt-8" aria-label="Detailed fragrance recommendations">
@@ -760,7 +810,132 @@ export default function ResultsPage({
       </div>
 
       {showSignIn && <AuthModal onClose={() => setShowSignIn(false)} initialMode="login" />}
+      {filtersOpen && createPortal(
+        <div className="fixed inset-0 z-[100] sm:hidden">
+          <button
+            type="button"
+            aria-label="Close filter and sort"
+            tabIndex={-1}
+            onClick={() => setFiltersOpen(false)}
+            className="absolute inset-0 h-full w-full bg-stone-950/45 backdrop-blur-sm"
+          />
+          <div
+            ref={filterDialogRef}
+            id={filterDialogId}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Filter and sort fragrance results"
+            tabIndex={-1}
+            className="absolute inset-x-0 bottom-0 max-h-[88dvh] overflow-y-auto rounded-t-[2rem] border border-stone-200 bg-stone-50 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-[0_-24px_70px_rgba(28,25,23,0.24)] outline-none"
+          >
+            <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-stone-300" aria-hidden="true" />
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-[#8a6417]">Filter & Sort</p>
+                <h2 className="mt-1 text-2xl font-black tracking-[-0.04em] text-stone-950">Tune your matches</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(false)}
+                aria-label="Close filters"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-stone-600 shadow-sm"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <fieldset className="mt-5">
+              <legend className="text-sm font-bold text-stone-700">Scent mood</legend>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {moodFilters.map(filter => (
+                  <button
+                    key={filter.id}
+                    type="button"
+                    aria-pressed={activeMood === filter.id}
+                    onClick={() => {
+                      setActiveMood(filter.id);
+                      trackEvent('results_filter_change', { filter: filter.id });
+                    }}
+                    className={clsx(
+                      'min-h-12 rounded-2xl border px-3 text-sm font-bold transition-colors',
+                      activeMood === filter.id
+                        ? 'border-stone-950 bg-stone-950 text-white'
+                        : 'border-stone-200 bg-white text-stone-700',
+                    )}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset className="mt-6">
+              <legend className="text-sm font-bold text-stone-700">Sort preference</legend>
+              <div className="mt-3 grid gap-2">
+                {adjustModes.map(mode => (
+                  <button
+                    key={mode.id}
+                    type="button"
+                    aria-pressed={adjustMode === mode.id}
+                    onClick={() => {
+                      setAdjustMode(mode.id);
+                      trackEvent('results_filter_change', { mode: mode.id });
+                    }}
+                    className={clsx(
+                      'rounded-2xl border p-3 text-left transition-colors',
+                      adjustMode === mode.id
+                        ? 'border-stone-950 bg-stone-950 text-white'
+                        : 'border-stone-200 bg-white text-stone-800',
+                    )}
+                  >
+                    <span className="block text-sm font-black">{mode.label}</span>
+                    <span className={clsx('mt-1 block text-xs leading-snug', adjustMode === mode.id ? 'text-stone-300' : 'text-stone-500')}>
+                      {mode.description}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <div className="sticky bottom-0 -mx-4 mt-6 border-t border-stone-200 bg-stone-50/95 px-4 pt-3 backdrop-blur">
+              {filtersActive && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="mb-2 min-h-10 w-full rounded-xl text-sm font-semibold text-stone-500 underline decoration-stone-300 underline-offset-4"
+                >
+                  Clear all filters
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(false)}
+                className="min-h-[3.25rem] w-full rounded-2xl bg-stone-950 px-5 py-3 text-base font-bold text-white shadow-[0_14px_34px_rgba(28,25,23,0.16)]"
+              >
+                Show {personalisedPool.length} results
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
     </>
+  );
+}
+
+function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-xs font-semibold text-stone-700">
+      {label}
+      <button
+        type="button"
+        onClick={onRemove}
+        aria-label={`Remove ${label} filter`}
+        className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-stone-500"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </span>
   );
 }
 

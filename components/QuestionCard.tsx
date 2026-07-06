@@ -15,22 +15,26 @@ interface QuestionCardProps {
 // Driving columns from JS lets compact questions fit the viewport, while larger
 // mobile image sets can scroll inside the options area without shrinking cards.
 function useGridColumns(count: number): number {
-  const [bp, setBp] = useState<'base' | 'md' | 'lg'>('base');
+  const [bp, setBp] = useState<'base' | 'widePhone' | 'md' | 'lg'>('base');
 
   useEffect(() => {
+    const widePhone = window.matchMedia('(min-width: 390px)');
     const md = window.matchMedia('(min-width: 768px)');
     const lg = window.matchMedia('(min-width: 1024px)');
-    const update = () => setBp(lg.matches ? 'lg' : md.matches ? 'md' : 'base');
+    const update = () => setBp(lg.matches ? 'lg' : md.matches ? 'md' : widePhone.matches ? 'widePhone' : 'base');
     update();
+    widePhone.addEventListener('change', update);
     md.addEventListener('change', update);
     lg.addEventListener('change', update);
     return () => {
+      widePhone.removeEventListener('change', update);
       md.removeEventListener('change', update);
       lg.removeEventListener('change', update);
     };
   }, []);
 
   if (bp === 'base') return 1;
+  if (bp === 'widePhone') return count <= 4 ? 2 : 1;
   if (count <= 3) return Math.max(1, count);
   if (count === 4) return 2; // 2 by 2 at every size
   if (count >= 7) return bp === 'lg' ? 4 : 2;
@@ -200,7 +204,7 @@ const SECTION_LABELS: Record<string, string> = {
             style={{
               gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
               ...(scrollImageGrid
-                ? { gridAutoRows: columns === 1 ? 'minmax(154px, 178px)' : 'minmax(148px, 168px)' }
+                ? { gridAutoRows: columns === 1 ? 'minmax(164px, 188px)' : 'minmax(150px, 174px)' }
                 : { gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))` }),
             }}
             ref={setOptionsNode}

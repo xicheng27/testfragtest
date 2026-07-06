@@ -11,6 +11,9 @@ interface MainPageProps {
   onStartQuiz: () => void;
   onViewShelf: () => void;
   onViewPreviousResults: () => void;
+  onResumeQuiz: () => void;
+  onStartOver: () => void;
+  hasDraftProgress: boolean;
   hasPreviousResults: boolean;
 }
 
@@ -18,6 +21,9 @@ export default function MainPage({
   onStartQuiz,
   onViewShelf,
   onViewPreviousResults,
+  onResumeQuiz,
+  onStartOver,
+  hasDraftProgress,
   hasPreviousResults,
 }: MainPageProps) {
   const { user, isGuest, signOut } = useAuth();
@@ -28,6 +34,7 @@ export default function MainPage({
     { label: 'About', href: '/about' },
     { label: 'Disclaimer', href: '/disclaimer' },
     { label: 'My Shelf', onClick: onViewShelf },
+    ...(hasDraftProgress ? [{ label: 'Resume quiz', onClick: onResumeQuiz }] : []),
     ...(hasPreviousResults ? [{ label: 'My saved matches', onClick: onViewPreviousResults }] : []),
     user
       ? { label: 'Sign out', onClick: signOut }
@@ -50,7 +57,7 @@ export default function MainPage({
               <button
                 type="button"
                 onClick={onViewShelf}
-                className="hidden min-h-11 items-center rounded-full border border-stone-200 bg-white/80 px-4 text-sm font-medium text-stone-700 shadow-sm transition-colors hover:border-stone-400 hover:text-stone-950 sm:inline-flex"
+                className="inline-flex min-h-11 items-center rounded-full border border-stone-200 bg-white/80 px-4 text-sm font-medium text-stone-700 shadow-sm transition-colors hover:border-stone-400 hover:text-stone-950"
               >
                 Shelf
               </button>
@@ -80,7 +87,7 @@ export default function MainPage({
           </div>
         </header>
 
-        <main data-ui="hero" className="flex flex-1 flex-col items-center justify-center px-4 py-10 text-center sm:px-6 sm:py-16">
+        <main data-ui="hero" className="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center sm:px-6 sm:py-16">
           <div className="w-full max-w-4xl">
             <div className="mb-5 inline-flex rounded-full border border-stone-200 bg-white/80 px-3 py-1 text-xs font-medium text-stone-600 shadow-sm">
               No account needed. Shelf stays safe.
@@ -91,14 +98,38 @@ export default function MainPage({
               </svg>
             </div>
 
-            <h1 className="mx-auto max-w-[14ch] text-[clamp(2.25rem,8.5vw,3rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-stone-950 [text-wrap:balance]">
-              Find your next fragrance
+            <h1 className="mx-auto max-w-[13ch] text-[clamp(2.35rem,9vw,3rem)] font-semibold leading-[1] tracking-[-0.04em] text-stone-950 [text-wrap:balance]">
+              Find a fragrance that actually feels like you
             </h1>
-            <p className="mx-auto mb-8 mt-3 max-w-[34ch] text-[clamp(0.95rem,3.8vw,1rem)] leading-relaxed text-stone-600 [text-wrap:pretty]">
-              Answer quick visual questions about scent, vibe, budget, occasion, and style. We will turn that into useful fragrance picks.
+            <p className="mx-auto mb-6 mt-3 max-w-[34ch] text-base leading-relaxed text-stone-600 [text-wrap:pretty]">
+              Answer a few vibe, scent, budget, and occasion questions to get personalised fragrance matches.
             </p>
 
             <div className="mx-auto grid max-w-3xl gap-4 text-left">
+              {hasDraftProgress && (
+                <section className="rounded-[1.6rem] border border-stone-300 bg-stone-950 p-4 text-white shadow-[0_18px_50px_rgba(28,25,23,0.18)] sm:p-5">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-stone-400">Continue your quiz?</p>
+                  <h2 className="mt-2 text-2xl font-semibold tracking-tight">Pick up where you left off.</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-300">Your answers are saved in this browser.</p>
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={onResumeQuiz}
+                      className="min-h-12 rounded-2xl bg-white px-5 text-sm font-bold text-stone-950 transition-transform hover:-translate-y-0.5 active:translate-y-0"
+                    >
+                      Resume
+                    </button>
+                    <button
+                      type="button"
+                      onClick={onStartOver}
+                      className="min-h-12 rounded-2xl border border-white/20 px-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                    >
+                      Start over
+                    </button>
+                  </div>
+                </section>
+              )}
+
               <section className="group flex flex-col rounded-[1.75rem] border border-white/80 bg-white/90 p-5 shadow-[0_22px_70px_rgba(28,25,23,0.08)] transition duration-300 hover:-translate-y-1 sm:p-6">
                 <p className="text-xs font-semibold text-[#8a6417]">Fast, visual, fragrance-first</p>
                 <h2 className="mt-2 text-xl font-semibold tracking-tight text-stone-950">Recommendation Quiz</h2>
@@ -123,9 +154,16 @@ export default function MainPage({
                   <button
                     type="button"
                     onClick={onStartQuiz}
-                    className="min-h-12 w-full rounded-2xl bg-stone-950 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(28,25,23,0.18)] transition-all hover:-translate-y-0.5 hover:bg-stone-800 active:translate-y-0"
+                    className="min-h-14 w-full rounded-2xl bg-stone-950 text-base font-bold text-white shadow-[0_14px_34px_rgba(28,25,23,0.18)] transition-all hover:-translate-y-0.5 hover:bg-stone-800 active:translate-y-0"
                   >
-                    Find my scent
+                    Start Quiz
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onViewShelf}
+                    className="mt-3 min-h-12 w-full rounded-2xl border border-stone-200 bg-white/70 text-sm font-semibold text-stone-700 transition-colors hover:border-stone-500 hover:text-stone-950"
+                  >
+                    View my Shelf
                   </button>
                   {hasPreviousResults && (
                     <button

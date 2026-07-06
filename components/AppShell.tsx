@@ -32,17 +32,22 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
   const {
     answers: storedAnswers,
     isExtended: storedIsExtended,
+    step: storedStep,
+    hasDraftProgress,
     hasPreviousResults,
+    saveDraft,
     saveProgress,
     clearProgress,
   } = useQuizProgress();
   const [view, setView] = useState<AppView>(() => (autoStartQuiz ? 'quiz' : 'landing'));
   const [results, setResults] = useState<ScoredFragrance[]>([]);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers>({});
+  const [quizStep, setQuizStep] = useState(0);
   const [isExtended, setIsExtended] = useState(false);
   const [shelfReturnView, setShelfReturnView] = useState<ShelfReturnView>('main');
   const previousProfileId = useRef<string | null>(null);
   const startQuizAfterGuestEntry = useRef(false);
+  const viewShelfAfterGuestEntry = useRef(false);
   const autoStartHandled = useRef(false);
 
   useEffect(() => {
@@ -50,10 +55,13 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
 
     previousProfileId.current = profileId;
     const shouldStartQuiz = profileId === 'guest' && startQuizAfterGuestEntry.current;
+    const shouldViewShelf = profileId === 'guest' && viewShelfAfterGuestEntry.current;
     startQuizAfterGuestEntry.current = false;
-    setView(profileId ? (shouldStartQuiz ? 'quiz' : 'main') : 'landing');
+    viewShelfAfterGuestEntry.current = false;
+    setView(profileId ? (shouldStartQuiz ? 'quiz' : shouldViewShelf ? 'shelf' : 'main') : 'landing');
     setResults([]);
     setQuizAnswers({});
+    setQuizStep(0);
     setIsExtended(false);
     setShelfReturnView('main');
   }, [isReady, profileId]);
@@ -88,6 +96,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
   const handleRestart = () => {
     setResults([]);
     setQuizAnswers({});
+    setQuizStep(0);
     setIsExtended(false);
     clearProgress();
     setView('main');
@@ -95,21 +104,46 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
 
   const handleExtendedQuiz = () => {
     setIsExtended(true);
+    setQuizStep(0);
     setView('quiz-extended');
   };
 
   const handleStartQuiz = () => {
     setQuizAnswers({});
+    setQuizStep(0);
     setIsExtended(false);
+    clearProgress();
     setView('quiz');
   };
 
   const handleLandingStartQuiz = () => {
     setQuizAnswers({});
+    setQuizStep(0);
     setIsExtended(false);
+    clearProgress();
     setView('quiz');
     startQuizAfterGuestEntry.current = true;
     continueAsGuest();
+  };
+
+  const handleLandingViewShelf = () => {
+    setShelfReturnView('main');
+    setView('shelf');
+    viewShelfAfterGuestEntry.current = true;
+    continueAsGuest();
+  };
+
+  const handleResumeQuiz = () => {
+    setQuizAnswers(storedAnswers);
+    setQuizStep(storedStep);
+    setIsExtended(storedIsExtended);
+    setView(storedIsExtended ? 'quiz-extended' : 'quiz');
+  };
+
+  const handleQuizProgress = (answers: QuizAnswers, step: number) => {
+    setQuizAnswers(answers);
+    setQuizStep(step);
+    saveDraft(answers, isExtended, step);
   };
 
   const handleViewShelf = (returnView: ShelfReturnView) => {
@@ -128,7 +162,7 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
     <AnimatePresence mode="wait">
       {currentView === 'landing' && (
         <motion.div key="landing" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>
-          <LandingPage onStartQuiz={handleLandingStartQuiz} />
+          <LandingPage onStartQuiz={handleLandingStartQuiz} onViewShelf={handleLandingViewShelf} />
         </motion.div>
       )}
       {currentView === 'main' && (
@@ -137,6 +171,9 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
             onStartQuiz={handleStartQuiz}
             onViewShelf={() => handleViewShelf('main')}
             onViewPreviousResults={handleViewPreviousResults}
+            onResumeQuiz={handleResumeQuiz}
+            onStartOver={handleStartQuiz}
+            hasDraftProgress={hasDraftProgress}
             hasPreviousResults={hasPreviousResults}
           />
         </motion.div>
@@ -146,6 +183,9 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
           <Quiz
             questions={quizQuestions}
             initialAnswers={quizAnswers}
+            initialStep={quizStep}
+            autoStart={quizStep > 0 || Object.keys(quizAnswers).length > 0}
+            onProgress={handleQuizProgress}
             onComplete={handleQuizComplete}
             onBack={() => setView('main')}
           />
@@ -156,6 +196,9 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
           <Quiz
             questions={additionalQuizQuestions}
             initialAnswers={quizAnswers}
+            initialStep={quizStep}
+            autoStart={quizStep > 0 || Object.keys(quizAnswers).length > 0}
+            onProgress={handleQuizProgress}
             onComplete={handleQuizComplete}
             onBack={() => setView('results')}
           />

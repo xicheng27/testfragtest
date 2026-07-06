@@ -49,8 +49,8 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
           <p className="mb-2 text-xs font-medium uppercase tracking-[0.22em] text-stone-400">
             {user ? `${user.name.split(' ')[0]}'s collection` : 'Your collection'}
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-stone-950">Shelf</h1>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-stone-500">
+          <h1 className="text-[clamp(2.25rem,10vw,3rem)] font-semibold tracking-tight text-stone-950">Shelf</h1>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-stone-600">
             A considered place for fragrances you want to revisit.
             {isGuest ? ' This guest Shelf stays only in this browser.' : ' It is connected to your account.'}
           </p>
@@ -63,20 +63,20 @@ export default function ShelfPage({ onBack, onStartQuiz }: ShelfPageProps) {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-stone-200 bg-white px-6 py-14 text-center sm:px-10">
+          <div className="rounded-[1.7rem] border border-stone-200 bg-white/90 px-6 py-14 text-center shadow-sm sm:px-10">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 text-stone-500">
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 19.5h16M6 16V5.5A1.5 1.5 0 017.5 4h9A1.5 1.5 0 0118 5.5V16M9 8h6M9 11h6" />
               </svg>
             </div>
-            <h2 className="mt-5 font-medium text-stone-950">Your shelf is empty.</h2>
-            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-stone-500">
-              Add fragrances you love from your recommendations.
+            <h2 className="mt-5 text-2xl font-semibold tracking-tight text-stone-950">Your Shelf is empty</h2>
+            <p className="mx-auto mt-2 max-w-md text-base leading-relaxed text-stone-600">
+              Save fragrances from your recommendations to build your scent shortlist.
             </p>
             <button
               type="button"
               onClick={onStartQuiz}
-              className="mt-6 rounded-xl bg-stone-950 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-stone-800"
+              className="mt-6 min-h-12 rounded-2xl bg-stone-950 px-6 py-3 text-base font-bold text-white shadow-[0_14px_34px_rgba(28,25,23,0.16)] transition-colors hover:bg-stone-800"
             >
               Take the quiz
             </button>

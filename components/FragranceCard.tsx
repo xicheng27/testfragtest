@@ -439,7 +439,7 @@ export default function FragranceCard({
             </div>
           )}
 
-          <div className="mt-6 grid gap-2 sm:grid-cols-3">
+          <div className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             <button
               type="button"
               onClick={handleShelf}
@@ -459,6 +459,17 @@ export default function FragranceCard({
               )}
               {saved ? 'Saved to Shelf' : 'Save to Shelf'}
             </button>
+            {fragrance.productUrl && (
+              <a
+                href={fragrance.productUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('result_view_official_product', { fragranceId: fragrance.id, url: fragrance.productUrl })}
+                className="flex min-h-12 items-center justify-center rounded-xl border border-stone-300 bg-white px-4 text-base font-medium text-stone-800 transition-colors hover:border-stone-500 hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
+              >
+                View Official
+              </a>
+            )}
             <button
               type="button"
               onClick={() => setDetailsOpen(open => !open)}
