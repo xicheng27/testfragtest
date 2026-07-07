@@ -390,8 +390,8 @@ export default function ResultsPage({
 
   return (
     <>
-      <div className="marble-bg min-h-screen">
-        <header data-ui="site-header" className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/85 px-4 py-3 backdrop-blur-xl sm:px-6">
+      <div className="results-page marble-bg min-h-screen">
+        <header data-ui="site-header" className="sticky top-0 z-20 border-b border-stone-200/70 bg-stone-50/95 px-4 py-3 sm:bg-stone-50/85 sm:px-6 sm:backdrop-blur-xl">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
             <span className="font-black tracking-tight text-stone-950">ScentMatch</span>
             <div className="flex items-center gap-1 sm:gap-3">
@@ -419,7 +419,7 @@ export default function ResultsPage({
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-12">
-          <section className="mb-7 overflow-hidden rounded-[2.15rem] border border-stone-200 bg-stone-950 text-white shadow-[0_10px_24px_rgba(28,25,23,0.1)] sm:shadow-[0_30px_90px_rgba(28,25,23,0.18)]" aria-labelledby="scent-profile-report">
+          <section data-results-section="profile-report" className="mb-7 overflow-hidden rounded-[2.15rem] border border-stone-200 bg-stone-950 text-white shadow-[0_10px_24px_rgba(28,25,23,0.1)] sm:shadow-[0_30px_90px_rgba(28,25,23,0.18)]" aria-labelledby="scent-profile-report">
             <div className="relative p-5 sm:p-8">
               <div className="pointer-events-none absolute inset-0 opacity-0 sm:opacity-70 [background:radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.16),transparent_28%),radial-gradient(circle_at_88%_0%,rgba(176,141,87,0.18),transparent_34%)]" aria-hidden="true" />
               <div className="relative grid gap-4 sm:gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:items-start">
@@ -583,8 +583,8 @@ export default function ResultsPage({
             </div>
           </section>
 
-          <section className="mt-7">
-            <div className="rounded-[1.6rem] border border-stone-200 bg-white/85 p-4 shadow-sm backdrop-blur sm:hidden">
+          <section data-results-section="refine-results" className="mt-7">
+            <div className="rounded-[1.6rem] border border-stone-200 bg-white p-4 shadow-sm sm:hidden">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.18em] text-[#8a6417]">Refine</p>
@@ -622,7 +622,7 @@ export default function ResultsPage({
               )}
             </div>
 
-            <section className="hidden min-w-0 rounded-[2rem] border border-stone-200 bg-white/85 p-5 shadow-sm backdrop-blur sm:block sm:p-7">
+            <section className="hidden min-w-0 rounded-[2rem] border border-stone-200 bg-white p-5 shadow-sm sm:block sm:bg-white/85 sm:p-7 sm:backdrop-blur">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Refine results</p>
@@ -734,7 +734,7 @@ export default function ResultsPage({
             )}
           </section>
 
-          <section className="mt-8" aria-label="Detailed fragrance recommendations">
+          <section data-results-section="recommendations" className="mt-8" aria-label="Detailed fragrance recommendations">
             <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Why these made the list</p>

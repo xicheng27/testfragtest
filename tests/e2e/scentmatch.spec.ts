@@ -78,15 +78,36 @@ test('mobile results keep report and recommendation cards mounted while scrollin
   await completeQuiz(page);
 
   await expect(page.getByText(/Overall profile confidence/i)).toBeVisible();
+  await expect(page.locator('[data-results-section="profile-report"]')).toBeVisible();
+  await expect(page.locator('[data-results-section="refine-results"]')).toBeVisible();
+  await expect(page.locator('[data-results-section="recommendations"]')).toBeVisible();
   const cards = page.locator('[data-fragrance-id]');
   await expect(cards).toHaveCount(7);
 
   const before = await page.evaluate(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-results-section]'));
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-fragrance-id]'));
+    sections.forEach((node, index) => {
+      node.dataset.sectionProbe = `section-${index}`;
+    });
     nodes.forEach((node, index) => {
       node.dataset.mountProbe = `stable-${index}`;
     });
+    const sectionStyles = sections.map(node => {
+      const style = window.getComputedStyle(node);
+      return {
+        id: node.dataset.resultsSection,
+        animationName: style.animationName,
+        transitionDuration: style.transitionDuration,
+        transitionDelay: style.transitionDelay,
+        contentVisibility: style.contentVisibility,
+        backdropFilter: style.backdropFilter || style.webkitBackdropFilter,
+      };
+    });
     return {
+      sectionIds: sections.map(node => node.dataset.resultsSection),
+      sectionProbes: sections.map(node => node.dataset.sectionProbe),
+      sectionStyles,
       ids: nodes.map(node => node.dataset.fragranceId),
       probes: nodes.map(node => node.dataset.mountProbe),
       loading: Array.from(document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img')).map(img => img.loading),
@@ -100,8 +121,11 @@ test('mobile results keep report and recommendation cards mounted while scrollin
   await page.waitForTimeout(200);
 
   const after = await page.evaluate(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-results-section]'));
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-fragrance-id]'));
     return {
+      sectionIds: sections.map(node => node.dataset.resultsSection),
+      sectionProbes: sections.map(node => node.dataset.sectionProbe),
       ids: nodes.map(node => node.dataset.fragranceId),
       probes: nodes.map(node => node.dataset.mountProbe),
       loading: Array.from(document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img')).map(img => img.loading),
@@ -109,6 +133,14 @@ test('mobile results keep report and recommendation cards mounted while scrollin
     };
   });
 
+  expect(after.sectionIds).toEqual(before.sectionIds);
+  expect(after.sectionProbes).toEqual(before.sectionProbes);
+  expect(before.sectionStyles.every(style => (
+    style.animationName === 'none'
+    && style.transitionDelay === '0s'
+    && style.backdropFilter === 'none'
+    && style.contentVisibility === 'visible'
+  ))).toBeTruthy();
   expect(after.ids).toEqual(before.ids);
   expect(after.probes).toEqual(before.probes);
   expect(after.loading.every(value => value === 'eager')).toBeTruthy();

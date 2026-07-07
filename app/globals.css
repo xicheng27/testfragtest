@@ -149,6 +149,26 @@ a {
   touch-action: manipulation;
 }
 
+@media (max-width: 767px) {
+  .results-page,
+  .results-page * {
+    animation: none !important;
+    transition-delay: 0ms !important;
+    transition-duration: 0ms !important;
+    content-visibility: visible !important;
+    contain-intrinsic-size: auto !important;
+  }
+
+  .results-page {
+    contain: none !important;
+  }
+
+  .results-page [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
