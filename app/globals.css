@@ -151,7 +151,9 @@ a {
 
 @media (max-width: 767px) {
   .results-page,
-  .results-page * {
+  .results-page-v2,
+  .results-page *,
+  .results-page-v2 * {
     animation: none !important;
     transition-delay: 0ms !important;
     transition-duration: 0ms !important;
@@ -159,11 +161,13 @@ a {
     contain-intrinsic-size: auto !important;
   }
 
-  .results-page {
+  .results-page,
+  .results-page-v2 {
     contain: none !important;
   }
 
-  .results-page [class*="backdrop-blur"] {
+  .results-page [class*="backdrop-blur"],
+  .results-page-v2 [class*="backdrop-blur"] {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
   }

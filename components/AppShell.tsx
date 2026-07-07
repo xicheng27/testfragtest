@@ -5,7 +5,7 @@ import { useAuth } from '@/lib/auth-context';
 import LandingPage from '@/components/LandingPage';
 import MainPage from '@/components/MainPage';
 import Quiz from '@/components/Quiz';
-import ResultsPage from '@/components/ResultsPage';
+import ResultsPageV2 from '@/components/ResultsPageV2';
 import ShelfPage from '@/components/ShelfPage';
 import { QuizAnswers, getRecommendations, ScoredFragrance } from '@/lib/scoring';
 import { additionalQuizQuestions, quizQuestions } from '@/lib/quiz';
@@ -158,6 +158,19 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
     setView('results');
   };
 
+  if (currentView === 'results') {
+    return (
+      <ResultsPageV2
+        results={results}
+        answers={quizAnswers}
+        onRestart={handleRestart}
+        onExtendedQuiz={handleExtendedQuiz}
+        onViewShelf={() => handleViewShelf('results')}
+        isExtended={isExtended}
+      />
+    );
+  }
+
   return (
     <AnimatePresence mode="wait">
       {currentView === 'landing' && (
@@ -203,18 +216,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
             onBack={() => setView('results')}
           />
         </motion.div>
-      )}
-      {currentView === 'results' && (
-        <div key="results">
-          <ResultsPage
-            results={results}
-            answers={quizAnswers}
-            onRestart={handleRestart}
-            onExtendedQuiz={handleExtendedQuiz}
-            onViewShelf={() => handleViewShelf('results')}
-            isExtended={isExtended}
-          />
-        </div>
       )}
       {currentView === 'shelf' && (
         <motion.div key="shelf" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.3 }}>

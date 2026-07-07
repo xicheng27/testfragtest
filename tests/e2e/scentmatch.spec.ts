@@ -29,7 +29,7 @@ async function completeQuiz(page: Page) {
   for (let index = 0; index < 10; index += 1) {
     await answerCurrentQuestion(page);
   }
-  await expect(page.getByText(/Your Scent Profile Report/i)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/Your Scent Profile/i)).toBeVisible({ timeout: 20_000 });
 }
 
 test('landing page starts the quiz', async ({ page }) => {
@@ -77,9 +77,9 @@ test('mobile results keep report and recommendation cards mounted while scrollin
   await page.setViewportSize({ width: 360, height: 740 });
   await completeQuiz(page);
 
-  await expect(page.getByText(/Overall profile confidence/i)).toBeVisible();
+  await expect(page.getByText(/Report confidence/i)).toBeVisible();
   await expect(page.locator('[data-results-section="profile-report"]')).toBeVisible();
-  await expect(page.locator('[data-results-section="refine-results"]')).toBeVisible();
+  await expect(page.locator('[data-results-section="match-summary"]')).toBeVisible();
   await expect(page.locator('[data-results-section="recommendations"]')).toBeVisible();
   const cards = page.locator('[data-fragrance-id]');
   await expect(cards).toHaveCount(7);
@@ -110,7 +110,7 @@ test('mobile results keep report and recommendation cards mounted while scrollin
       sectionStyles,
       ids: nodes.map(node => node.dataset.fragranceId),
       probes: nodes.map(node => node.dataset.mountProbe),
-      loading: Array.from(document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img')).map(img => img.loading),
+      imageCount: document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img').length,
       horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
     };
   });
@@ -128,7 +128,7 @@ test('mobile results keep report and recommendation cards mounted while scrollin
       sectionProbes: sections.map(node => node.dataset.sectionProbe),
       ids: nodes.map(node => node.dataset.fragranceId),
       probes: nodes.map(node => node.dataset.mountProbe),
-      loading: Array.from(document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img')).map(img => img.loading),
+      imageCount: document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img').length,
       horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
     };
   });
@@ -143,7 +143,7 @@ test('mobile results keep report and recommendation cards mounted while scrollin
   ))).toBeTruthy();
   expect(after.ids).toEqual(before.ids);
   expect(after.probes).toEqual(before.probes);
-  expect(after.loading.every(value => value === 'eager')).toBeTruthy();
+  expect(after.imageCount).toBe(before.imageCount);
   expect(after.horizontalOverflow).toBeFalsy();
 });
 

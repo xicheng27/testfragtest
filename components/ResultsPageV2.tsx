@@ -1,0 +1,446 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
+import AuthModal from './AuthModal';
+import { useAuth } from '@/lib/auth-context';
+import { useShelf } from '@/lib/shelf-context';
+import { CURRENCIES, Currency, PRICED_AS_OF, formatPrice, getSignaturePrice, useCurrency } from '@/lib/pricing';
+import { Fragrance } from '@/lib/fragrances';
+import { QuizAnswers, ScoredFragrance, buildScentProfile, getRecommendations } from '@/lib/scoring';
+import { trackEvent } from '@/lib/analytics';
+
+interface ResultsPageV2Props {
+  results: ScoredFragrance[];
+  answers?: QuizAnswers;
+  onRestart: () => void;
+  onExtendedQuiz: () => void;
+  onViewShelf: () => void;
+  isExtended: boolean;
+}
+
+const fallbackImage = '/images/products/fallback.svg';
+
+function valuesFor(answers: QuizAnswers, id: string) {
+  const value = answers[id];
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
+function pretty(value: string) {
+  return value.replaceAll('-', ' ');
+}
+
+function join(values: string[], fallback: string) {
+  return values.length ? values.map(pretty).join(' / ') : fallback;
+}
+
+function brandSlug(brand: string) {
+  return brand.toLowerCase().replace(/\s+/g, '-');
+}
+
+function average(values: number[]) {
+  if (!values.length) return 0;
+  return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
+}
+
+function profileSummary(answers: QuizAnswers) {
+  const avoids = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
+  return [
+    { label: 'Vibe', value: join(valuesFor(answers, 'desired-feel'), 'Flexible') },
+    { label: 'Occasion', value: join(valuesFor(answers, 'occasion'), 'Any setting') },
+    { label: 'Weather', value: join(valuesFor(answers, 'weather'), 'Any climate') },
+    { label: 'Budget', value: join(valuesFor(answers, 'price-range'), 'Open') },
+    { label: 'Projection', value: join(valuesFor(answers, 'projection'), 'Not sure') },
+    { label: 'Avoids', value: avoids.length ? join(avoids, '') : 'No hard red flags selected' },
+  ];
+}
+
+function profileMetrics(results: ScoredFragrance[], answers: QuizAnswers) {
+  const top = results.slice(0, 3);
+  const avoids = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
+  return [
+    {
+      label: 'Report confidence',
+      value: `${average(top.map(result => result.matchBreakdown.confidenceScore)) || average(top.map(result => result.matchPercent))}%`,
+      detail: 'Average confidence from the top recommendations.',
+    },
+    {
+      label: 'Best match',
+      value: top[0] ? `${top[0].matchPercent}%` : 'N/A',
+      detail: top[0] ? `${top[0].fragrance.name} has the strongest total fit.` : 'Take the quiz to generate matches.',
+    },
+    {
+      label: 'Red flag safety',
+      value: `${average(top.map(result => result.matchBreakdown.redFlagSafety)) || 100}%`,
+      detail: avoids.length ? `Avoiding ${avoids.map(pretty).join(', ')}.` : 'No hard avoid notes selected.',
+    },
+    {
+      label: 'Budget fit',
+      value: `${average(top.map(result => result.matchBreakdown.budgetFit)) || 0}%`,
+      detail: 'Checks how well the matches respect your price answer.',
+    },
+  ];
+}
+
+export default function ResultsPageV2({
+  results,
+  answers = {},
+  onRestart,
+  onViewShelf,
+}: ResultsPageV2Props) {
+  const { user, signOut } = useAuth();
+  const { shelfIds, isOnShelf, addToShelf, removeFromShelf } = useShelf();
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [currency, setCurrency] = useCurrency();
+  const [hiddenIds, setHiddenIds] = useState<string[]>([]);
+  const [message, setMessage] = useState('');
+  const scentProfile = useMemo(() => buildScentProfile(answers), [answers]);
+  const baseResults = useMemo(() => (
+    results.length ? results : getRecommendations(answers, 7)
+  ), [answers, results]);
+  const visibleResults = useMemo(() => (
+    baseResults.filter(result => !hiddenIds.includes(result.fragrance.id))
+  ), [baseResults, hiddenIds]);
+  const summary = useMemo(() => profileSummary(answers), [answers]);
+  const metrics = useMemo(() => profileMetrics(baseResults, answers), [answers, baseResults]);
+
+  useEffect(() => {
+    trackEvent('results_view', { resultCount: baseResults.length, profile: scentProfile.title, version: 'static_v2' });
+  }, [baseResults.length, scentProfile.title]);
+
+  useEffect(() => {
+    if (!message) return;
+    const timeout = window.setTimeout(() => setMessage(''), 2200);
+    return () => window.clearTimeout(timeout);
+  }, [message]);
+
+  const handleShelf = (fragrance: Fragrance) => {
+    if (isOnShelf(fragrance.id)) {
+      removeFromShelf(fragrance.id);
+      setMessage(`${fragrance.name} removed from your Shelf.`);
+      return;
+    }
+
+    addToShelf(fragrance.id);
+    trackEvent('result_save_to_shelf', { fragranceId: fragrance.id });
+    setMessage(`${fragrance.name} saved to your Shelf.`);
+  };
+
+  const handleNotMyVibe = (fragranceId: string, reason: string) => {
+    setHiddenIds(current => current.includes(fragranceId) ? current : [...current, fragranceId]);
+    setMessage(`Got it - hiding that pick because it felt ${reason.toLowerCase()}.`);
+    trackEvent('result_feedback_not_my_vibe', { fragranceId, reason });
+  };
+
+  return (
+    <>
+      <div className="results-page-v2 min-h-screen overflow-x-clip bg-[#f7f4ee] text-stone-950">
+        <header className="sticky top-0 z-20 border-b border-stone-200 bg-[#f7f4ee] px-4 py-3">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
+            <span className="font-black tracking-tight">ScentMatch</span>
+            <nav className="flex items-center gap-2" aria-label="Results navigation">
+              <button
+                type="button"
+                onClick={onViewShelf}
+                className="min-h-11 rounded-full border border-stone-300 bg-white px-4 text-sm font-bold text-stone-800"
+              >
+                Shelf{shelfIds.length ? ` (${shelfIds.length})` : ''}
+              </button>
+              {user ? (
+                <button type="button" onClick={signOut} className="min-h-11 px-2 text-sm font-semibold text-stone-600">
+                  Sign out
+                </button>
+              ) : (
+                <button type="button" onClick={() => setShowSignIn(true)} className="min-h-11 px-2 text-sm font-semibold text-stone-600">
+                  Log in
+                </button>
+              )}
+            </nav>
+          </div>
+        </header>
+
+        <main className="mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-10">
+          <section data-results-section="profile-report" className="rounded-[1.75rem] border border-stone-200 bg-stone-950 p-5 text-white sm:p-8">
+            <div className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d2b886]">Your Scent Profile</p>
+                <h1 className="mt-3 text-[clamp(2.4rem,10vw,5.4rem)] font-black leading-[0.9] tracking-[-0.075em]">
+                  {scentProfile.title}
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-stone-300 sm:text-lg">
+                  {scentProfile.description} These picks are ranked from your scent direction, occasion, climate, budget, projection, and red flags.
+                </p>
+              </div>
+              <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.07] p-4">
+                <p className="text-xs font-black uppercase tracking-[0.16em] text-stone-500">Top match confidence</p>
+                <p className="mt-3 text-5xl font-black tracking-[-0.06em]">{baseResults[0]?.matchPercent ?? 0}%</p>
+                <p className="mt-2 text-sm leading-relaxed text-stone-400">
+                  Based on your strongest current recommendation.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent('quiz_retake', { source: 'results_v2_top' });
+                    onRestart();
+                  }}
+                  className="mt-5 min-h-12 w-full rounded-2xl bg-white px-5 text-base font-black text-stone-950"
+                >
+                  Retake quiz
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {summary.map(item => (
+                <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-500">{item.label}</p>
+                  <p className="mt-1.5 text-sm capitalize leading-snug text-stone-100">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section data-results-section="match-summary" className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {metrics.map(metric => (
+              <article key={metric.label} className="rounded-[1.35rem] border border-stone-200 bg-white p-4 shadow-sm">
+                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-500">{metric.label}</p>
+                <p className="mt-2 text-2xl font-black tracking-[-0.04em] text-stone-950">{metric.value}</p>
+                <p className="mt-2 text-xs leading-relaxed text-stone-500">{metric.detail}</p>
+              </article>
+            ))}
+          </section>
+
+          <section data-results-section="recommendations" className="mt-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Your Matches</p>
+                <h2 className="mt-1 text-3xl font-black tracking-[-0.05em] text-stone-950">Fragrances worth trying</h2>
+              </div>
+              <CurrencyPicker currency={currency} setCurrency={setCurrency} />
+            </div>
+
+            {message && (
+              <p className="mt-4 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm font-semibold text-stone-700" aria-live="polite">
+                {message}
+              </p>
+            )}
+
+            {visibleResults.length ? (
+              <div className="mt-4 grid gap-4">
+                {visibleResults.map((result, index) => (
+                  <StaticRecommendationCard
+                    key={result.fragrance.id}
+                    result={result}
+                    rank={index + 1}
+                    currency={currency}
+                    saved={isOnShelf(result.fragrance.id)}
+                    onShelf={() => handleShelf(result.fragrance)}
+                    onNotMyVibe={handleNotMyVibe}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-4 rounded-[1.5rem] border border-stone-200 bg-white p-6 text-center">
+                <h3 className="text-xl font-black tracking-[-0.03em]">No matches left after feedback.</h3>
+                <p className="mt-2 text-sm leading-relaxed text-stone-500">Retake the quiz or loosen an avoid rule to see more options.</p>
+              </div>
+            )}
+          </section>
+        </main>
+      </div>
+
+      {showSignIn && <AuthModal onClose={() => setShowSignIn(false)} initialMode="login" />}
+    </>
+  );
+}
+
+function CurrencyPicker({
+  currency,
+  setCurrency,
+}: {
+  currency: Currency;
+  setCurrency: (currency: Currency) => void;
+}) {
+  return (
+    <div role="radiogroup" aria-label="Display currency" className="inline-flex self-start rounded-xl border border-stone-200 bg-white p-1">
+      {CURRENCIES.map(option => (
+        <button
+          key={option.code}
+          type="button"
+          role="radio"
+          aria-checked={currency === option.code}
+          onClick={() => setCurrency(option.code)}
+          className={clsx(
+            'min-h-10 rounded-lg px-3 text-sm font-black',
+            currency === option.code ? 'bg-stone-950 text-white' : 'text-stone-500',
+          )}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function StaticRecommendationCard({
+  result,
+  rank,
+  currency,
+  saved,
+  onShelf,
+  onNotMyVibe,
+}: {
+  result: ScoredFragrance;
+  rank: number;
+  currency: Currency;
+  saved: boolean;
+  onShelf: () => void;
+  onNotMyVibe: (fragranceId: string, reason: string) => void;
+}) {
+  const fragrance = result.fragrance;
+  const price = getSignaturePrice(fragrance, currency);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [imageSrc, setImageSrc] = useState(fragrance.imageUrl || fallbackImage);
+
+  return (
+    <article
+      id={`result-${fragrance.id}`}
+      data-fragrance-id={fragrance.id}
+      className="overflow-hidden rounded-[1.65rem] border border-stone-200 bg-white shadow-sm"
+    >
+      <div className="grid gap-0 md:grid-cols-[minmax(210px,0.75fr)_minmax(0,1.55fr)]">
+        <div className="border-b border-stone-100 bg-stone-50 p-4 md:border-b-0 md:border-r">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.25rem] bg-white">
+            <Image
+              src={imageSrc}
+              alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
+              fill
+              sizes="(max-width: 767px) calc(100vw - 48px), 320px"
+              className="object-contain p-6"
+              loading={rank <= 2 ? 'eager' : 'lazy'}
+              fetchPriority={rank === 1 ? 'high' : 'auto'}
+              quality={70}
+              unoptimized={imageSrc.endsWith('.svg')}
+              onError={() => setImageSrc(fallbackImage)}
+            />
+          </div>
+          {fragrance.isDupe && (
+            <p className="mt-3 rounded-full border border-stone-200 bg-white px-3 py-2 text-xs font-bold text-stone-700">
+              Alternative inspired by {fragrance.inspiredBy ?? fragrance.dupeOf ?? 'a similar scent'}
+            </p>
+          )}
+        </div>
+
+        <div className="p-5 sm:p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-stone-400">{fragrance.brand}</p>
+              <h3 className="mt-1 break-words text-2xl font-black leading-tight tracking-[-0.04em] text-stone-950 sm:text-3xl">
+                {fragrance.name}
+              </h3>
+            </div>
+            <div className="shrink-0 rounded-2xl bg-stone-950 px-3 py-2 text-center text-white">
+              <p className="text-[10px] font-black uppercase tracking-[0.12em] text-stone-400">Match</p>
+              <p className="text-xl font-black">{result.matchPercent}%</p>
+            </div>
+          </div>
+
+          <p className="mt-3 text-sm font-black uppercase tracking-[0.16em] text-[#8a6417]">{result.recommendationLabel}</p>
+          <p className="mt-2 text-base leading-relaxed text-stone-600">{fragrance.shortDescription}</p>
+
+          <section className="mt-4 rounded-2xl bg-stone-50 p-4" aria-label={`Why ${fragrance.name} fits you`}>
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-stone-400">Why this fits you</p>
+            <ul className="mt-2 space-y-2 text-sm leading-relaxed text-stone-700">
+              {(result.matchReasons.length ? result.matchReasons : [result.matchReason]).slice(0, 3).map(reason => (
+                <li key={reason} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-stone-950" aria-hidden="true" />
+                  <span>{reason}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+            <div className="col-span-2 rounded-2xl border border-stone-100 p-3 sm:col-span-2">
+              <dt className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-400">Key notes</dt>
+              <dd className="mt-1 capitalize text-stone-800">{fragrance.notes.slice(0, 5).join(' / ')}</dd>
+            </div>
+            <div className="rounded-2xl border border-stone-100 p-3">
+              <dt className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-400">Best for</dt>
+              <dd className="mt-1 capitalize text-stone-800">{fragrance.occasions.slice(0, 2).map(pretty).join(' / ')}</dd>
+            </div>
+            <div className="rounded-2xl border border-stone-100 p-3">
+              <dt className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-400">Price</dt>
+              <dd className="mt-1 text-stone-800">
+                {!price.exact && <span aria-label="approximately">approx. </span>}
+                {formatPrice(price.amount, currency)}
+                <span className="block text-[11px] text-stone-400">{price.size}</span>
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-2 text-[11px] text-stone-400">Indicative retail pricing as of {PRICED_AS_OF}.</p>
+
+          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            <button
+              type="button"
+              onClick={onShelf}
+              aria-pressed={saved}
+              className={clsx(
+                'min-h-12 rounded-xl px-4 text-base font-black',
+                saved ? 'border border-stone-300 bg-stone-100 text-stone-950' : 'bg-stone-950 text-white',
+              )}
+            >
+              {saved ? 'Saved to Shelf' : 'Save to Shelf'}
+            </button>
+            {fragrance.productUrl && (
+              <a
+                href={fragrance.productUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('result_view_official_product', { fragranceId: fragrance.id, url: fragrance.productUrl })}
+                className="flex min-h-12 items-center justify-center rounded-xl border border-stone-300 bg-white px-4 text-base font-black text-stone-800"
+              >
+                View official product
+              </a>
+            )}
+            <Link
+              href={`/fragrances/${brandSlug(fragrance.brand)}/${fragrance.id}`}
+              className="flex min-h-12 items-center justify-center rounded-xl border border-stone-300 bg-white px-4 text-base font-black text-stone-800"
+            >
+              View details
+            </Link>
+            <button
+              type="button"
+              onClick={() => setFeedbackOpen(open => !open)}
+              aria-expanded={feedbackOpen}
+              className="min-h-12 rounded-xl border border-stone-300 bg-white px-4 text-base font-black text-stone-800"
+            >
+              Not my vibe
+            </button>
+          </div>
+
+          {feedbackOpen && (
+            <div className="mt-4 rounded-2xl border border-stone-200 bg-stone-50 p-4">
+              <p className="text-sm font-black text-stone-950">What felt off?</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {['Too sweet', 'Too strong', 'Too expensive', 'Too basic', 'Too niche', 'Too mature', 'Not my style'].map(reason => (
+                  <button
+                    key={reason}
+                    type="button"
+                    onClick={() => onNotMyVibe(fragrance.id, reason)}
+                    className="min-h-10 rounded-full border border-stone-200 bg-white px-3 text-sm font-bold text-stone-700"
+                  >
+                    {reason}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
