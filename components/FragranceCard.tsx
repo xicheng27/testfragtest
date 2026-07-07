@@ -22,6 +22,7 @@ interface FragranceCardProps {
   rank?: number;
   similarFragrance?: Fragrance;
   currency?: Currency;
+  immediateImage?: boolean;
   onNotMyVibe?: (fragranceId: string, reason: string) => void;
 }
 
@@ -50,6 +51,7 @@ export default function FragranceCard({
   rank,
   similarFragrance,
   currency = 'USD',
+  immediateImage = false,
   onNotMyVibe,
 }: FragranceCardProps) {
   const { isOnShelf, addToShelf, removeFromShelf } = useShelf();
@@ -138,6 +140,7 @@ export default function FragranceCard({
             <ProductImage
               src={fragrance.imageUrl}
               alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
+              immediate={immediateImage}
               eager={rank === 1}
               sizes="(max-width: 767px) calc(100vw - 32px), 360px"
               className="object-contain p-7 sm:p-9"

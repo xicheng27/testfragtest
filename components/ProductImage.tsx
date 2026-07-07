@@ -7,6 +7,7 @@ import clsx from 'clsx';
 interface ProductImageProps {
   src: string;
   alt: string;
+  immediate?: boolean;
   eager?: boolean;
   sizes?: string;
   className?: string;
@@ -17,6 +18,7 @@ const FALLBACK_IMAGE = '/images/products/fallback.svg';
 export default function ProductImage({
   src,
   alt,
+  immediate = false,
   eager = false,
   sizes = '(max-width: 672px) 100vw, 672px',
   className = 'object-contain p-6 sm:p-8',
@@ -41,8 +43,8 @@ export default function ProductImage({
         fill
         sizes={sizes}
         className={clsx(className, 'transition-opacity duration-200', loaded ? 'opacity-100' : 'opacity-0')}
-        loading={eager ? 'eager' : 'lazy'}
-        fetchPriority={eager ? 'high' : 'auto'}
+        loading={immediate || eager ? 'eager' : 'lazy'}
+        fetchPriority={eager ? 'high' : immediate ? 'low' : 'auto'}
         quality={70}
         onLoad={() => setLoadedSrc(imageSrc)}
         onError={() => {

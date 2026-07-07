@@ -73,6 +73,48 @@ test('guest can complete quiz, view results, save to Shelf, give feedback, and o
   await expect(page.getByRole('button', { name: /Remove from Shelf/i }).first()).toBeVisible();
 });
 
+test('mobile results keep report and recommendation cards mounted while scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await completeQuiz(page);
+
+  await expect(page.getByText(/Overall profile confidence/i)).toBeVisible();
+  const cards = page.locator('[data-fragrance-id]');
+  await expect(cards).toHaveCount(7);
+
+  const before = await page.evaluate(() => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-fragrance-id]'));
+    nodes.forEach((node, index) => {
+      node.dataset.mountProbe = `stable-${index}`;
+    });
+    return {
+      ids: nodes.map(node => node.dataset.fragranceId),
+      probes: nodes.map(node => node.dataset.mountProbe),
+      loading: Array.from(document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img')).map(img => img.loading),
+      horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    };
+  });
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(200);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(200);
+
+  const after = await page.evaluate(() => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-fragrance-id]'));
+    return {
+      ids: nodes.map(node => node.dataset.fragranceId),
+      probes: nodes.map(node => node.dataset.mountProbe),
+      loading: Array.from(document.querySelectorAll<HTMLImageElement>('[data-fragrance-id] img')).map(img => img.loading),
+      horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    };
+  });
+
+  expect(after.ids).toEqual(before.ids);
+  expect(after.probes).toEqual(before.probes);
+  expect(after.loading.every(value => value === 'eager')).toBeTruthy();
+  expect(after.horizontalOverflow).toBeFalsy();
+});
+
 test('mobile menu is accessible', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

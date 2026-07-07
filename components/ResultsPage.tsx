@@ -523,7 +523,8 @@ export default function ResultsPage({
                                 <ProductImage
                                   src={result.fragrance.imageUrl}
                                   alt={`${result.fragrance.brand} ${result.fragrance.name} fragrance bottle`}
-                                  eager={false}
+                                  immediate
+                                  eager={index === 0}
                                   sizes="56px"
                                   className="object-contain p-2"
                                 />
@@ -746,10 +747,11 @@ export default function ResultsPage({
               <div className="flex flex-col gap-5">
                 {personalisedPool.map((result, index) => (
                   <FragranceCard
-                    key={`${result.fragrance.id}-card-${activeMood}-${adjustMode}`}
+                    key={result.fragrance.id}
                     result={result}
                     rank={index + 1}
                     currency={currency}
+                    immediateImage
                     onNotMyVibe={handleFeedback}
                   />
                 ))}
