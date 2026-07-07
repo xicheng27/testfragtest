@@ -79,6 +79,9 @@ test('mobile results keep report and recommendation cards mounted while scrollin
 
   await expect(page.getByText(/Report confidence/i)).toBeVisible();
   await expect(page.locator('[data-results-section="profile-report"]')).toBeVisible();
+  await expect(page.locator('[data-results-section="scent-dna"]')).toBeVisible();
+  await expect(page.getByText(/Your Scent DNA/i)).toBeVisible();
+  await expect(page.getByText(/^Fresh$/i).first()).toBeVisible();
   await expect(page.locator('[data-results-section="match-summary"]')).toBeVisible();
   await expect(page.locator('[data-results-section="recommendations"]')).toBeVisible();
   const cards = page.locator('[data-fragrance-id]');

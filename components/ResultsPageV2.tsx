@@ -22,6 +22,21 @@ interface ResultsPageV2Props {
 }
 
 const fallbackImage = '/images/products/fallback.svg';
+const scentStatLabels = ['Fresh', 'Sweet', 'Woody', 'Smoky', 'Mature', 'Playful', 'Elegant', 'Bold'] as const;
+
+type ScentStatLabel = typeof scentStatLabels[number];
+
+interface ScentProfileStats {
+  archetype: string;
+  archetypeDescription: string;
+  summary: string;
+  stats: Array<{ label: ScentStatLabel; value: number }>;
+  strongestTraits: ScentStatLabel[];
+  avoidTraits: string[];
+  bestOccasions: string[];
+  recommendedFamilies: string[];
+  insightCards: Array<{ title: string; value: string; description: string }>;
+}
 
 function valuesFor(answers: QuizAnswers, id: string) {
   const value = answers[id];
@@ -44,6 +59,220 @@ function brandSlug(brand: string) {
 function average(values: number[]) {
   if (!values.length) return 0;
   return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length);
+}
+
+function clampScore(value: number) {
+  return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function collectSignals(fragrance: Fragrance) {
+  return [
+    ...fragrance.scentFamilies,
+    ...fragrance.notes,
+    ...fragrance.accords,
+    ...fragrance.vibeTags,
+    ...fragrance.occasions,
+    ...fragrance.seasons,
+    ...fragrance.moods,
+    ...fragrance.aesthetics,
+    ...fragrance.vibes,
+    fragrance.projection,
+    fragrance.tier,
+    fragrance.priceRange,
+  ].map(value => value.toLowerCase());
+}
+
+function addScores(
+  scores: Record<ScentStatLabel, number>,
+  boosts: Partial<Record<ScentStatLabel, number>>,
+) {
+  for (const [label, boost] of Object.entries(boosts) as Array<[ScentStatLabel, number]>) {
+    scores[label] += boost;
+  }
+}
+
+const answerBoosts: Record<string, Partial<Record<ScentStatLabel, number>>> = {
+  clean: { Fresh: 18, Elegant: 8, Mature: 4 },
+  comforting: { Sweet: 12, Woody: 5, Elegant: 4 },
+  mysterious: { Smoky: 16, Mature: 10, Bold: 10 },
+  expensive: { Elegant: 20, Mature: 10, Woody: 6 },
+  playful: { Playful: 22, Sweet: 14, Fresh: 4 },
+  sporty: { Fresh: 20, Playful: 8, Bold: 4 },
+  bold: { Bold: 24, Smoky: 8, Mature: 5 },
+  intimate: { Elegant: 8, Mature: 4, Bold: -6 },
+  daily: { Fresh: 12, Elegant: 6, Bold: -4 },
+  work: { Elegant: 14, Mature: 8, Fresh: 4 },
+  date: { Sweet: 8, Playful: 5, Bold: 8, Elegant: 4 },
+  night: { Bold: 18, Smoky: 10, Mature: 8 },
+  casual: { Fresh: 10, Playful: 8, Elegant: -3 },
+  special: { Elegant: 18, Mature: 10, Bold: 8 },
+  everything: { Fresh: 8, Elegant: 8, Bold: -4 },
+  aquatic: { Fresh: 18, Playful: 4 },
+  gourmand: { Sweet: 24, Playful: 8, Mature: -4 },
+  floral: { Sweet: 8, Playful: 10, Elegant: 8 },
+  woody: { Woody: 22, Mature: 8, Elegant: 6 },
+  oriental: { Smoky: 18, Mature: 12, Bold: 10 },
+  spicy: { Smoky: 8, Bold: 12, Mature: 6 },
+  subtle: { Elegant: 10, Fresh: 6, Bold: -10 },
+  moderate: { Elegant: 8, Fresh: 4 },
+  strong: { Bold: 18, Mature: 4 },
+  beast: { Bold: 26, Smoky: 8 },
+  'hot-humid': { Fresh: 20, Sweet: -8, Smoky: -8 },
+  cool: { Woody: 10, Sweet: 8, Smoky: 8 },
+  indoor: { Elegant: 14, Mature: 6, Bold: -4 },
+  'all-year': { Fresh: 8, Elegant: 8 },
+  budget: { Playful: 8, Elegant: -4 },
+  mid: { Elegant: 5 },
+  designer: { Elegant: 10, Mature: 4 },
+  niche: { Elegant: 14, Mature: 8, Bold: 6 },
+  beginner: { Fresh: 8, Elegant: 5, Bold: -6 },
+  intermediate: { Elegant: 8, Woody: 4 },
+  unique: { Bold: 12, Smoky: 6, Elegant: 6 },
+  'you-smell-clean': { Fresh: 18, Elegant: 6 },
+  'what-is-that': { Bold: 18, Playful: 8 },
+  'soft-comfort': { Sweet: 12, Woody: 6, Elegant: 4 },
+  'rich-mysterious': { Smoky: 16, Mature: 10, Bold: 10 },
+  'only-you': { Bold: 12, Elegant: 8, Smoky: 6 },
+};
+
+const avoidPenalties: Record<string, Partial<Record<ScentStatLabel, number>>> = {
+  'too-sweet': { Sweet: -32 },
+  'too-strong': { Bold: -24, Smoky: -8 },
+  oud: { Smoky: -16, Woody: -8, Mature: -8 },
+  smoke: { Smoky: -34 },
+  powdery: { Mature: -12, Sweet: -4 },
+  vanilla: { Sweet: -22 },
+  rose: { Playful: -6, Elegant: -4 },
+  leather: { Smoky: -14, Mature: -8 },
+  mature: { Mature: -30, Smoky: -8 },
+};
+
+const traitSignals: Record<ScentStatLabel, string[]> = {
+  Fresh: ['fresh', 'citrus', 'aquatic', 'green', 'tea', 'linen', 'marine', 'neroli', 'bergamot', 'musk'],
+  Sweet: ['sweet', 'vanilla', 'gourmand', 'caramel', 'praline', 'tonka', 'cacao', 'cherry', 'pear'],
+  Woody: ['woody', 'cedar', 'sandalwood', 'vetiver', 'patchouli', 'oakmoss', 'birch', 'dry woods'],
+  Smoky: ['smoky', 'smoke', 'tobacco', 'incense', 'leather', 'oud', 'dark', 'fireplace'],
+  Mature: ['mature', 'elegant', 'formal', 'special', 'niche', 'winter', 'amber', 'patchouli', 'tobacco'],
+  Playful: ['playful', 'fruity', 'casual', 'summer', 'bright', 'pear', 'cherry', 'coconut', 'compliment'],
+  Elegant: ['elegant', 'quiet-luxury', 'old-money', 'hotel-room', 'luxury', 'work', 'polished', 'niche'],
+  Bold: ['bold', 'strong', 'beast', 'statement', 'night', 'date', 'special', 'addictive', 'confident'],
+};
+
+function topTraitText(traits: ScentStatLabel[]) {
+  return traits.map(trait => trait.toLowerCase()).join(', ');
+}
+
+function generateScentProfileStats(answers: QuizAnswers, recommendations: ScoredFragrance[]): ScentProfileStats {
+  const scores = scentStatLabels.reduce((acc, label) => {
+    acc[label] = 42;
+    return acc;
+  }, {} as Record<ScentStatLabel, number>);
+
+  const answerIds = [
+    ...valuesFor(answers, 'desired-feel'),
+    ...valuesFor(answers, 'occasion'),
+    ...valuesFor(answers, 'scent-family'),
+    ...valuesFor(answers, 'projection'),
+    ...valuesFor(answers, 'weather'),
+    ...valuesFor(answers, 'price-range'),
+    ...valuesFor(answers, 'experience'),
+    ...valuesFor(answers, 'compliment-style'),
+  ];
+
+  for (const id of answerIds) {
+    addScores(scores, answerBoosts[id] ?? {});
+  }
+
+  const avoids = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
+  for (const id of avoids) {
+    addScores(scores, avoidPenalties[id] ?? {});
+  }
+
+  for (const result of recommendations.slice(0, 5)) {
+    const signals = collectSignals(result.fragrance);
+    for (const label of scentStatLabels) {
+      const matches = traitSignals[label].filter(term => signals.some(signal => signal.includes(term))).length;
+      scores[label] += Math.min(16, matches * 3);
+    }
+  }
+
+  const stats = scentStatLabels.map(label => ({ label, value: clampScore(scores[label]) }));
+  const strongestTraits = [...stats]
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 3)
+    .map(stat => stat.label);
+  const traitA = strongestTraits[0] ?? 'Fresh';
+  const traitB = strongestTraits[1] ?? 'Elegant';
+  const traitC = strongestTraits[2] ?? 'Woody';
+
+  let archetype = `${traitA} ${traitB} Signature`;
+  let archetypeDescription = `Your scent lane is ${topTraitText([traitA, traitB])}: polished enough to feel intentional, but still easy to wear.`;
+  if (scores.Fresh >= 70 && scores.Elegant >= 64) {
+    archetype = 'Clean Luxury Minimalist';
+    archetypeDescription = 'Clean, expensive, and easy to wear. You like scents that feel put-together without trying too hard.';
+  } else if (scores.Smoky >= 66 && scores.Woody >= 60) {
+    archetype = 'Woody Night-Out Strategist';
+    archetypeDescription = 'You like depth, texture, and a little mystery. Polished, but definitely not boring.';
+  } else if (scores.Sweet >= 66 && scores.Playful >= 60) {
+    archetype = 'Soft Sweet Daydreamer';
+    archetypeDescription = 'Warm, sweet, and compliment-friendly, but still wearable enough for real life.';
+  } else if (scores.Fresh >= 65 && scores.Bold >= 60) {
+    archetype = 'Fresh but Dangerous';
+    archetypeDescription = 'Fresh with a bit of main-character tension. Clean first impression, memorable drydown.';
+  } else if (scores.Elegant >= 70 && scores.Mature >= 60) {
+    archetype = 'Quiet Luxury Villain';
+    archetypeDescription = 'Smooth, refined, and slightly intimidating in the best way. Polished, not boring.';
+  } else if (scores.Sweet >= 58 && scores.Elegant >= 62) {
+    archetype = 'Warm Vanilla Socialite';
+    archetypeDescription = 'Soft warmth with a dressed-up edge. You want cozy, but make it expensive.';
+  }
+
+  const recommendedFamilies = [...new Set(recommendations.slice(0, 4).flatMap(result => result.fragrance.scentFamilies))]
+    .slice(0, 4)
+    .map(pretty);
+  const bestOccasions = [...new Set(recommendations.slice(0, 4).flatMap(result => result.fragrance.occasions))]
+    .slice(0, 3)
+    .map(pretty);
+  const avoidTraits = avoids.length
+    ? avoids.map(pretty)
+    : [
+      scores.Bold > 72 ? 'headache-level projection' : 'anything too flat',
+      scores.Sweet < 40 ? 'sugar bomb sweetness' : 'boring safe picks',
+    ];
+  const summary = `Your profile leans ${topTraitText(strongestTraits)}. You seem to want something ${traitA.toLowerCase()} and ${traitB.toLowerCase()}, with enough ${traitC.toLowerCase()} energy to feel personal.`;
+
+  return {
+    archetype,
+    archetypeDescription,
+    summary,
+    stats,
+    strongestTraits,
+    avoidTraits,
+    bestOccasions,
+    recommendedFamilies,
+    insightCards: [
+      {
+        title: 'Strongest direction',
+        value: `${traitA} ${traitB}`,
+        description: `${traitA} leads the profile, while ${traitB.toLowerCase()} keeps it from feeling random.`,
+      },
+      {
+        title: 'Best occasion',
+        value: bestOccasions.slice(0, 2).join(' / ') || 'Daily wear',
+        description: 'Your matches are easiest to wear in the moments your quiz weighted highest.',
+      },
+      {
+        title: 'Safest blind-buy zone',
+        value: recommendedFamilies.slice(0, 2).join(' / ') || 'Clean musk',
+        description: 'These families repeat across your top matches, so they are the least risky lane.',
+      },
+      {
+        title: 'What to avoid',
+        value: avoidTraits.slice(0, 2).join(' / '),
+        description: 'These signals are treated carefully so the recommendations stay wearable for you.',
+      },
+    ],
+  };
 }
 
 function profileSummary(answers: QuizAnswers) {
@@ -106,6 +335,7 @@ export default function ResultsPageV2({
   ), [baseResults, hiddenIds]);
   const summary = useMemo(() => profileSummary(answers), [answers]);
   const metrics = useMemo(() => profileMetrics(baseResults, answers), [answers, baseResults]);
+  const scentDNA = useMemo(() => generateScentProfileStats(answers, baseResults), [answers, baseResults]);
 
   useEffect(() => {
     trackEvent('results_view', { resultCount: baseResults.length, profile: scentProfile.title, version: 'static_v2' });
@@ -203,6 +433,49 @@ export default function ResultsPageV2({
             </div>
           </section>
 
+          <section data-results-section="scent-dna" className="mt-5 rounded-[1.75rem] border border-stone-200 bg-white p-5 shadow-sm sm:p-7">
+            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Your Scent DNA</p>
+                <h2 className="mt-2 text-4xl font-black leading-[0.95] tracking-[-0.065em] text-stone-950 sm:text-5xl">
+                  {scentDNA.archetype}
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-stone-600">
+                  {scentDNA.archetypeDescription}
+                </p>
+                <p className="mt-3 rounded-2xl bg-stone-50 p-4 text-sm leading-relaxed text-stone-600">
+                  {scentDNA.summary}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {scentDNA.recommendedFamilies.map(family => (
+                    <span key={family} className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-bold capitalize text-stone-700">
+                      {family}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[1.5rem] border border-stone-200 bg-stone-950 p-4 text-white">
+                <ScentRadarChart stats={scentDNA.stats} />
+                <div className="mt-4 grid gap-2">
+                  {scentDNA.stats.map(stat => (
+                    <ScentStatBar key={stat.label} label={stat.label} value={stat.value} />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {scentDNA.insightCards.map(card => (
+                <article key={card.title} className="rounded-[1.35rem] border border-stone-200 bg-stone-50 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-500">{card.title}</p>
+                  <p className="mt-2 text-lg font-black leading-tight tracking-[-0.03em] text-stone-950">{card.value}</p>
+                  <p className="mt-2 text-xs leading-relaxed text-stone-500">{card.description}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
           <section data-results-section="match-summary" className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {metrics.map(metric => (
               <article key={metric.label} className="rounded-[1.35rem] border border-stone-200 bg-white p-4 shadow-sm">
@@ -281,6 +554,96 @@ function CurrencyPicker({
           {option.label}
         </button>
       ))}
+    </div>
+  );
+}
+
+function ScentRadarChart({ stats }: { stats: Array<{ label: ScentStatLabel; value: number }> }) {
+  const center = 80;
+  const maxRadius = 46;
+  const points = stats.map((stat, index) => {
+    const angle = (-90 + (360 / stats.length) * index) * (Math.PI / 180);
+    const radius = (stat.value / 100) * maxRadius;
+    return `${center + Math.cos(angle) * radius},${center + Math.sin(angle) * radius}`;
+  }).join(' ');
+
+  return (
+    <div>
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#d2b886]">Stat graph</p>
+      <svg
+        viewBox="0 0 160 160"
+        className="mx-auto mt-2 h-64 w-full max-w-[19rem]"
+        role="img"
+        aria-label={`Scent DNA radar chart: ${stats.map(stat => `${stat.label} ${stat.value}`).join(', ')}`}
+      >
+        {[0.25, 0.5, 0.75, 1].map(scale => (
+          <polygon
+            key={scale}
+            points={stats.map((_, index) => {
+              const angle = (-90 + (360 / stats.length) * index) * (Math.PI / 180);
+              const radius = maxRadius * scale;
+              return `${center + Math.cos(angle) * radius},${center + Math.sin(angle) * radius}`;
+            }).join(' ')}
+            fill="none"
+            stroke="rgba(255,255,255,0.14)"
+            strokeWidth="1"
+          />
+        ))}
+        {stats.map((_, index) => {
+          const angle = (-90 + (360 / stats.length) * index) * (Math.PI / 180);
+          return (
+            <line
+              key={index}
+              x1={center}
+              y1={center}
+              x2={center + Math.cos(angle) * maxRadius}
+              y2={center + Math.sin(angle) * maxRadius}
+              stroke="rgba(255,255,255,0.11)"
+            />
+          );
+        })}
+        <polygon points={points} fill="rgba(210,184,134,0.33)" stroke="#ffffff" strokeWidth="2" />
+        {stats.map((stat, index) => {
+          const angle = (-90 + (360 / stats.length) * index) * (Math.PI / 180);
+          const dotRadius = (stat.value / 100) * maxRadius;
+          const labelRadius = 65;
+          return (
+            <g key={stat.label}>
+              <circle
+                cx={center + Math.cos(angle) * dotRadius}
+                cy={center + Math.sin(angle) * dotRadius}
+                r="2.5"
+                fill="#ffffff"
+              />
+              <text
+                x={center + Math.cos(angle) * labelRadius}
+                y={center + Math.sin(angle) * labelRadius}
+                fill="rgba(255,255,255,0.86)"
+                fontSize="6.5"
+                fontWeight="800"
+                textAnchor="middle"
+                dominantBaseline="middle"
+              >
+                {stat.label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function ScentStatBar({ label, value }: { label: ScentStatLabel; value: number }) {
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between gap-3">
+        <span className="text-xs font-bold text-stone-300">{label}</span>
+        <span className="text-xs font-black tabular-nums text-white">{value}</span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-white/10">
+        <div className="h-full rounded-full bg-white" style={{ width: `${Math.max(4, value)}%` }} />
+      </div>
     </div>
   );
 }
