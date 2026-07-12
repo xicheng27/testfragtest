@@ -29,7 +29,7 @@ const terms = [
 
 const choosingTips = [
   {
-    title: 'For school, work, or NS',
+    title: 'For school, work or formal occasions',
     body: 'Go for clean, fresh, subtle, or moderate scents. Avoid very strong projection in close spaces.',
   },
   {
@@ -37,7 +37,7 @@ const choosingTips = [
     body: 'Look for soft musk, warm amber, light vanilla, or smooth woods. You want memorable, not overwhelming.',
   },
   {
-    title: 'For Singapore weather',
+    title: 'In tropical weather',
     body: 'Fresh, citrus, tea, aquatic, green, and clean musk scents usually work better in heat and humidity.',
   },
   {
