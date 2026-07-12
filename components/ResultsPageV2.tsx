@@ -275,18 +275,6 @@ function generateScentProfileStats(answers: QuizAnswers, recommendations: Scored
   };
 }
 
-function profileSummary(answers: QuizAnswers) {
-  const avoids = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
-  return [
-    { label: 'Vibe', value: join(valuesFor(answers, 'desired-feel'), 'Flexible') },
-    { label: 'Occasion', value: join(valuesFor(answers, 'occasion'), 'Any setting') },
-    { label: 'Weather', value: join(valuesFor(answers, 'weather'), 'Any climate') },
-    { label: 'Budget', value: join(valuesFor(answers, 'price-range'), 'Open') },
-    { label: 'Projection', value: join(valuesFor(answers, 'projection'), 'Not sure') },
-    { label: 'Avoids', value: avoids.length ? join(avoids, '') : 'No hard red flags selected' },
-  ];
-}
-
 function profileMetrics(results: ScoredFragrance[], answers: QuizAnswers) {
   const top = results.slice(0, 3);
   const avoids = valuesFor(answers, 'disliked-notes').filter(value => value !== 'none');
@@ -333,7 +321,6 @@ export default function ResultsPageV2({
   const visibleResults = useMemo(() => (
     baseResults.filter(result => !hiddenIds.includes(result.fragrance.id))
   ), [baseResults, hiddenIds]);
-  const summary = useMemo(() => profileSummary(answers), [answers]);
   const metrics = useMemo(() => profileMetrics(baseResults, answers), [answers, baseResults]);
   const scentDNA = useMemo(() => generateScentProfileStats(answers, baseResults), [answers, baseResults]);
 
@@ -393,47 +380,7 @@ export default function ResultsPageV2({
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-10">
-          <section data-results-section="profile-report" className="rounded-[1.75rem] border border-stone-200 bg-stone-950 p-5 text-white sm:p-8">
-            <div className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d2b886]">Your Scent Profile</p>
-                <h1 className="mt-3 text-[clamp(2.4rem,10vw,5.4rem)] font-black leading-[0.9] tracking-[-0.075em]">
-                  {scentProfile.title}
-                </h1>
-                <p className="mt-5 max-w-2xl text-base leading-relaxed text-stone-300 sm:text-lg">
-                  {scentProfile.description} These picks are ranked from your scent direction, occasion, climate, budget, projection, and red flags.
-                </p>
-              </div>
-              <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.07] p-4">
-                <p className="text-xs font-black uppercase tracking-[0.16em] text-stone-500">Top match confidence</p>
-                <p className="mt-3 text-5xl font-black tracking-[-0.06em]">{baseResults[0]?.matchPercent ?? 0}%</p>
-                <p className="mt-2 text-sm leading-relaxed text-stone-400">
-                  Based on your strongest current recommendation.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    trackEvent('quiz_retake', { source: 'results_v2_top' });
-                    onRestart();
-                  }}
-                  className="mt-5 min-h-12 w-full rounded-2xl bg-white px-5 text-base font-black text-stone-950"
-                >
-                  Retake quiz
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {summary.map(item => (
-                <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-stone-500">{item.label}</p>
-                  <p className="mt-1.5 text-sm capitalize leading-snug text-stone-100">{item.value}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section data-results-section="scent-dna" className="mt-5 rounded-[1.75rem] border border-stone-200 bg-white p-5 shadow-sm sm:p-7">
+          <section data-results-section="scent-dna" className="rounded-[1.75rem] border border-stone-200 bg-white p-5 shadow-sm sm:p-7">
             <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-[#8a6417]">Your Scent DNA</p>
@@ -522,6 +469,19 @@ export default function ResultsPageV2({
               </div>
             )}
           </section>
+
+          <div className="mt-6 flex justify-center">
+            <button
+              type="button"
+              onClick={() => {
+                trackEvent('quiz_retake', { source: 'results_v2_footer' });
+                onRestart();
+              }}
+              className="min-h-11 rounded-full border border-stone-300 bg-white px-6 text-sm font-bold text-stone-700 transition-colors hover:border-stone-950 hover:text-stone-950"
+            >
+              Retake quiz
+            </button>
+          </div>
         </main>
       </div>
 
