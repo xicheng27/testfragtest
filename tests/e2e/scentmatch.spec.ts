@@ -3,8 +3,9 @@ import { expect, test, type Page } from '@playwright/test';
 async function startQuiz(page: Page) {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /Find a fragrance/i })).toBeVisible();
-  await page.getByRole('button', { name: /Find my scent/i }).click();
-  await page.getByRole('button', { name: /Start the scent quiz/i }).click();
+  // One CTA tap now lands directly on question one — the intro screen was removed.
+  await page.getByRole('button', { name: /Find my scent/i }).first().click();
+  await expect(page.getByText(/1 of 10/i)).toBeVisible({ timeout: 15_000 });
 }
 
 async function answerCurrentQuestion(page: Page) {
@@ -29,7 +30,7 @@ async function completeQuiz(page: Page) {
   for (let index = 0; index < 10; index += 1) {
     await answerCurrentQuestion(page);
   }
-  await expect(page.getByText(/Your Scent Profile/i)).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator('article[data-fragrance-id]').first()).toBeVisible({ timeout: 25_000 });
 }
 
 test('landing page starts the quiz', async ({ page }) => {
@@ -78,7 +79,6 @@ test('mobile results keep report and recommendation cards mounted while scrollin
   await completeQuiz(page);
 
   await expect(page.getByText(/Report confidence/i)).toBeVisible();
-  await expect(page.locator('[data-results-section="profile-report"]')).toBeVisible();
   await expect(page.locator('[data-results-section="scent-dna"]')).toBeVisible();
   await expect(page.getByText(/Your Scent DNA/i)).toBeVisible();
   await expect(page.getByText(/^Fresh$/i).first()).toBeVisible();

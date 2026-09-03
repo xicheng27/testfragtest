@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ProductImage from '@/components/ProductImage';
-import { fragrances } from '@/lib/fragrances';
+import { recommendableFragrances as fragrances } from '@/lib/fragrances';
 import {
   coverageLabel,
   fragranceWarnings,

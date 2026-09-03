@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import AuthModal from './AuthModal';
+import ProductImage from './ProductImage';
 import { useAuth } from '@/lib/auth-context';
 import { useShelf } from '@/lib/shelf-context';
 import { CURRENCIES, Currency, PRICED_AS_OF, formatPrice, getSignaturePrice, useCurrency } from '@/lib/pricing';
@@ -21,7 +21,6 @@ interface ResultsPageV2Props {
   isExtended: boolean;
 }
 
-const fallbackImage = '/images/products/fallback.svg';
 const scentStatLabels = ['Fresh', 'Sweet', 'Woody', 'Smoky', 'Mature', 'Playful', 'Elegant', 'Bold'] as const;
 
 type ScentStatLabel = typeof scentStatLabels[number];
@@ -626,7 +625,6 @@ function StaticRecommendationCard({
   const fragrance = result.fragrance;
   const price = getSignaturePrice(fragrance, currency);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [imageSrc, setImageSrc] = useState(fragrance.imageUrl || fallbackImage);
 
   return (
     <article
@@ -637,17 +635,13 @@ function StaticRecommendationCard({
       <div className="grid gap-0 md:grid-cols-[minmax(210px,0.75fr)_minmax(0,1.55fr)]">
         <div className="border-b border-stone-100 bg-stone-50 p-4 md:border-b-0 md:border-r">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.25rem] bg-white">
-            <Image
-              src={imageSrc}
+            <ProductImage
+              src={fragrance.imageUrl}
               alt={`${fragrance.brand} ${fragrance.name} fragrance bottle`}
-              fill
               sizes="(max-width: 767px) calc(100vw - 48px), 320px"
               className="object-contain p-6"
-              loading={rank <= 2 ? 'eager' : 'lazy'}
-              fetchPriority={rank === 1 ? 'high' : 'auto'}
-              quality={70}
-              unoptimized={imageSrc.endsWith('.svg')}
-              onError={() => setImageSrc(fallbackImage)}
+              eager={rank === 1}
+              immediate={rank <= 2}
             />
           </div>
           {fragrance.isDupe && (

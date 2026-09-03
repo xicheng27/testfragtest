@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { fragrances } from '@/lib/fragrances';
+import { recommendableFragrances as fragrances } from '@/lib/fragrances';
 import AuthModal from './AuthModal';
 import MobileNav, { type MobileNavItem } from './MobileNav';
 

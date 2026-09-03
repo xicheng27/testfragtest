@@ -12,7 +12,6 @@ interface QuizProps {
   questions: QuizQuestion[];
   initialAnswers?: QuizAnswers;
   initialStep?: number;
-  autoStart?: boolean;
   onProgress?: (answers: QuizAnswers, step: number) => void;
   onComplete: (answers: QuizAnswers) => void;
   onBack: () => void;
@@ -49,13 +48,14 @@ export default function Quiz({
   questions,
   initialAnswers = {},
   initialStep = 0,
-  autoStart = false,
   onProgress,
   onComplete,
   onBack,
 }: QuizProps) {
   const safeInitialStep = Math.max(0, Math.min(initialStep, questions.length - 1));
-  const [started, setStarted] = useState(autoStart);
+  // The quiz always opens directly on question one; the standalone intro screen
+  // was removed to cut friction from the social-traffic funnel.
+  const [started] = useState(true);
   const [step, setStep] = useState(safeInitialStep);
   const [answers, setAnswers] = useState<QuizAnswers>(initialAnswers);
   const [isCompleting, setIsCompleting] = useState(false);
@@ -85,6 +85,15 @@ export default function Quiz({
     }, 520);
     return () => window.clearInterval(interval);
   }, [isCompleting]);
+
+  // The quiz now opens straight on question one (no intro screen), so record the
+  // start once when it mounts already started.
+  const startTrackedRef = useRef(false);
+  useEffect(() => {
+    if (!started || startTrackedRef.current) return;
+    startTrackedRef.current = true;
+    trackEvent('quiz_start', { source: 'direct' });
+  }, [started]);
 
   useEffect(() => {
     if (!started || isCompleting) return;
@@ -155,55 +164,6 @@ export default function Quiz({
     }
     moveToStep(step + 1);
   };
-
-  if (!started) {
-    return (
-      <div className="marble-bg fixed inset-0 z-40 flex h-dvh min-h-0 flex-col overflow-hidden">
-        <header className="flex items-center justify-between border-b border-white/70 bg-white/70 px-4 py-3 backdrop-blur-xl sm:px-6">
-          <button
-            type="button"
-            onClick={onBack}
-            className="inline-flex min-h-11 items-center rounded-full px-2 text-sm font-medium text-stone-600 transition-colors hover:bg-white hover:text-stone-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
-          >
-            Back
-          </button>
-          <span className="text-sm font-semibold tracking-tight text-stone-900">ScentMatch</span>
-          <span className="w-12" aria-hidden="true" />
-        </header>
-
-        <main className="flex min-h-0 flex-1 items-center px-4 py-6 sm:px-6">
-          <section className="mx-auto w-full max-w-xl rounded-[2rem] border border-stone-200 bg-white/88 p-6 text-center shadow-[0_24px_70px_rgba(28,25,23,0.12)] backdrop-blur sm:p-9">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#8a6417]">Scent quiz</p>
-            <h1 className="mt-3 text-[clamp(2rem,10vw,3.5rem)] font-black leading-[0.95] tracking-[-0.07em] text-stone-950">
-              Let&apos;s find a scent that actually fits your life.
-            </h1>
-            <p className="mx-auto mt-4 max-w-sm text-base leading-relaxed text-stone-600">
-              Pick what you like, what you hate, where you&apos;ll wear it, and how loud you want it to be. We&apos;ll use that to recommend fragrances that make sense.
-            </p>
-            <ul className="mx-auto mt-5 grid max-w-sm gap-2 text-left text-sm text-stone-700 sm:grid-cols-2">
-              {['10 quick questions', 'Visual choices', 'Avoids notes you dislike', 'Shows why each scent matched'].map(item => (
-                <li key={item} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-stone-950" aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              onClick={() => {
-                trackEvent('quiz_start', { source: 'intro' });
-                setStarted(true);
-              }}
-              className="mt-6 min-h-12 w-full rounded-2xl bg-stone-950 px-5 text-base font-bold text-white shadow-[0_16px_36px_rgba(28,25,23,0.18)] transition-all hover:-translate-y-0.5 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
-            >
-              Start the scent quiz
-            </button>
-            <p className="mt-3 text-sm text-stone-500">Fast, visual, and you can retake it anytime.</p>
-          </section>
-        </main>
-      </div>
-    );
-  }
 
   if (isCompleting) {
     return (
