@@ -197,7 +197,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
             questions={quizQuestions}
             initialAnswers={quizAnswers}
             initialStep={quizStep}
-            autoStart={quizStep > 0 || Object.keys(quizAnswers).length > 0}
             onProgress={handleQuizProgress}
             onComplete={handleQuizComplete}
             onBack={() => setView('main')}
@@ -210,7 +209,6 @@ export default function AppShell({ autoStartQuiz = false }: AppShellProps) {
             questions={additionalQuizQuestions}
             initialAnswers={quizAnswers}
             initialStep={quizStep}
-            autoStart={quizStep > 0 || Object.keys(quizAnswers).length > 0}
             onProgress={handleQuizProgress}
             onComplete={handleQuizComplete}
             onBack={() => setView('results')}

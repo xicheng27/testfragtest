@@ -62,6 +62,7 @@ export interface Fragrance {
   longevity: Longevity;
   genderMarketing: GenderStyle;
   imageUrl: string; // Local product image, never quiz scene artwork
+  hasProductImage: boolean; // false when imageUrl resolves to the shared fallback
   productUrl: string;
   sourceUrl: string;
   isDupe: boolean;
@@ -92,6 +93,7 @@ export type FragranceSeed = Omit<
   | 'concentration'
   | 'coverageStatus'
   | 'genderMarketing'
+  | 'hasProductImage'
   | 'imageUrl'
   | 'isDupe'
   | 'lastChecked'
@@ -983,6 +985,8 @@ const productSourceById = new Map(
   (productSources as ProductSource[]).map(source => [source.id, source])
 );
 
+export const FALLBACK_PRODUCT_IMAGE = '/images/products/fallback.svg';
+
 function normalizeFragrance(seed: FragranceSeed): Fragrance {
   const longevity: Longevity = seed.longevity
     ?? (seed.projection === 'strong' ? 'long' : seed.projection === 'subtle' ? 'light' : 'moderate');
@@ -1000,7 +1004,9 @@ function normalizeFragrance(seed: FragranceSeed): Fragrance {
   const productSource = productSourceById.get(seed.id);
   const localImageUrl = productSource?.status === 'OK' && productSource.file
     ? `/images/products/${productSource.file}`
-    : '/images/products/fallback.svg';
+    : FALLBACK_PRODUCT_IMAGE;
+  const resolvedImageUrl = seed.imageUrl ?? localImageUrl;
+  const hasProductImage = resolvedImageUrl !== FALLBACK_PRODUCT_IMAGE;
   const officialProductUrl = seed.productUrl ?? productSource?.pageUrl ?? '';
   const sourceUrl = seed.sourceUrl
     ?? productSource?.pageUrl
@@ -1033,7 +1039,8 @@ function normalizeFragrance(seed: FragranceSeed): Fragrance {
     vibeTags: [...new Set([...(seed.vibeTags ?? []), ...derivedTags])],
     longevity,
     genderMarketing: seed.genderMarketing ?? seed.genderStyle,
-    imageUrl: seed.imageUrl ?? localImageUrl,
+    imageUrl: resolvedImageUrl,
+    hasProductImage,
     productUrl: officialProductUrl,
     sourceUrl,
     isDupe: seed.isDupe ?? false,
@@ -1064,3 +1071,19 @@ export const fragrances: Fragrance[] = [
   ...brandExpansion,
   ...catalogCompletion,
 ].map(normalizeFragrance);
+
+/**
+ * Fragrances that carry a recognisable local product photograph. Until real
+ * packshots exist for the remaining catalogue, these are the only entries that
+ * may surface in recommendations, browsing, search or the Shelf — never a
+ * generic fallback illustration. See scripts/validate-fragrance-catalog.mjs and
+ * docs/missing-product-images.md for the excluded IDs.
+ */
+export const recommendableFragrances: Fragrance[] = fragrances.filter(
+  fragrance => fragrance.hasProductImage,
+);
+
+/** Catalogue IDs still awaiting a real product photograph. */
+export const fragrancesMissingProductImage: Fragrance[] = fragrances.filter(
+  fragrance => !fragrance.hasProductImage,
+);

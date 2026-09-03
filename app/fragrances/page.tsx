@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
-import { fragrances, Fragrance, Occasion, PriceRange, Projection, ScentFamily } from '@/lib/fragrances';
+import { recommendableFragrances as fragrances, Fragrance, Occasion, PriceRange, Projection, ScentFamily } from '@/lib/fragrances';
 import { sourceConfidenceLabel, sourceConfidenceTone } from '@/lib/fragrance-trust';
 import ProductImage from '@/components/ProductImage';
 import MobileNav from '@/components/MobileNav';

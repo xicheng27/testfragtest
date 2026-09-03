@@ -1170,10 +1170,9 @@
   },
   {
     "id": "mfk-oud-satin-mood",
-    "status": "OK",
+    "status": "DUPLICATE",
     "pageUrl": "https://www.neimanmarcus.com/p/maison-francis-kurkdjian-2-4-oz-oud-satin-mood-extrait-de-parfum-prod205350014?childItemId=NMC4NDJ_&navpath=cat000000_cat000730_cat24260734_cat24520759&page=0&position=3",
-    "imageSourceUrl": "https://media.neimanmarcus.com/f_auto,q_auto:low,ar_4:5,c_fill,dpr_2.0,w_790/01/nm_2259800_100000_m",
-    "file": "mfk-oud-satin-mood.jpg"
+    "note": "Shared the Oud Satin Mood Extrait packshot; excluded until a distinct EDP photo is sourced."
   },
   {
     "id": "mfk-oud-satin-mood-extrait",

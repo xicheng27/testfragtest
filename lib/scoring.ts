@@ -1,11 +1,17 @@
 import {
-  fragrances,
+  recommendableFragrances,
   Fragrance,
   Occasion,
   PriceRange,
   Projection,
   ScentFamily,
 } from './fragrances';
+
+// Only fragrances with a real product photograph are eligible; entries that
+// would fall back to a generic illustration are excluded from every result set
+// until a genuine packshot exists. The scoring logic itself is unchanged — only
+// the candidate pool is scoped.
+const fragrances = recommendableFragrances;
 
 export interface QuizAnswers {
   [questionId: string]: string | string[];

@@ -2,7 +2,7 @@
 import { use, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
-import { fragrances } from '@/lib/fragrances';
+import { recommendableFragrances as fragrances } from '@/lib/fragrances';
 import FragranceCard from '@/components/FragranceCard';
 import MobileNav from '@/components/MobileNav';
 

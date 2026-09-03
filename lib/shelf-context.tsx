@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Fragrance, fragrances } from './fragrances';
+import { Fragrance, recommendableFragrances as fragrances } from './fragrances';
 import { useAuth } from './auth-context';
 
 const LEGACY_GUEST_KEY = 'scentmatch:saved-fragrances';
